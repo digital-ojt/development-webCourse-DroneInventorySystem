@@ -21,7 +21,7 @@ public class ErrorMessage {
 	public static final String UNEXPECTED_INPUT_ERROR_MESSAGE = "unexpected.input";
 
 	// 不正な文字列を使用した検索に関するエラーメッセージ
-	public static final String INVALID_INPUT_ERROR_MESSAGE = "invalid.input";
+	public static final String INVALID_INPUT_ERROR_MESSAGE = "{invalid.input}";
 
 	// 文字超過に関するエラーメッセージ
 	public static final String CENTER_NAME_LENGTH_ERROR_MESSAGE = "centerName.length.wrongInput";
@@ -37,4 +37,19 @@ public class ErrorMessage {
 	
 	// 操作履歴画面の操作時刻に関するエラーメッセージ
 	public static final String OPERATION_DATE_FIELD_ERROR_MESSAGE = "operationLog.operationDateField.empty";
+
+	//登録データの登録に成功した場合のメッセージ
+	public static final String SUCCESS_REGISTER_MESSAGE = "register.success";
+	
+	//登録データが重複している場合のエラーメッセージ
+	public static final String DATA_DUPLICATE_ERROR_MESSAGE = "data.duplicate";
+	
+	//不正な登録を検知した場合のエラーメッセージ
+	public static final String INVALID_REGISTRATION_ERROR_MESSAGE = "invalid.registration";
+
+	//更新に成功した場合のメッセージ
+	public static final String SUCCESS_UPDATE_MESSAGE = "update.success";
+		
+	//更新に失敗した場合のエラーメッセージ
+	public static final String INVALID_UPDATE_ERROR_MESSAGE = "invalid.update";
 }

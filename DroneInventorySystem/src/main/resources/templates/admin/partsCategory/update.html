@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html 
+	xmlns:th="http://www.thymeleaf.org" 
+	th:replace="~{layout/template::layout(~{::title},~{::body/content()})}">
+<head>
+<meta charset="UTF-8">
+<title>InvenTrack</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+		<div class="card shadow mb-4">
+			<div class="card header py-3">
+				<h6 class="m-0 font-weght-bold text^primary">部品カテゴリー管理 更新/削除画面</h6>
+			</div>
+
+			<div class="card-body">		
+				<!-- エラーメッセージの表示 -->
+					<div th:if="${not #strings.isEmpty(errorMsg)}" class="text-danger">
+				  	  <p th:utext="${errorMsg}"></p>
+					</div>
+					<!-- 成功メッセージの表示 -->
+					<div th:if="${not #strings.isEmpty(successMsg)}" class="text-info">
+				    	  <p th:utext="${successMsg}"></p>
+					</div>	  
+
+			<!-- 更新フォーム-->
+			<form id="updateForm" method="post" th:action="@{'/admin/partsCategory/update'}"
+				th:object="${partsCategoryForm}">	
+
+				<!-- 疑似 PATCHリクエスト -->
+				<input type="hidden" name="_method" value="patch">
+				
+				<!-- 部品カテゴリーID -->
+				<input type="hidden" th:field="*{categoryId}">
+
+				<!-- 削除フラグ -->
+				<input type="hidden" th:field="*{deleteFlag}" id="deleteFlag" value="false">
+				
+				<table class="table table-bordered">
+					<thead>
+						<tr>
+							<th colspan="2">＊必須項目</th>
+						</tr>
+					</thead>				
+					<tbody>
+						<!-- 部品カテゴリー名 -->
+						<tr>
+							<td>部品カテゴリー名 ＊</td>
+							<td>
+								<input type="text" name="categoryName" th:field="*{categoryName}" class="form-control"
+									maxlength="20" required>
+								<span class="text-danger error-message" id="error-centerName"></span>
+							</td>
+						</tr>
+					</tbody>
+				</table>		
+			
+				<!-- ボタンエリア -->
+				<div class="d-flex justify-content-between mt-4">
+					<!-- キャンセルボタン -->
+					<button type="button" class="btn btn-secondary" onclick="goBack()">キャンセル</button>
+
+					<!-- 削除ボタン & 更新ボタン（右寄せ） -->
+					<div>
+					<!-- 削除ボタン -->
+					<button id="deleteBtn" class="btn btn-danger ml-2" onclick="submitWithFlag(true)">
+						削除
+					</button>
+					<!-- 更新ボタン -->
+					<button id="upDateBtn" class="btn btn-success ml-2" 
+						style="background-color: #f8c471; border: none; border-radius: 5px;">
+						更新
+					</button>
+				</div>
+			</div>
+
+		</form>
+						
+		</div>
+	</div>
+
+	<!-- 前のページに戻る -->
+	<script>
+		function goBack() {
+			window.history.back();
+		}
+	</Script>
+	
+	<!-- 削除フラグをonにする -->
+	<script>
+		function submitWithFlag(isDelete) {
+			// deleteFlagの値を設定
+			document.getElementById('deleteFlag').value = isDelete;
+			// フォームを送信
+			document.getElementById('updateForm').submit();
+		}
+	</Script>
+	
+</body>
+</html>

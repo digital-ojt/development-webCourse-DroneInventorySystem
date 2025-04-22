@@ -2,6 +2,8 @@ package com.digitalojt.web.exception;
 
 import java.sql.SQLException;
 
+import jakarta.servlet.http.HttpServletRequest;
+
 import org.springframework.dao.DataAccessException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -10,8 +12,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.digitalojt.web.consts.LogMessage;
 import com.digitalojt.web.consts.UrlConsts;
 
-import jakarta.servlet.http.HttpServletRequest;
-
 /**
  * グローバル例外ハンドラー
  */
@@ -19,12 +19,33 @@ import jakarta.servlet.http.HttpServletRequest;
 public class GlobalExceptionHandler {
 
 	/**
+	 * 入力値不正例外のハンドリング
+	 */
+	
+	@ExceptionHandler(InvalidInputException.class)
+	public String handleDatebaseException(InvalidInputException ex, RedirectAttributes redirectAttributes) {
+		String errorMessage = ex.getMessage();
+		redirectAttributes.addFlashAttribute(LogMessage.FLASH_ATTRIBUTE_ERROR, errorMessage);
+		return "redirect:" + UrlConsts.ERROR;
+	}
+	
+	
+	/**
 	 * 重複登録例外のハンドリング
 	 */
 	@ExceptionHandler(DuplicateEntryException.class)
 	public String handleDuplicateEntryException(DuplicateEntryException ex, RedirectAttributes redirectAttributes,
 			HttpServletRequest request) {
-		return handleException(ex, redirectAttributes, request);
+		
+		String errorMessage = ex.getMessage();
+		redirectAttributes.addFlashAttribute(LogMessage.FLASH_ATTRIBUTE_ERROR, errorMessage);
+		
+		// リファラーの取得
+		String referer = request.getHeader("Referer");
+		referer = referer != null ? referer.replaceAll("^(https?://[^/]+)", "") : "";
+
+		return "redirect:" + referer;
+
 	}
 
 	/**
@@ -41,16 +62,6 @@ public class GlobalExceptionHandler {
 		return "redirect:" + referer;
 	}
 	
-
-	/**
-	 * 入力値不正例外のハンドリング
-	 */
-	@ExceptionHandler(InvalidInputException.class)
-	public String handleDatabaseException(InvalidInputException ex, RedirectAttributes redirectAttributes) {
-		String errorMessage = ex.getMessage();
-		redirectAttributes.addFlashAttribute(LogMessage.FLASH_ATTRIBUTE_ERROR, errorMessage);
-		return "redirect:" + UrlConsts.ERROR;
-	}
 
 	/**
 	 * DBエラーのハンドリング

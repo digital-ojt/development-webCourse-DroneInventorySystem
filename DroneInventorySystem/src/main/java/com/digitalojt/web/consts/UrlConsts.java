@@ -52,5 +52,23 @@ public class UrlConsts {
 	
 	// エラー
 	public static final String  ERROR_VIEW = "error/error";
+	
+	// 部品カテゴリー管理画面 初期処理
+	public static final String PARTS_CATEGORY = "/admin/partsCategory";
+	// 部品カテゴリー管理画面　テンプレート名
+	public static final String PARTS_CATEGORY_INDEX = "admin/partsCategory/partsCategory";
+	
+	public static final String[] CATEGORY_LIST = {"/admin/partsCategory"};
+	
+	public static final String CATEGORY_LIST_INDEX = "/admin/partsCategory/partsCategory";
+
+	// 部品カテゴリー管理画面 検索
+	public static final String PARTS_CATEGORY_SEARCH = "/admin/partsCategory/search";
+
+	
+	// 部品カテゴリー管理画面 登録
+	public static final String PARTS_CATEGORY_REGISTER = "/admin/partsCategory/register";
+
+	public static final String PARTS_CATEGORY_UPDATE = "/admin/partsCategory/update";
 
 }

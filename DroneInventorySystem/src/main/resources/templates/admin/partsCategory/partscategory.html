@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html 
+    xmlns:th="http://www.thymeleaf.org" 
+    th:replace="~{layout/template::layout(~{::title},~{::body/content()})}">
+<head>
+    <title>InvenTrack</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">部品カテゴリー管理</h6>
+    </div>
+    <div class="card-body">
+
+		<!-- 検索フォーム -->
+		<div class="search-container">
+		  <form class="form-inline" method="get" th:action="@{'/admin/partsCategory/search'}" th:object="${partsCategoryForm}">
+		    <label for="searchTerm" class="mr-2 search-label">検索条件</label>
+		    <label for="searchTerm" class="mr-2">部品カテゴリー名</label>
+		    <input type="text" id="searchTerm" name="categoryName" class="form-control mr-2" maxlength="20" required>
+		    <button type="submit" class="btn btn-primary">検索</button>
+		  </form>
+		  <!-- エラーメッセージの表示 -->
+		  	<div th:if="${not #strings.isEmpty(errorMsg)}" class="text-danger">
+		    	  <p th:utext="${errorMsg}"></p>
+		  	</div>
+		  	<!-- 成功メッセージの表示 -->
+		  	<div th:if="${not #strings.isEmpty(successMsg)}" class="text-info">
+		      	  <p th:utext="${successMsg}"></p>
+		  	</div>	  
+		</div>				
+				
+        <!-- 部品カテゴリーテーブル -->
+        <div class="table-responsive">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>部品カテゴリー</th>
+                    </tr>
+                </thead>
+				<tbody>
+				    <tr th:each="item : ${categoryList}">
+				        <td>
+				            <a th:href="@{/admin/partsCategory/update/{categoryId}(categoryId=${item.categoryId})}" th:text="${item.categoryName}"></a>
+				        </td>
+				    </tr>
+				</tbody>
+            </table>
+			
+			<form id="registerForm" method="get" th:action="@{'/admin/partsCategory/register'}">
+				<div class="d-flex justify-content-end mt-4">  <!-- 右寄せ -->
+				    <button id="registerBtn" type="submit" class="btn btn-success 	ml-2" 
+			        	style="background-color: #f8c471; border: none; border-radius: 5px;">
+			        登録
+			   		</button>
+				</div>
+			</form>
+       </div>	
+    </div>
+</div>
+
+</body>
+</html>
