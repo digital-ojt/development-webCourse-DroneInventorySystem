@@ -43,7 +43,8 @@ public class PartsCategoryController extends AbstractController {
 	/**
 	 * 部品カテゴリー情報画面の初期表示
 	 *
-	 * @param model Modelオブジェクト
+	 * @param 
+ Modelオブジェクト
 	 * @return String(Viewの名前：部品カテゴリー管理画面)
 	 */
 	@GetMapping(UrlConsts.PARTS_CATEGORY)
