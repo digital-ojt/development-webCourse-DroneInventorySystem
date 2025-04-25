@@ -29,6 +29,24 @@ public class UrlConsts {
 	// 在庫一覧画面 検索
 	public static final String STOCK_LIST_SEARCH = "/admin/stockList/search";
 	
+	// 部品カテゴリー管理画面 初期処理
+	public static final String PARTS_CATEGORY = "/admin/partsCategory";
+	
+	// 部品カテゴリー管理画面　テンプレート名
+	public static final String PARTS_CATEGORY_INDEX = "admin/partsCategory/partsCategory";
+	
+	// 部品カテゴリー管理画面 検索
+	public static final String PARTS_CATEGORY_SEARCH = "/admin/partsCategory/search";
+	
+	// 部品カテゴリー管理画面 登録
+	public static final String PARTS_CATEGORY_REGISTER = "/admin/partsCategory/register";
+	
+	// 部品カテゴリー管理画面　更新
+	public static final String PARTS_CATEGORY_UPDATE = "admin/partsCategory/update";
+	
+	// 部品カテゴリー管理画面 削除
+	public static final String PARTS_CATEGORY_DELETE = "/admin/partsCategory/delete";
+	
 	// 在庫センター情報画面
 	public static final String  CENTER_INFO = "/admin/centerInfo";
 

@@ -34,4 +34,5 @@ public class LogMessage {
 	//HTTPメソッド
     public static final String HTTP_GET = "GET";
     public static final String HTTP_POST = "POST";
+    public static final String HTTP_PATCH = "PATCH";
 }

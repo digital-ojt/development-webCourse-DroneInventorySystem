@@ -37,4 +37,13 @@ public class ErrorMessage {
 	
 	// 操作履歴画面の操作時刻に関するエラーメッセージ
 	public static final String OPERATION_DATE_FIELD_ERROR_MESSAGE = "operationLog.operationDateField.empty";
+	
+	// 不正なデータ登録に関するエラーメッセージ
+	public static final String DATA_DUPLICATE_ERROR_MESSAGE = "data.duplicate";
+	
+	// 不正なデータ登録に関するエラーメッセージ
+	public static final String ININVALID_REGISTRATION_ERROR_MESSAGE = "invalid.registration";
+	
+	// 不正なデータ更新/削除に関するエラーメッセージ
+	public static final String ININVALID_UPDATE_ERROR_MESSAGE = "invalid.update";
 }

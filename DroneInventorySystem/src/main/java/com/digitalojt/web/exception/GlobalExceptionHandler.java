@@ -3,6 +3,7 @@ package com.digitalojt.web.exception;
 import java.sql.SQLException;
 
 import org.springframework.dao.DataAccessException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -10,6 +11,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.digitalojt.web.consts.LogMessage;
 import com.digitalojt.web.consts.UrlConsts;
 
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 
 /**
@@ -47,6 +49,32 @@ public class GlobalExceptionHandler {
 	 */
 	@ExceptionHandler(InvalidInputException.class)
 	public String handleDatabaseException(InvalidInputException ex, RedirectAttributes redirectAttributes) {
+		String errorMessage = ex.getMessage();
+		redirectAttributes.addFlashAttribute(LogMessage.FLASH_ATTRIBUTE_ERROR, errorMessage);
+		return "redirect:" + UrlConsts.ERROR;
+	}
+	
+	/**
+	 * 重複登録例外のハンドリング
+	 */
+	@ExceptionHandler(DataIntegrityViolationException.class)
+	public String handleDataIntegrityViolationException(DataIntegrityViolationException ex, RedirectAttributes redirectAttributes, HttpServletRequest request) {
+		
+		String errorMessage = ex.getMessage();
+		redirectAttributes.addFlashAttribute(LogMessage.FLASH_ATTRIBUTE_ERROR, errorMessage);
+
+		// リファラーの取得
+		String referer = request.getHeader("Referer");
+		referer = referer != null ? referer.replaceAll("^(https?://[^/]+)", "") : "";
+
+		return "redirect:" + referer;
+	}
+	
+	/**
+	 * 特定のIDやキーを使って検索したエンティティが存在しない場合のハンドリング
+	 */
+	@ExceptionHandler(EntityNotFoundException.class)
+	public String handleDatabaseException(EntityNotFoundException ex, RedirectAttributes redirectAttributes) {
 		String errorMessage = ex.getMessage();
 		redirectAttributes.addFlashAttribute(LogMessage.FLASH_ATTRIBUTE_ERROR, errorMessage);
 		return "redirect:" + UrlConsts.ERROR;

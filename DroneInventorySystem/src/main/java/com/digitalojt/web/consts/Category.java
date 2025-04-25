@@ -1,7 +1,7 @@
 package com.digitalojt.web.consts;
 
 /**
- * 在庫の分類情報に関するEnum
+ * 在庫のカテゴリー情報に関するEnum
  * 
  * @author dotlife
  *
