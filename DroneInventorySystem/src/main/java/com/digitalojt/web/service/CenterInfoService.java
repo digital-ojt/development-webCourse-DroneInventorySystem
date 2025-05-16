@@ -33,12 +33,13 @@ public class CenterInfoService {
 
 	/**
 	 * 引数に合致する在庫センター情報を取得
+	 * 2025/05/16 機能改修 現在容量範囲が検索できるため、検索項目引数を追加する
 	 * 
 	 * @param centerName
 	 * @param region 
 	 * @return
 	 */
-	public List<CenterInfo> getCenterInfoData(String centerName, String region) {
-		return repository.findActiveCenters(centerName, region);
+	public List<CenterInfo> getCenterInfoData(String centerName, String region,Integer storageCapacityFrom,Integer storageCapacityTo) {
+		return repository.findActiveCenters(centerName, region, storageCapacityFrom, storageCapacityTo);
 	}
 }

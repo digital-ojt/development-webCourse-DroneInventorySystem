@@ -32,6 +32,14 @@
 						 	th:text="${region.name}"></option>
 					</select>
 					
+					<!--//2025/05/16 機能改修 現在容量範囲が検索できるため、検索項目に「現在容量」のFrom-Toを追加する-->
+					<label for="searchTerm" class="mr-2">現在容量(㎥)</label>
+ 					<input type="text" id="storageCapacityFrom" name="storageCapacityFrom" class="form-control mr-2"  maxlength="10">
+
+ 					<span class="mr-2">～</span>
+
+ 					<input type="text" id="storageCapacityTo" name="storageCapacityTo" class="form-control mr-2" maxlength="10">
+					
  					<button type="submit" class="btn btn-primary">検索</button>
  				</form>
  				
@@ -50,6 +58,8 @@
 							<th>住所</th>
 							<th>連絡先</th>
 							<th>管理者名</th>
+							<th>最大容量(㎥)</th>
+							<th>現在容量(㎥)</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -58,6 +68,8 @@
 							<td> [[${item.address}]] </td>
 							<td> [[${item.phoneNumber}]] </td>
 							<td> [[${item.managerName}]] </td>
+							<td> [[${item.maxStorageCapacity}]] </td>
+							<td> [[${item.currentStorageCapacity}]] </td>
 						</tr>
 					</tbody>
 				</table>
