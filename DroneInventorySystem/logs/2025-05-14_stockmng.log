@@ -1,0 +1,76 @@
+INFO  2025-05-14 18:16:13.671   c.d.w.DroneInventorySystemApplication - Starting DroneInventorySystemApplication using Java 17.0.10 with PID 18076 (C:\Users\s-sasagawa\Desktop\DOJT研修\Project\development-PGcourse-DroneInventorySystem\DroneInventorySystem\target\classes started by s-sasagawa in C:\Users\s-sasagawa\Desktop\DOJT研修\Project\development-PGcourse-DroneInventorySystem\DroneInventorySystem)
+INFO  2025-05-14 18:16:13.672   c.d.w.DroneInventorySystemApplication - No active profile set, falling back to 1 default profile: "default"
+INFO  2025-05-14 18:16:13.717   o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+INFO  2025-05-14 18:16:13.718   o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+INFO  2025-05-14 18:16:14.248   o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+INFO  2025-05-14 18:16:14.299   o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 45 ms. Found 4 JPA repository interfaces.
+INFO  2025-05-14 18:16:14.725   o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+INFO  2025-05-14 18:16:14.732   o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+INFO  2025-05-14 18:16:14.735   o.a.catalina.core.StandardService - Starting service [Tomcat]
+INFO  2025-05-14 18:16:14.735   o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.28]
+INFO  2025-05-14 18:16:14.772   o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+INFO  2025-05-14 18:16:14.773   o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1054 ms
+INFO  2025-05-14 18:16:14.796   com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+INFO  2025-05-14 18:16:15.003   com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@4325a553
+INFO  2025-05-14 18:16:15.005   com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+INFO  2025-05-14 18:16:15.012   o.s.b.a.h.H2ConsoleAutoConfiguration - H2 console available at '/h2-console'. Database available at 'jdbc:mysql://localhost:3306/stock_mng'
+INFO  2025-05-14 18:16:15.365   o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+INFO  2025-05-14 18:16:18.091   o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+INFO  2025-05-14 18:16:18.265   o.s.d.j.r.query.QueryEnhancerFactory - Hibernate is in classpath; If applicable, HQL parser will be used.
+WARN  2025-05-14 18:16:18.680   o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+INFO  2025-05-14 18:16:18.878   o.s.s.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@2193252e, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@3dad47e8, org.springframework.security.web.context.SecurityContextHolderFilter@2a5176c4, org.springframework.security.web.header.HeaderWriterFilter@44806aaa, org.springframework.security.web.csrf.CsrfFilter@296a984, org.springframework.security.web.authentication.logout.LogoutFilter@3c24a556, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@1e60c1a1, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@1279709d, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@2a2c6471, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@25d8e435, org.springframework.security.web.access.ExceptionTranslationFilter@3bf35358, org.springframework.security.web.access.intercept.AuthorizationFilter@203d420]
+INFO  2025-05-14 18:16:19.058   o.s.b.d.a.OptionalLiveReloadServer - LiveReload server is running on port 35729
+INFO  2025-05-14 18:16:19.072   o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+INFO  2025-05-14 18:16:19.087   o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path ''
+INFO  2025-05-14 18:16:19.095   c.d.w.DroneInventorySystemApplication - Started DroneInventorySystemApplication in 5.683 seconds (process running for 6.245)
+INFO  2025-05-14 18:16:28.690   o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+INFO  2025-05-14 18:16:28.690   o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+INFO  2025-05-14 18:16:28.692   o.s.web.servlet.DispatcherServlet - Completed initialization in 2 ms
+INFO  2025-05-14 18:16:28.724 0:0:0:0:0:0:0:1 anonymousUser c.d.w.controller.AbstractController - ACCESS: /login
+INFO  2025-05-14 18:16:28.726 0:0:0:0:0:0:0:1 anonymousUser c.d.w.controller.AbstractController - APP: GET - index - START
+INFO  2025-05-14 18:16:28.726 0:0:0:0:0:0:0:1 anonymousUser c.d.w.controller.AbstractController - APP: GET - index - END
+INFO  2025-05-14 18:16:29.095 0:0:0:0:0:0:0:1 anonymousUser c.d.w.controller.AbstractController - ACCESS: /login
+INFO  2025-05-14 18:16:29.096 0:0:0:0:0:0:0:1 anonymousUser c.d.w.controller.AbstractController - APP: GET - index - START
+INFO  2025-05-14 18:16:29.096 0:0:0:0:0:0:0:1 anonymousUser c.d.w.controller.AbstractController - APP: GET - index - END
+INFO  2025-05-14 18:16:29.154 0:0:0:0:0:0:0:1 anonymousUser c.d.w.controller.AbstractController - ACCESS: /login
+INFO  2025-05-14 18:16:29.154 0:0:0:0:0:0:0:1 anonymousUser c.d.w.controller.AbstractController - APP: GET - index - START
+INFO  2025-05-14 18:16:29.154 0:0:0:0:0:0:0:1 anonymousUser c.d.w.controller.AbstractController - APP: GET - index - END
+INFO  2025-05-14 18:16:38.415 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - ACCESS: /admin/partsCategory
+INFO  2025-05-14 18:16:38.416 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - APP: GET - index - START
+INFO  2025-05-14 18:16:38.503 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - APP: GET - index - END
+INFO  2025-05-14 18:19:47.897 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - ACCESS: /admin/partsCategory/update/1
+INFO  2025-05-14 18:19:47.898 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - APP: GET - update - START
+INFO  2025-05-14 18:19:47.903 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - APP: GET - update - END
+WARN  2025-05-14 18:19:47.943 0:0:0:0:0:0:0:1 dotlife o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Resolved [org.springframework.web.servlet.resource.NoResourceFoundException: No static resource js/centerInfo.js.]
+ERROR 2025-05-14 18:19:47.961 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - ERROR: GET - handleError - No static resource js/centerInfo.js.
+INFO  2025-05-14 18:19:56.874 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - ACCESS: /admin/partsCategory/search
+INFO  2025-05-14 18:19:56.876 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - APP: GET - search - START
+ERROR 2025-05-14 18:19:56.876 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - ERROR: POST - getValidationErrorMessage - com.digitalojt.web.form.PartsCategoryForm@1a7b9e48 不正な入力を検知しました。
+
+INFO  2025-05-14 18:19:56.885 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - ACCESS: /admin/partsCategory
+INFO  2025-05-14 18:19:56.885 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - APP: GET - index - START
+INFO  2025-05-14 18:19:56.891 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - APP: GET - index - END
+INFO  2025-05-14 18:20:55.408 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - ACCESS: /admin/partsCategory/search
+INFO  2025-05-14 18:20:55.409 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - APP: GET - search - START
+ERROR 2025-05-14 18:20:55.409 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - ERROR: POST - getValidationErrorMessage - com.digitalojt.web.form.PartsCategoryForm@44b8a0e7 不正な入力を検知しました。
+
+INFO  2025-05-14 18:20:55.415 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - ACCESS: /admin/partsCategory
+INFO  2025-05-14 18:20:55.415 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - APP: GET - index - START
+INFO  2025-05-14 18:20:55.422 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - APP: GET - index - END
+INFO  2025-05-14 18:20:59.407 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - ACCESS: /admin/partsCategory/search
+INFO  2025-05-14 18:20:59.407 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - APP: GET - search - START
+INFO  2025-05-14 18:20:59.422 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - ACCESS: /admin/partsCategory
+INFO  2025-05-14 18:20:59.423 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - APP: GET - index - START
+INFO  2025-05-14 18:20:59.429 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - APP: GET - index - END
+INFO  2025-05-14 18:21:05.204 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - ACCESS: /admin/partsCategory/search
+INFO  2025-05-14 18:21:05.205 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - APP: GET - search - START
+ERROR 2025-05-14 18:21:05.205 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - ERROR: POST - getValidationErrorMessage - com.digitalojt.web.form.PartsCategoryForm@afd6785 必須項目が未設定です。
+
+INFO  2025-05-14 18:21:05.212 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - ACCESS: /admin/partsCategory
+INFO  2025-05-14 18:21:05.212 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - APP: GET - index - START
+INFO  2025-05-14 18:21:05.218 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - APP: GET - index - END
+INFO  2025-05-14 18:52:56.285   o.s.b.a.SpringApplicationAdminMXBeanRegistrar$SpringApplicationAdmin - Application shutdown requested.
+INFO  2025-05-14 18:52:56.291   o.a.coyote.http11.Http11NioProtocol - Stopping ProtocolHandler ["http-nio-8080"]
+INFO  2025-05-14 18:52:56.572   o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+INFO  2025-05-14 18:52:56.577   com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+INFO  2025-05-14 18:52:56.590   com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
