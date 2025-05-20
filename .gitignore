@@ -1,0 +1,26 @@
+# Eclipse
+.classpath
+.project
+.metadata/
+.settings/
+bin/
+tmp/
+Servers/
+*.tmp
+*.bak
+*.swp
+*~
+
+# ビルド成果物 (プロジェクトのビルドツールに応じて追加)
+# 例: Maven
+# target/
+# 例: Gradle
+# build/
+# .gradle/
+
+# ローカル設定ファイル (もしあれば)
+# local.properties
+
+# OS固有のファイル
+.DS_Store
+Thumbs.db
