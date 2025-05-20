@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<title>navbar</title>
+</head>
+
+<body>
+	<div th:fragment="navbar" th:remove="tag">
+
+		<ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+
+			<!-- Sidebar - Brand -->
+			<a class="sidebar-brand d-flex align-items-center justify-content-center" href="#">
+				<div class="sidebar-brand-text mx-3">InvenTrack</sup></div>
+			</a>
+
+			<!-- Divider -->
+			<hr class="sidebar-divider my-0" />
+
+			<!-- Heading -->
+			<!-- <div class="sidebar-heading">Interface</div> -->
+
+			<!-- Nav Item - Dashboard -->
+			<li class="nav-item">
+				<a class="nav-link" th:href="@{'/admin/stockList'}">
+					<span>部品在庫一覧</span>
+				</a>
+				<a class="nav-link" th:href="@{'/admin/partsCategory'}">
+					<span>部品カテゴリー管理</span>
+				</a>
+				<a class="nav-link" th:href="@{'/admin/centerInfo'}">
+					<span>在庫センター情報</span>
+				</a>
+				<a class="nav-link" th:href="@{'/admin/operationLog'}">
+					<span>操作履歴</span>
+				</a>
+			</li>
+		</ul>
+	</div>
+</body>
+
+</html>

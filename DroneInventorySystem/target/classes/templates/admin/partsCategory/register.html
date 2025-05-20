@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout/template :: layout(~{::title},~{::body/content()})}">
+
+<head>
+	<title>InvenTrack</title>
+	<link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+	<div class="card shadow mb-4">
+		<div class="card-header py-3">
+			<h6 class="m-0 font-weight-bold text-primary">部品カテゴリー管理 登録画面</h6>
+		</div>
+
+		<div class="card-body">
+			<!-- エラーメッセージの表示 -->
+			<div th:if="${not #strings.isEmpty(errorMsg)}" class="text-danger">
+				<p th:utext="${errorMsg}"></p>
+			</div>
+
+			<!-- 登録フォーム -->
+			<form id="updateForm" method="post" th:action="@{/admin/partsCategory/register}"
+				th:object="${partsCategoryUpdateForm}">
+
+				<!-- 部品カテゴリーID -->
+				<input type="hidden" th:field="*{categoryId}">
+
+				<table class="table table-bordered">
+					<thead>
+						<tr>
+							<th colspan="2">＊必須項目</th>
+						</tr>
+					</thead>
+
+					<tbody>
+						<!-- 部品カテゴリー名 -->
+						<tr>
+							<td>部品カテゴリー名 ＊</td>
+							<td>
+								<input type="text" name="categoryName" th:field="*{categoryName}" class="form-control"
+									maxlength="20">
+								<span class="text-danger error-message" id="error-centerName"></span>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+
+				<!-- ボタンエリア -->
+				<div class="d-flex justify-content-between mt-4">
+					<!-- キャンセルボタン -->
+					<button type="button" class="btn btn-secondary" onclick="goBack()">キャンセル</button>
+
+					<!-- 登録ボタン -->
+					<input type="hidden" name="confirmFlag" id="confirmFlag" value="false">
+					<button id="registerBtn" class="btn btn-success ml-2"
+						style="background-color: #f8c471; border: none; border-radius: 5px;">
+						登録
+					</button>
+				</div>
+			</form>
+
+		</div>
+	</div>
+
+	<!-- 前のページに戻る -->
+	<script>
+		function goBack() {
+			window.history.back();
+		}
+	</script>
+
+	<!-- 外部JSファイルを読み込む -->
+	<script th:src="@{/js/centerInfo.js}"></script> <!-- 外部JSファイルのパス -->
+</body>
+
+</html>

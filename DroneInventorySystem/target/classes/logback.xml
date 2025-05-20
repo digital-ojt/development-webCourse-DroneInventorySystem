@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE logback>
+<configuration>
+
+	<!-- コンソール出力 -->
+	<appender name="STDOUT"
+		class="ch.qos.logback.core.ConsoleAppender">
+		<target>System.out</target>
+		<encoder>
+			<charset>UTF-8</charset>
+			<pattern>%-5level %d{yyyy-MM-dd HH:mm:ss.SSS} %X{ipAddress} %X{userId} %logger{36} - %msg%n</pattern>
+		</encoder>
+	</appender>
+
+	<!-- ログファイル出力 -->
+	<appender name="LOG_FILE"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<!-- ログローテーション設定 -->
+		<rollingPolicy
+			class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<file>logs/stockmng.log</file> <!-- local環境用のフォルダーパス。ステージング環境以降はパスの変更をお願いします。 -->
+			<fileNamePattern>logs/%d{yyyy-MM-dd}_stockmng.log</fileNamePattern>
+			<maxHistory>180</maxHistory> <!-- 保存期間は半年 -->
+			<cleanHistoryOnStart>true</cleanHistoryOnStart>
+			<!--アプリケーション起動時に古いログを削除 -->
+		</rollingPolicy>
+
+		<!-- ログフォーマット -->
+		<encoder>
+			<charset>UTF-8</charset>
+			<pattern>%-5level %d{yyyy-MM-dd HH:mm:ss.SSS} %X{ipAddress} %X{userId} %logger{36} - %msg%n</pattern>
+		</encoder>
+
+	</appender>
+
+	<!-- ルートロガー -->
+	<root level="INFO">
+		<appender-ref ref="STDOUT" />
+		<appender-ref ref="LOG_FILE" />
+	</root>
+
+	<!-- アクセスログ用ロガー（INFOレベルアクセスログ） -->
+	<logger name="com.digitalojt.web.access" level="INFO">
+		<appender-ref ref="LOG_FILE" />
+	</logger>
+
+	<!-- エラーログ用ロガー（ERRORレベルエラーログ） -->
+	<logger name="com.digitalojt.web.error" level="ERROR">
+		<appender-ref ref="LOG_FILE" />
+	</logger>
+
+	<!-- アプリケーションログ用ロガー（INFOレベルアプリケーションログ） -->
+	<logger name="com.digitalojt.web.app" level="INFO">
+		<appender-ref ref="LOG_FILE" />
+	</logger>
+
+</configuration>

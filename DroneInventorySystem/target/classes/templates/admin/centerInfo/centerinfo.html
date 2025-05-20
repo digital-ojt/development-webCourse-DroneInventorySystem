@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html
+  xmlns:th="http://www.thymeleaf.org"
+  th:replace="~{layout/template :: layout(~{::title},~{::body/content()})}"
+>
+  <head>
+    <title>InvenTrack</title>
+  </head>
+
+  <body>
+	<div class="card shadow mb-4">
+
+		<div class="card-header py-3">
+			<h6 class="m-0 font-weight-bold text-primary">在庫センター情報</h6>
+		</div>
+
+		<div class="card-body">
+			
+			<!-- 検索フォーム -->
+			<div class="search-container">
+				<form class="form-inline" method="get" th:action="@{'/admin/centerInfo/search'}" th:object="${CenterInfoForm}">
+					<label for="searchTerm" class="mr-2">検索条件</label>
+					
+					<label for="searchTerm" class="mr-2">センター名</label>
+ 					<input type="text" id="searchTerm" name="centerName" class="form-control mr-2">
+ 					
+ 					<label for="searchTerm" class="mr-2">都道府県</label>
+ 					<select id="searchTerm" name="region" class="form-control mr-2">
+						 <option value="">選択してください</option>
+						 <option th:each="region : ${regions}" 
+						 	th:value="${region.name}" 
+						 	th:text="${region.name}"></option>
+					</select>
+					
+ 					<button type="submit" class="btn btn-primary">検索</button>
+ 				</form>
+ 				
+ 				<!-- エラーメッセージの表示 -->
+ 				<div th:if="${errorMsg}" class="text-danger">
+					 <p th:text="${errorMsg}"></p>
+				</div>
+			</div>
+ 			
+			<!-- 在庫センター情報テーブル -->
+			<div class="table-responsive">
+				<table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+					<thead>
+						<tr>
+							<th>センター名</th>
+							<th>住所</th>
+							<th>連絡先</th>
+							<th>管理者名</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="item : ${centerInfoList}">
+							<td> [[${item.centerName}]] </td>
+							<td> [[${item.address}]] </td>
+							<td> [[${item.phoneNumber}]] </td>
+							<td> [[${item.managerName}]] </td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+	        <!-- 検索結果がない場合のメッセージ -->
+			<div th:if="${#lists.isEmpty(centerInfoList) and errorMessage == null}" class="text-muted">
+			    <p>検索結果がありません。</p>
+			</div>
+		</div>
+	</div>
+  </body>
+</html>
