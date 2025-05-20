@@ -18,7 +18,7 @@
 			
 			<!-- 検索フォーム -->
 			<div class="search-container">
-				<form class="form-inline" method="get" th:action="@{'/admin/centerInfo/search'}" th:object="${CenterInfoForm}">
+				<form id="searchForm" class="form-inline" method="get" th:action="@{'/admin/centerInfo/search'}" th:object="${CenterInfoForm}">
 					<label for="searchTerm" class="mr-2">検索条件</label>
 					
 					<label for="searchTerm" class="mr-2">センター名</label>
@@ -32,7 +32,7 @@
 						 	th:text="${region.name}"></option>
 					</select>
 					
-					<!--//2025/05/16 機能改修 現在容量範囲が検索できるため、検索項目に「現在容量」のFrom-Toを追加する-->
+					<!--2025/05/16 機能改修 現在容量範囲が検索できるため、検索項目に「現在容量」のFrom-Toを追加する-->
 					<label for="searchTerm" class="mr-2">現在容量(㎥)</label>
  					<input type="text" id="storageCapacityFrom" name="storageCapacityFrom" class="form-control mr-2"  maxlength="10">
 
@@ -40,7 +40,7 @@
 
  					<input type="text" id="storageCapacityTo" name="storageCapacityTo" class="form-control mr-2" maxlength="10">
 					
- 					<button type="submit" class="btn btn-primary">検索</button>
+ 					<button type="submit" class="btn btn-primary" onclick="centerInfoComponent()">検索</button>
  				</form>
  				
  				<!-- エラーメッセージの表示 -->
@@ -80,5 +80,30 @@
 			</div>
 		</div>
 	</div>
+	
+	  
+  <script>
+	//2025/05/19 在庫センター情報の検索処理を行う非同期関数の追加
+    async function centerInfoComponent() {
+		document.getElementById("searchForm"),onsubmit=async function(e){
+			e.preventDefault();
+		}
+		
+		
+		//2025/05/19 入力された検索条件をURLパラメータ形式に変換
+		const params = new URLSearchParams({
+			centerName: document.getElementsByName("centerName")[0].value,
+			region: document.getElementsByName("region")[0].value,
+			storageCapacityFrom: document.getElementsByName('storageCapacityFrom')[0].value,
+			storageCapacityTo: document.getElementsByName('storageCapacityTo')[0].value});
+			
+		//2025/05/19 パラメータ付きで検索APIを呼び出し
+		const res = await fetch('/admin/centerInfo/search?' + params);
+		
+		//2025/05/19 レスポンスのJSONデータを取得
+		const data = await res.json();
+		
+ }
+  </script>
   </body>
 </html>
