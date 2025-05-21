@@ -1,0 +1,27 @@
+sequenceDiagram
+    participant User as ユーザー
+    participant Frontend as フロントエンド(Alpine.js)
+    participant Controller as CenterInfoController
+    participant Service as CenterInfoService
+    participant Repository as CenterInfoRepository(DB)
+
+    User->>Frontend: 容量From/To入力
+    Frontend->>Frontend: 入力値のリアルタイム検証
+    alt 入力不正
+        Frontend-->>User: エラーメッセージ表示
+    else 入力正常
+        User->>Frontend: 検索ボタン押下
+        Frontend->>Controller: Ajaxで検索条件送信
+        Controller->>Service: 検索条件を渡す
+        Service->>Repository: DBクエリ実行
+        Repository-->>Service: 検索結果返却
+        Service-->>Controller: 検索結果返却
+        alt 結果あり
+            Controller-->>Frontend: 検索結果JSON返却
+            Frontend->>Frontend: 画面リストを更新
+            Frontend-->>User: 操作完了のポップアップ表示
+        else 結果なし
+            Controller-->>Frontend: 空の結果またはメッセージ返却
+            Frontend-->>User: 「該当データなし」メッセージ表示
+        end
+    end
