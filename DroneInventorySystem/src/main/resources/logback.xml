@@ -53,5 +53,15 @@
 	<logger name="com.digitalojt.web.app" level="INFO">
 		<appender-ref ref="LOG_FILE" />
 	</logger>
+	
+	<!-- 実行されるSQL文をDEBUGレベルで出力 -->
+	<logger name="org.hibernate.SQL" level="DEBUG">
+	<appender-ref ref="LOG_FILE" />
+	</logger>
+	
+	<!-- プレースホルダにバインドされるパラメータ値をTRACEレベルで出力 -->
+	<logger name="org.hibernate.type.descriptor.sql.BasicBinder" level="TRACE">
+	<appender-ref ref="LOG_FILE" />
+	</logger>
 
 </configuration>
