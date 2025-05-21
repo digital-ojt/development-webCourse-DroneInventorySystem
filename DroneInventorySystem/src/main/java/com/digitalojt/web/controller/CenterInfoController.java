@@ -82,7 +82,7 @@ public class CenterInfoController extends AbstractController {
 		}
 
 		// 検索条件に基づいて在庫センター情報を取得
-		List<CenterInfo> centerInfoList = centerInfoService.getCenterInfoData(form.getCenterName(), form.getRegion());
+		List<CenterInfo> centerInfoList = centerInfoService.getCenterInfoData(form.getCenterName(), form.getRegion(),form.getStorageCapacityFrom() ,form.getStorageCapacityTo() );
 
 		// 画面表示用に商品情報リストをセット
 		model.addAttribute(ModelAttributeContents.CENTER_INFO_LIST, centerInfoList);

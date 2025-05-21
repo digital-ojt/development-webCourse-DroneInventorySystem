@@ -39,7 +39,7 @@ public class CenterInfoForm {
 	 * @return
 	 */
 	@PostConstruct
-	public Integer init() {
+	public Integer inittialCapacityFrom() {
 
 		if (storageCapacityTo != null && storageCapacityFrom == null) {
 			return ModelAttributeContents.INITIAL_CAPACITY_FROM;

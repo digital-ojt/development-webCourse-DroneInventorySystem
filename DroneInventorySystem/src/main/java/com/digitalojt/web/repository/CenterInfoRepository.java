@@ -20,13 +20,19 @@ public interface CenterInfoRepository extends JpaRepository<CenterInfo, Integer>
 	 * 
 	 * @param centerName
 	 * @param region
+	 * @param storageCapacityFrom
+	 * @param storageCapacityTo
 	 * @return paramで検索した結果
 	 */
 	@Query("SELECT s FROM CenterInfo s WHERE " +
 			"(:centerName = '' OR s.centerName LIKE %:centerName%) AND " +
 			"(:region = '' OR s.address LIKE %:region%) AND " +
+			"(:storageCapacityFrom IS NULL OR s.currentStorageCapacity > :storageCapacityFrom) AND " +
+			"(:storageCapacityTo IS NULL OR s.currentStorageCapacity < :storageCapacityTo) AND " +
 			"(s.operationalStatus = 0)")
 	List<CenterInfo> findActiveCenters(
 			String centerName,
-			String region);
+			String region,
+			Integer storageCapacityFrom,
+			Integer storageCapacityTo);
 }

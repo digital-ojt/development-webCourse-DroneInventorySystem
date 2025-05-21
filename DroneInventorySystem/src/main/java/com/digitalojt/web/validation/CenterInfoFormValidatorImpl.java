@@ -1,14 +1,15 @@
 package com.digitalojt.web.validation;
 
-import jakarta.validation.ConstraintValidator;
-import jakarta.validation.ConstraintValidatorContext;
-
 import com.digitalojt.web.consts.ErrorMessage;
 import com.digitalojt.web.consts.InvalidCharacter;
+import com.digitalojt.web.consts.ModelAttributeContents;
 import com.digitalojt.web.consts.Region;
 import com.digitalojt.web.exception.ErrorMessageHelper;
 import com.digitalojt.web.form.CenterInfoForm;
 import com.digitalojt.web.util.InputValidator;
+
+import jakarta.validation.ConstraintValidator;
+import jakarta.validation.ConstraintValidatorContext;
 
 /**
  * 在庫センター情報のバリデーション処理実装
@@ -35,7 +36,15 @@ public class CenterInfoFormValidatorImpl implements ConstraintValidator<CenterIn
         // センター名が不正文字に含まれる場合にエラー処理
         if (isValidCenterName(form.getCenterName())) {
             context.disableDefaultConstraintViolation();
-            context.buildConstraintViolationWithTemplate(ErrorMessageHelper.getMessage(ErrorMessage.ALL_FIELDS_EMPTY_ERROR_MESSAGE))
+            context.buildConstraintViolationWithTemplate(ErrorMessageHelper.getMessage(ErrorMessage.INVALID_INPUT_ERROR_MESSAGE))
+                   .addConstraintViolation();
+            return false;
+        }
+        
+        // センター名が指定文字数を超過する場合にエラー処理
+        if (isValidLenghtCenterName(form.getCenterName())) {
+            context.disableDefaultConstraintViolation();
+            context.buildConstraintViolationWithTemplate(ErrorMessageHelper.getMessage(ErrorMessage.CENTER_NAME_LENGTH_ERROR_MESSAGE))
                    .addConstraintViolation();
             return false;
         }
@@ -44,7 +53,7 @@ public class CenterInfoFormValidatorImpl implements ConstraintValidator<CenterIn
         if (!isValidRegion(form.getRegion())) {
             // 都道府県が無効な場合、エラーメッセージをスロー
             context.disableDefaultConstraintViolation();
-            context.buildConstraintViolationWithTemplate(ErrorMessageHelper.getMessage(ErrorMessage.ALL_FIELDS_EMPTY_ERROR_MESSAGE))
+            context.buildConstraintViolationWithTemplate(ErrorMessageHelper.getMessage(ErrorMessage.INVALID_INPUT_ERROR_MESSAGE))
                    .addConstraintViolation();
             return false;
         }
@@ -68,6 +77,19 @@ public class CenterInfoFormValidatorImpl implements ConstraintValidator<CenterIn
         }
         return false;
     }
+    
+    /**
+     * 文字列のサイズチェックを実施する
+     * @param input
+     * @return
+     */
+    private boolean isValidLenghtCenterName(String input) {
+        // 文字サイズが超過していないか確認
+        if (input.length() >ModelAttributeContents.MAX_CENTER_NAME_LENGTH) {
+            return true;
+         }
+        return false;
+    }   
     
     /**
      * 文字が不正文字かをチェックするメソッド
@@ -114,6 +136,6 @@ public class CenterInfoFormValidatorImpl implements ConstraintValidator<CenterIn
      */
     private boolean isAllFieldsEmpty(CenterInfoForm form) {
         // センター名または都道府県がnullまたは空の場合にtrueを返す
-        return form.getCenterName().isEmpty() && form.getRegion().isEmpty();
+        return form.getCenterName().isEmpty() && form.getRegion().isEmpty() && form.getStorageCapacityFrom() == null && form.getStorageCapacityTo() == null;
     }
 }
