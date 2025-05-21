@@ -1,14 +1,14 @@
 package com.digitalojt.web.validation;
 
-import jakarta.validation.ConstraintValidator;
-import jakarta.validation.ConstraintValidatorContext;
-
 import com.digitalojt.web.consts.ErrorMessage;
 import com.digitalojt.web.consts.InvalidCharacter;
 import com.digitalojt.web.consts.Region;
 import com.digitalojt.web.exception.ErrorMessageHelper;
 import com.digitalojt.web.form.CenterInfoForm;
 import com.digitalojt.web.util.InputValidator;
+
+import jakarta.validation.ConstraintValidator;
+import jakarta.validation.ConstraintValidatorContext;
 
 /**
  * 在庫センター情報のバリデーション処理実装
@@ -48,6 +48,34 @@ public class CenterInfoFormValidatorImpl implements ConstraintValidator<CenterIn
                    .addConstraintViolation();
             return false;
         }
+        
+        // 2025/05/20　現在容量_Fromのバリデーション
+        if (!isValidStorageCapacityForm(form.getStorageCapacityFrom())) {
+            // 都道府県が無効な場合、エラーメッセージをスロー
+            context.disableDefaultConstraintViolation();
+            context.buildConstraintViolationWithTemplate(ErrorMessageHelper.getMessage(ErrorMessage.INVALID_INPUT_ERROR_MESSAGE))
+                   .addConstraintViolation();
+            return false;
+        }
+        
+        // 2025/05/20　現在容量_Toのバリデーション
+        if (!isValidStorageCapacityTo(form.getStorageCapacityTo())) {
+            // 都道府県が無効な場合、エラーメッセージをスロー
+            context.disableDefaultConstraintViolation();
+            context.buildConstraintViolationWithTemplate(ErrorMessageHelper.getMessage(ErrorMessage.INVALID_INPUT_ERROR_MESSAGE))
+                   .addConstraintViolation();
+            return false;
+        }
+        
+        
+        // 2025/05/20　現在容量_FromToのバリデーション
+        if (!isValidStorageCapacityFromTo(form.getStorageCapacityFrom(),form.getStorageCapacityTo())) {
+            // 都道府県が無効な場合、エラーメッセージをスロー
+            context.disableDefaultConstraintViolation();
+            context.buildConstraintViolationWithTemplate(ErrorMessageHelper.getMessage(ErrorMessage.FROM_TO_ERROR_MESSAGE))
+                   .addConstraintViolation();
+            return false;
+        }
 
         // バリデーションが成功した場合はtrueを返す
         return true;
@@ -67,6 +95,50 @@ public class CenterInfoFormValidatorImpl implements ConstraintValidator<CenterIn
             }
         }
         return false;
+    }
+    
+    /**
+     * 2025/05/20　現在容量_From文字列の不正文字チェックを実施する
+     * @param input
+     * @return
+     */
+    private boolean isValidStorageCapacityForm(Integer input) {
+    	// 数字以外の文字列であるか確認
+    	if (input == null) {
+    		return false;
+    	} else {
+    		return true;
+    	}
+    	
+    }
+    
+    /**
+     * 2025/05/20　現在容量_To文字列の不正文字チェックを実施する
+     * @param input
+     * @return
+     */
+    private boolean isValidStorageCapacityTo(Integer input) {
+    	// 数字以外の文字列であるか確認
+    	if (input == null) {
+    		return false;
+    	} else {
+    		return true;
+    	}
+    	
+    }
+    
+    /**
+     * 2025/05/20　現在容量_Fromより現在容量_Toの値が大きい場合、警告メッセージを表示する
+     * @param input
+     * @return
+     */
+    private boolean isValidStorageCapacityFromTo(Integer from, Integer to) {
+    	if (from <= to) {
+    		return true;
+    	} else {
+    		return false;
+    	}
+    	
     }
     
     /**

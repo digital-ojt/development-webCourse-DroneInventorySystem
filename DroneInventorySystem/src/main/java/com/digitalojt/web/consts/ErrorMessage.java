@@ -37,4 +37,8 @@ public class ErrorMessage {
 	
 	// 操作履歴画面の操作時刻に関するエラーメッセージ
 	public static final String OPERATION_DATE_FIELD_ERROR_MESSAGE = "operationLog.operationDateField.empty";
+	
+	// 2025/05/20　不正な数字を使用した検索に関するエラーメッセージ
+	public static final String FROM_TO_ERROR_MESSAGE = "StorageCapacityfrom.to";
+	
 }
