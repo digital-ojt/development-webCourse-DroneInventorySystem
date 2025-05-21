@@ -32,6 +32,11 @@
 						 	th:text="${region.name}"></option>
 					</select>
 					
+					<label for="storageCapacityFrom" class="mr-2">現在保存容量：</label>
+					<input type="number" id="storageCapacityFrom" name="storageCapacityFrom" class="form-control mr-2">
+					<label for="storageCapacityTo" class="mr-2">～</label>
+					<input type="number" id="storageCapacityTo" name="storageCapacityTo" class="form-control mr-2">	
+					
  					<button type="submit" class="btn btn-primary">検索</button>
  				</form>
  				
@@ -50,6 +55,8 @@
 							<th>住所</th>
 							<th>連絡先</th>
 							<th>管理者名</th>
+							<th>最大保存容量(㎥)</th>
+							<th>現在保存容量(㎥)</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -58,6 +65,8 @@
 							<td> [[${item.address}]] </td>
 							<td> [[${item.phoneNumber}]] </td>
 							<td> [[${item.managerName}]] </td>
+							<td> [[${item.maxStorageCapacity}]] </td>
+							<td> [[${item.currentStorageCapacity}]] </td>							
 						</tr>
 					</tbody>
 				</table>

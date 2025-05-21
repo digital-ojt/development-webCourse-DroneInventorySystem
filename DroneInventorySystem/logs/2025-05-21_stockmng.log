@@ -1,0 +1,441 @@
+INFO  2025-05-21 10:29:55.671   c.d.w.DroneInventorySystemApplication - Starting DroneInventorySystemApplication using Java 17.0.10 with PID 9252 (C:\Users\KoheiNakamura\Desktop\OJT\development-PGcourse-DroneInventorySystem\DroneInventorySystem\target\classes started by KoheiNakamura in C:\Users\KoheiNakamura\Desktop\OJT\development-PGcourse-DroneInventorySystem\DroneInventorySystem)
+INFO  2025-05-21 10:29:55.672   c.d.w.DroneInventorySystemApplication - No active profile set, falling back to 1 default profile: "default"
+INFO  2025-05-21 10:29:55.703   o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+INFO  2025-05-21 10:29:55.703   o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+INFO  2025-05-21 10:29:55.745   c.d.w.DroneInventorySystemApplication - Starting DroneInventorySystemApplication using Java 17.0.10 with PID 15632 (C:\Users\KoheiNakamura\Desktop\OJT\development-PGcourse-DroneInventorySystem\DroneInventorySystem\target\classes started by KoheiNakamura in C:\Users\KoheiNakamura\Desktop\OJT\development-PGcourse-DroneInventorySystem\DroneInventorySystem)
+INFO  2025-05-21 10:29:55.747   c.d.w.DroneInventorySystemApplication - No active profile set, falling back to 1 default profile: "default"
+INFO  2025-05-21 10:29:55.787   o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+INFO  2025-05-21 10:29:55.788   o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+INFO  2025-05-21 10:29:56.508   o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+INFO  2025-05-21 10:29:56.508   o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+INFO  2025-05-21 10:29:56.564   o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 49 ms. Found 3 JPA repository interfaces.
+INFO  2025-05-21 10:29:56.567   o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 52 ms. Found 3 JPA repository interfaces.
+INFO  2025-05-21 10:29:57.050   o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+INFO  2025-05-21 10:29:57.051   o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+INFO  2025-05-21 10:29:57.060   o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+INFO  2025-05-21 10:29:57.061   o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+INFO  2025-05-21 10:29:57.064   o.a.catalina.core.StandardService - Starting service [Tomcat]
+INFO  2025-05-21 10:29:57.064   o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.28]
+INFO  2025-05-21 10:29:57.064   o.a.catalina.core.StandardService - Starting service [Tomcat]
+INFO  2025-05-21 10:29:57.065   o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.28]
+INFO  2025-05-21 10:29:57.114   o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+INFO  2025-05-21 10:29:57.114   o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1410 ms
+INFO  2025-05-21 10:29:57.120   o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+INFO  2025-05-21 10:29:57.120   o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1332 ms
+INFO  2025-05-21 10:29:57.144   com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+INFO  2025-05-21 10:29:57.153   com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+INFO  2025-05-21 10:29:57.428   com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@28857115
+INFO  2025-05-21 10:29:57.428   com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@404d1bd7
+INFO  2025-05-21 10:29:57.430   com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+INFO  2025-05-21 10:29:57.430   com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+INFO  2025-05-21 10:29:57.437   o.s.b.a.h.H2ConsoleAutoConfiguration - H2 console available at '/h2-console'. Database available at 'jdbc:mysql://localhost:3306/stock_mng'
+INFO  2025-05-21 10:29:57.438   o.s.b.a.h.H2ConsoleAutoConfiguration - H2 console available at '/h2-console'. Database available at 'jdbc:mysql://localhost:3306/stock_mng'
+INFO  2025-05-21 10:29:57.933   o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+INFO  2025-05-21 10:29:57.991   o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+INFO  2025-05-21 10:29:58.883   o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+INFO  2025-05-21 10:29:58.886   o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+INFO  2025-05-21 10:29:59.101   o.s.d.j.r.query.QueryEnhancerFactory - Hibernate is in classpath; If applicable, HQL parser will be used.
+INFO  2025-05-21 10:29:59.102   o.s.d.j.r.query.QueryEnhancerFactory - Hibernate is in classpath; If applicable, HQL parser will be used.
+WARN  2025-05-21 10:29:59.544   o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+WARN  2025-05-21 10:29:59.602   o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+INFO  2025-05-21 10:29:59.823   o.s.s.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@1fc59d1d, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@65234f9b, org.springframework.security.web.context.SecurityContextHolderFilter@263bcc02, org.springframework.security.web.header.HeaderWriterFilter@4cd7fabf, org.springframework.security.web.csrf.CsrfFilter@352084e2, org.springframework.security.web.authentication.logout.LogoutFilter@4aaa4001, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@40357363, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@3cf7eb31, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@2ba159a4, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@e668637, org.springframework.security.web.access.ExceptionTranslationFilter@1030c29f, org.springframework.security.web.access.intercept.AuthorizationFilter@7431c5a3]
+INFO  2025-05-21 10:29:59.929   o.s.s.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@19c0fbb3, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@b9db343, org.springframework.security.web.context.SecurityContextHolderFilter@1ef640da, org.springframework.security.web.header.HeaderWriterFilter@3913d448, org.springframework.security.web.csrf.CsrfFilter@20ad3942, org.springframework.security.web.authentication.logout.LogoutFilter@71d81148, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@26e6ad4c, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@2d9f9a51, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@7ed88dd5, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@1802e3b1, org.springframework.security.web.access.ExceptionTranslationFilter@2796bd7c, org.springframework.security.web.access.intercept.AuthorizationFilter@7dede44c]
+INFO  2025-05-21 10:30:00.069   o.s.b.d.a.OptionalLiveReloadServer - LiveReload server is running on port 35729
+INFO  2025-05-21 10:30:00.084   o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+INFO  2025-05-21 10:30:00.104   o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path ''
+INFO  2025-05-21 10:30:00.112   c.d.w.DroneInventorySystemApplication - Started DroneInventorySystemApplication in 4.666 seconds (process running for 5.188)
+WARN  2025-05-21 10:30:00.215   o.s.b.d.a.OptionalLiveReloadServer - Unable to start LiveReload server
+INFO  2025-05-21 10:30:00.233   o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+WARN  2025-05-21 10:30:00.240   o.s.b.w.s.c.AnnotationConfigServletWebServerApplicationContext - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.context.ApplicationContextException: Failed to start bean 'webServerStartStop'
+INFO  2025-05-21 10:30:00.243   o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+INFO  2025-05-21 10:30:00.248   com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+INFO  2025-05-21 10:30:00.255   com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+INFO  2025-05-21 10:30:00.283   o.s.b.a.l.ConditionEvaluationReportLogger - 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+INFO  2025-05-21 10:30:00.302   o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+INFO  2025-05-21 10:30:00.303   o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+ERROR 2025-05-21 10:30:00.303   o.s.b.d.LoggingFailureAnalysisReporter - 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Web server failed to start. Port 8080 was already in use.
+
+Action:
+
+Identify and stop the process that's listening on port 8080 or configure this application to listen on another port.
+
+INFO  2025-05-21 10:30:00.304   o.s.web.servlet.DispatcherServlet - Completed initialization in 1 ms
+INFO  2025-05-21 10:30:00.338 0:0:0:0:0:0:0:1 anonymousUser c.d.w.controller.AbstractController - ACCESS: /login
+INFO  2025-05-21 10:30:00.340 0:0:0:0:0:0:0:1 anonymousUser c.d.w.controller.AbstractController - APP: GET - index - START
+INFO  2025-05-21 10:30:00.340 0:0:0:0:0:0:0:1 anonymousUser c.d.w.controller.AbstractController - APP: GET - index - END
+INFO  2025-05-21 10:30:00.579 0:0:0:0:0:0:0:1 anonymousUser c.d.w.controller.AbstractController - ACCESS: /login
+INFO  2025-05-21 10:30:00.579 0:0:0:0:0:0:0:1 anonymousUser c.d.w.controller.AbstractController - APP: GET - index - START
+INFO  2025-05-21 10:30:00.579 0:0:0:0:0:0:0:1 anonymousUser c.d.w.controller.AbstractController - APP: GET - index - END
+INFO  2025-05-21 10:30:00.599 0:0:0:0:0:0:0:1 anonymousUser c.d.w.controller.AbstractController - ACCESS: /login
+INFO  2025-05-21 10:30:00.600 0:0:0:0:0:0:0:1 anonymousUser c.d.w.controller.AbstractController - APP: GET - index - START
+INFO  2025-05-21 10:30:00.600 0:0:0:0:0:0:0:1 anonymousUser c.d.w.controller.AbstractController - APP: GET - index - END
+INFO  2025-05-21 10:30:03.475 127.0.0.1 dotlife c.d.w.controller.AbstractController - ACCESS: /admin/centerInfo
+INFO  2025-05-21 10:30:03.476 127.0.0.1 dotlife c.d.w.controller.AbstractController - APP: GET - index - START
+INFO  2025-05-21 10:30:03.525 127.0.0.1 dotlife c.d.w.controller.AbstractController - APP: GET - index - END
+INFO  2025-05-21 10:30:07.271 127.0.0.1 dotlife c.d.w.controller.AbstractController - ACCESS: /admin/centerInfo/search
+INFO  2025-05-21 10:30:07.271 127.0.0.1 dotlife c.d.w.controller.AbstractController - APP: GET - search - START
+INFO  2025-05-21 10:30:07.292 127.0.0.1 dotlife c.d.w.controller.AbstractController - APP: GET - search - END
+INFO  2025-05-21 10:30:09.750 127.0.0.1 dotlife c.d.w.controller.AbstractController - ACCESS: /admin/centerInfo/search
+INFO  2025-05-21 10:30:09.751 127.0.0.1 dotlife c.d.w.controller.AbstractController - APP: GET - search - START
+INFO  2025-05-21 10:30:09.755 127.0.0.1 dotlife c.d.w.controller.AbstractController - APP: GET - search - END
+INFO  2025-05-21 10:30:14.075 127.0.0.1 dotlife c.d.w.controller.AbstractController - ACCESS: /admin/centerInfo/search
+INFO  2025-05-21 10:30:14.075 127.0.0.1 dotlife c.d.w.controller.AbstractController - APP: GET - search - START
+ERROR 2025-05-21 10:30:14.076 127.0.0.1 dotlife c.d.w.controller.AbstractController - ERROR: POST - handleValidationError - CenterInfoForm(centerName={, region=, storageCapacityFrom=null, storageCapacityTo=null) 不正な文字列を検出しました。
+
+INFO  2025-05-21 10:30:17.134 127.0.0.1 dotlife c.d.w.controller.AbstractController - ACCESS: /admin/centerInfo/search
+INFO  2025-05-21 10:30:17.134 127.0.0.1 dotlife c.d.w.controller.AbstractController - APP: GET - search - START
+INFO  2025-05-21 10:30:17.138 127.0.0.1 dotlife c.d.w.controller.AbstractController - APP: GET - search - END
+INFO  2025-05-21 10:30:19.068 127.0.0.1 dotlife c.d.w.controller.AbstractController - ACCESS: /admin/centerInfo/search
+INFO  2025-05-21 10:30:19.068 127.0.0.1 dotlife c.d.w.controller.AbstractController - APP: GET - search - START
+INFO  2025-05-21 10:30:19.071 127.0.0.1 dotlife c.d.w.controller.AbstractController - APP: GET - search - END
+INFO  2025-05-21 10:30:20.283 127.0.0.1 dotlife c.d.w.controller.AbstractController - ACCESS: /admin/centerInfo/search
+INFO  2025-05-21 10:30:20.283 127.0.0.1 dotlife c.d.w.controller.AbstractController - APP: GET - search - START
+INFO  2025-05-21 10:30:20.286 127.0.0.1 dotlife c.d.w.controller.AbstractController - APP: GET - search - END
+INFO  2025-05-21 10:30:28.616 127.0.0.1 dotlife c.d.w.controller.AbstractController - ACCESS: /admin/centerInfo/search
+INFO  2025-05-21 10:30:28.616 127.0.0.1 dotlife c.d.w.controller.AbstractController - APP: GET - search - START
+INFO  2025-05-21 10:30:28.619 127.0.0.1 dotlife c.d.w.controller.AbstractController - APP: GET - search - END
+INFO  2025-05-21 10:30:31.466 127.0.0.1 dotlife c.d.w.controller.AbstractController - ACCESS: /admin/centerInfo/search
+INFO  2025-05-21 10:30:31.467 127.0.0.1 dotlife c.d.w.controller.AbstractController - APP: GET - search - START
+INFO  2025-05-21 10:30:31.470 127.0.0.1 dotlife c.d.w.controller.AbstractController - APP: GET - search - END
+INFO  2025-05-21 10:30:36.316 127.0.0.1 dotlife c.d.w.controller.AbstractController - ACCESS: /admin/centerInfo/search
+INFO  2025-05-21 10:30:36.317 127.0.0.1 dotlife c.d.w.controller.AbstractController - APP: GET - search - START
+ERROR 2025-05-21 10:30:36.317 127.0.0.1 dotlife c.d.w.controller.AbstractController - ERROR: POST - handleValidationError - CenterInfoForm(centerName=, region=, storageCapacityFrom=null, storageCapacityTo=null) すべてのフィールドが空です。少なくとも1つのフィールドに値を入力してください。
+
+INFO  2025-05-21 10:45:07.344 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - ACCESS: /admin/centerInfo/search
+INFO  2025-05-21 10:45:07.345 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - APP: GET - search - START
+INFO  2025-05-21 10:45:07.348 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - APP: GET - search - END
+INFO  2025-05-21 10:45:12.475 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - ACCESS: /admin/centerInfo/search
+INFO  2025-05-21 10:45:12.475 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - APP: GET - search - START
+ERROR 2025-05-21 10:45:12.475 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - ERROR: POST - handleValidationError - CenterInfoForm(centerName=, region=, storageCapacityFrom=null, storageCapacityTo=null) すべてのフィールドが空です。少なくとも1つのフィールドに値を入力してください。
+
+INFO  2025-05-21 11:38:04.722 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - ACCESS: /admin/centerInfo/search
+INFO  2025-05-21 11:38:04.722 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - APP: GET - search - START
+INFO  2025-05-21 11:38:04.726 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - APP: GET - search - END
+INFO  2025-05-21 11:38:08.732 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - ACCESS: /admin/centerInfo/search
+INFO  2025-05-21 11:38:08.732 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - APP: GET - search - START
+ERROR 2025-05-21 11:38:08.732 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - ERROR: POST - handleValidationError - CenterInfoForm(centerName=*, region=, storageCapacityFrom=null, storageCapacityTo=null) 不正な文字列を検出しました。
+
+INFO  2025-05-21 11:38:15.894 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - ACCESS: /admin/centerInfo/search
+INFO  2025-05-21 11:38:15.895 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - APP: GET - search - START
+INFO  2025-05-21 11:38:15.897 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - APP: GET - search - END
+INFO  2025-05-21 12:54:11.313 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - ACCESS: /admin/centerInfo/search
+INFO  2025-05-21 12:54:11.314 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - APP: GET - search - START
+INFO  2025-05-21 12:54:11.319 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - APP: GET - search - END
+INFO  2025-05-21 12:54:13.609 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - ACCESS: /admin/centerInfo/search
+INFO  2025-05-21 12:54:13.609 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - APP: GET - search - START
+INFO  2025-05-21 12:54:13.612 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - APP: GET - search - END
+INFO  2025-05-21 12:54:13.924 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - ACCESS: /admin/centerInfo/search
+INFO  2025-05-21 12:54:13.924 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - APP: GET - search - START
+ERROR 2025-05-21 12:54:13.924 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - ERROR: POST - handleValidationError - CenterInfoForm(centerName=, region=, storageCapacityFrom=null, storageCapacityTo=null) すべてのフィールドが空です。少なくとも1つのフィールドに値を入力してください。
+
+INFO  2025-05-21 12:54:15.822 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - ACCESS: /admin/centerInfo/search
+INFO  2025-05-21 12:54:15.822 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - APP: GET - search - START
+ERROR 2025-05-21 12:54:15.822 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - ERROR: POST - handleValidationError - CenterInfoForm(centerName=, region=, storageCapacityFrom=null, storageCapacityTo=null) すべてのフィールドが空です。少なくとも1つのフィールドに値を入力してください。
+
+INFO  2025-05-21 12:54:18.797 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - ACCESS: /admin/centerInfo
+INFO  2025-05-21 12:54:18.797 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - APP: GET - index - START
+INFO  2025-05-21 12:54:18.803 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - APP: GET - index - END
+INFO  2025-05-21 12:54:23.492 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - ACCESS: /admin/centerInfo/search
+INFO  2025-05-21 12:54:23.492 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - APP: GET - search - START
+INFO  2025-05-21 12:54:23.494 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - APP: GET - search - END
+INFO  2025-05-21 12:54:25.170 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - ACCESS: /admin/centerInfo
+INFO  2025-05-21 12:54:25.171 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - APP: GET - index - START
+INFO  2025-05-21 12:54:25.175 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - APP: GET - index - END
+INFO  2025-05-21 12:54:28.708 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - ACCESS: /admin/centerInfo/search
+INFO  2025-05-21 12:54:28.708 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - APP: GET - search - START
+ERROR 2025-05-21 12:54:28.709 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - ERROR: POST - handleValidationError - CenterInfoForm(centerName=, region=, storageCapacityFrom=null, storageCapacityTo=null) すべてのフィールドが空です。少なくとも1つのフィールドに値を入力してください。
+
+INFO  2025-05-21 12:54:34.024 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - ACCESS: /admin/centerInfo/search
+INFO  2025-05-21 12:54:34.024 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - APP: GET - search - START
+ERROR 2025-05-21 12:54:34.024 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - ERROR: POST - handleValidationError - CenterInfoForm(centerName= aa, region=, storageCapacityFrom=null, storageCapacityTo=null) 不正な文字列を検出しました。
+
+INFO  2025-05-21 12:54:37.224 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - ACCESS: /admin/centerInfo/search
+INFO  2025-05-21 12:54:37.225 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - APP: GET - search - START
+INFO  2025-05-21 12:54:37.228 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - APP: GET - search - END
+INFO  2025-05-21 12:54:40.708 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - ACCESS: /admin/centerInfo/search
+INFO  2025-05-21 12:54:40.708 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - APP: GET - search - START
+ERROR 2025-05-21 12:54:40.708 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - ERROR: POST - handleValidationError - CenterInfoForm(centerName= , region=, storageCapacityFrom=null, storageCapacityTo=null) 不正な文字列を検出しました。
+
+INFO  2025-05-21 12:54:47.375 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - ACCESS: /admin/centerInfo/search
+INFO  2025-05-21 12:54:47.375 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - APP: GET - search - START
+ERROR 2025-05-21 12:54:47.375 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - ERROR: POST - handleValidationError - CenterInfoForm(centerName=aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaadd, region=, storageCapacityFrom=null, storageCapacityTo=null) 
+INFO  2025-05-21 12:57:11.820 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - ACCESS: /admin/centerInfo
+INFO  2025-05-21 12:57:11.820 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - APP: GET - index - START
+INFO  2025-05-21 12:57:11.824 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - APP: GET - index - END
+INFO  2025-05-21 12:57:13.708 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - ACCESS: /admin/centerInfo
+INFO  2025-05-21 12:57:13.709 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - APP: GET - index - START
+INFO  2025-05-21 12:57:13.715 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - APP: GET - index - END
+INFO  2025-05-21 12:57:24.190 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - ACCESS: /admin/centerInfo/search
+INFO  2025-05-21 12:57:24.190 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - APP: GET - search - START
+ERROR 2025-05-21 12:57:24.190 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - ERROR: POST - handleValidationError - CenterInfoForm(centerName=, region=, storageCapacityFrom=null, storageCapacityTo=null) すべてのフィールドが空です。少なくとも1つのフィールドに値を入力してください。
+
+INFO  2025-05-21 12:57:30.772 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - ACCESS: /admin/centerInfo/search
+INFO  2025-05-21 12:57:30.773 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - APP: GET - search - START
+ERROR 2025-05-21 12:57:30.773 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - ERROR: POST - handleValidationError - CenterInfoForm(centerName=*, region=, storageCapacityFrom=null, storageCapacityTo=null) 不正な文字列を検出しました。
+
+INFO  2025-05-21 12:58:50.757 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - ACCESS: /admin/centerInfo/search
+INFO  2025-05-21 12:58:50.757 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - APP: GET - search - START
+INFO  2025-05-21 12:58:50.760 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - APP: GET - search - END
+INFO  2025-05-21 12:58:51.905 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - ACCESS: /admin/centerInfo/search
+INFO  2025-05-21 12:58:51.905 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - APP: GET - search - START
+ERROR 2025-05-21 12:58:51.905 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - ERROR: POST - handleValidationError - CenterInfoForm(centerName=, region=, storageCapacityFrom=null, storageCapacityTo=null) すべてのフィールドが空です。少なくとも1つのフィールドに値を入力してください。
+
+INFO  2025-05-21 12:58:57.905 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - ACCESS: /admin/centerInfo/search
+INFO  2025-05-21 12:58:57.905 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - APP: GET - search - START
+INFO  2025-05-21 12:58:57.908 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - APP: GET - search - END
+INFO  2025-05-21 12:59:09.024 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - ACCESS: /admin/centerInfo/search
+INFO  2025-05-21 12:59:09.024 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - APP: GET - search - START
+ERROR 2025-05-21 12:59:09.024 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - ERROR: POST - handleValidationError - CenterInfoForm(centerName=, region=, storageCapacityFrom=null, storageCapacityTo=null) すべてのフィールドが空です。少なくとも1つのフィールドに値を入力してください。
+
+INFO  2025-05-21 13:04:05.522 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - ACCESS: /admin/centerInfo/search
+INFO  2025-05-21 13:04:05.522 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - APP: GET - search - START
+INFO  2025-05-21 13:04:05.526 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - APP: GET - search - END
+INFO  2025-05-21 13:04:09.453 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - ACCESS: /admin/centerInfo/search
+INFO  2025-05-21 13:04:09.453 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - APP: GET - search - START
+INFO  2025-05-21 13:04:09.457 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - APP: GET - search - END
+INFO  2025-05-21 13:05:26.780   o.s.b.a.SpringApplicationAdminMXBeanRegistrar$SpringApplicationAdmin - Application shutdown requested.
+INFO  2025-05-21 13:05:26.784   o.a.coyote.http11.Http11NioProtocol - Stopping ProtocolHandler ["http-nio-8080"]
+INFO  2025-05-21 13:05:26.813   o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+INFO  2025-05-21 13:05:26.815   com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+INFO  2025-05-21 13:05:26.818   com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+INFO  2025-05-21 13:05:29.520   c.d.w.DroneInventorySystemApplication - Starting DroneInventorySystemApplication using Java 17.0.10 with PID 11636 (C:\Users\KoheiNakamura\Desktop\OJT\development-PGcourse-DroneInventorySystem\DroneInventorySystem\target\classes started by KoheiNakamura in C:\Users\KoheiNakamura\Desktop\OJT\development-PGcourse-DroneInventorySystem\DroneInventorySystem)
+INFO  2025-05-21 13:05:29.521   c.d.w.DroneInventorySystemApplication - No active profile set, falling back to 1 default profile: "default"
+INFO  2025-05-21 13:05:29.547   o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+INFO  2025-05-21 13:05:29.547   o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+INFO  2025-05-21 13:05:29.972   o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+INFO  2025-05-21 13:05:30.010   o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 34 ms. Found 3 JPA repository interfaces.
+INFO  2025-05-21 13:05:30.358   o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+INFO  2025-05-21 13:05:30.364   o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+INFO  2025-05-21 13:05:30.366   o.a.catalina.core.StandardService - Starting service [Tomcat]
+INFO  2025-05-21 13:05:30.366   o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.28]
+INFO  2025-05-21 13:05:30.398   o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+INFO  2025-05-21 13:05:30.398   o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 850 ms
+INFO  2025-05-21 13:05:30.416   com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+INFO  2025-05-21 13:05:30.588   com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@53633e9d
+INFO  2025-05-21 13:05:30.589   com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+INFO  2025-05-21 13:05:30.595   o.s.b.a.h.H2ConsoleAutoConfiguration - H2 console available at '/h2-console'. Database available at 'jdbc:mysql://localhost:3306/stock_mng'
+INFO  2025-05-21 13:05:30.902   o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+INFO  2025-05-21 13:05:31.567   o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+INFO  2025-05-21 13:05:31.716   o.s.d.j.r.query.QueryEnhancerFactory - Hibernate is in classpath; If applicable, HQL parser will be used.
+WARN  2025-05-21 13:05:32.053   o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+INFO  2025-05-21 13:05:32.211   o.s.s.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@474211c8, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@2a3d94a5, org.springframework.security.web.context.SecurityContextHolderFilter@4eae93d5, org.springframework.security.web.header.HeaderWriterFilter@35e19b58, org.springframework.security.web.csrf.CsrfFilter@324907a9, org.springframework.security.web.authentication.logout.LogoutFilter@12855d64, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@1c1778bf, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@3e9ebdc3, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@4cdbf615, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@dc8c3dd, org.springframework.security.web.access.ExceptionTranslationFilter@28fdd80, org.springframework.security.web.access.intercept.AuthorizationFilter@1f6e5f8a]
+INFO  2025-05-21 13:05:32.360   o.s.b.d.a.OptionalLiveReloadServer - LiveReload server is running on port 35729
+INFO  2025-05-21 13:05:32.372   o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+INFO  2025-05-21 13:05:32.386   o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path ''
+INFO  2025-05-21 13:05:32.392   c.d.w.DroneInventorySystemApplication - Started DroneInventorySystemApplication in 3.077 seconds (process running for 3.528)
+INFO  2025-05-21 13:05:35.193   o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+INFO  2025-05-21 13:05:35.193   o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+INFO  2025-05-21 13:05:35.194   o.s.web.servlet.DispatcherServlet - Completed initialization in 1 ms
+INFO  2025-05-21 13:05:35.259 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - ACCESS: /admin/centerInfo/search
+INFO  2025-05-21 13:05:35.261 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - APP: GET - search - START
+INFO  2025-05-21 13:05:35.322 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - APP: GET - search - END
+INFO  2025-05-21 13:05:37.819 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - ACCESS: /admin/centerInfo/search
+INFO  2025-05-21 13:05:37.820 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - APP: GET - search - START
+INFO  2025-05-21 13:05:37.823 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - APP: GET - search - END
+INFO  2025-05-21 13:05:42.252 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - ACCESS: /admin/centerInfo/search
+INFO  2025-05-21 13:05:42.253 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - APP: GET - search - START
+INFO  2025-05-21 13:05:42.258 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - APP: GET - search - END
+INFO  2025-05-21 13:24:04.612   o.s.b.a.SpringApplicationAdminMXBeanRegistrar$SpringApplicationAdmin - Application shutdown requested.
+INFO  2025-05-21 13:24:04.615   o.a.coyote.http11.Http11NioProtocol - Stopping ProtocolHandler ["http-nio-8080"]
+INFO  2025-05-21 13:24:04.640   o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+INFO  2025-05-21 13:24:04.642   com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+INFO  2025-05-21 13:24:04.647   com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+INFO  2025-05-21 13:24:06.279   c.d.w.DroneInventorySystemApplication - Starting DroneInventorySystemApplication using Java 17.0.10 with PID 14760 (C:\Users\KoheiNakamura\Desktop\OJT\development-PGcourse-DroneInventorySystem\DroneInventorySystem\target\classes started by KoheiNakamura in C:\Users\KoheiNakamura\Desktop\OJT\development-PGcourse-DroneInventorySystem\DroneInventorySystem)
+INFO  2025-05-21 13:24:06.281   c.d.w.DroneInventorySystemApplication - No active profile set, falling back to 1 default profile: "default"
+INFO  2025-05-21 13:24:06.308   o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+INFO  2025-05-21 13:24:06.308   o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+INFO  2025-05-21 13:24:06.742   o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+INFO  2025-05-21 13:24:06.782   o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 35 ms. Found 3 JPA repository interfaces.
+INFO  2025-05-21 13:24:07.144   o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+INFO  2025-05-21 13:24:07.150   o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+INFO  2025-05-21 13:24:07.153   o.a.catalina.core.StandardService - Starting service [Tomcat]
+INFO  2025-05-21 13:24:07.153   o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.28]
+INFO  2025-05-21 13:24:07.186   o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+INFO  2025-05-21 13:24:07.187   o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 879 ms
+INFO  2025-05-21 13:24:07.206   com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+INFO  2025-05-21 13:24:07.382   com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@7baec525
+INFO  2025-05-21 13:24:07.383   com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+INFO  2025-05-21 13:24:07.389   o.s.b.a.h.H2ConsoleAutoConfiguration - H2 console available at '/h2-console'. Database available at 'jdbc:mysql://localhost:3306/stock_mng'
+INFO  2025-05-21 13:24:07.698   o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+INFO  2025-05-21 13:24:08.383   o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+INFO  2025-05-21 13:24:08.543   o.s.d.j.r.query.QueryEnhancerFactory - Hibernate is in classpath; If applicable, HQL parser will be used.
+WARN  2025-05-21 13:24:08.893   o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+INFO  2025-05-21 13:24:09.059   o.s.s.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@53d9860f, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@56bd004d, org.springframework.security.web.context.SecurityContextHolderFilter@7599e5a3, org.springframework.security.web.header.HeaderWriterFilter@12855d64, org.springframework.security.web.csrf.CsrfFilter@4cdbf615, org.springframework.security.web.authentication.logout.LogoutFilter@4336e51b, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@72b48abf, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@10ce7fd2, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@4e00b959, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@8a8957, org.springframework.security.web.access.ExceptionTranslationFilter@2d1439ca, org.springframework.security.web.access.intercept.AuthorizationFilter@5b8bcd54]
+INFO  2025-05-21 13:24:09.212   o.s.b.d.a.OptionalLiveReloadServer - LiveReload server is running on port 35729
+INFO  2025-05-21 13:24:09.226   o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+INFO  2025-05-21 13:24:09.241   o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path ''
+INFO  2025-05-21 13:24:09.248   c.d.w.DroneInventorySystemApplication - Started DroneInventorySystemApplication in 3.177 seconds (process running for 3.664)
+INFO  2025-05-21 13:24:12.476   o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+INFO  2025-05-21 13:24:12.476   o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+INFO  2025-05-21 13:24:12.477   o.s.web.servlet.DispatcherServlet - Completed initialization in 1 ms
+INFO  2025-05-21 13:24:12.541 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - ACCESS: /admin/centerInfo/search
+INFO  2025-05-21 13:24:12.543 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - APP: GET - search - START
+INFO  2025-05-21 13:24:12.605 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - APP: GET - search - END
+INFO  2025-05-21 13:24:16.979 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - ACCESS: /admin/centerInfo/search
+INFO  2025-05-21 13:24:16.980 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - APP: GET - search - START
+ERROR 2025-05-21 13:24:16.980 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - ERROR: POST - handleValidationError - CenterInfoForm(centerName=aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa, region=, storageCapacityFrom=null, storageCapacityTo=null) センター名は20文字以内で入力してください。
+
+INFO  2025-05-21 13:24:19.746 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - ACCESS: /admin/centerInfo/search
+INFO  2025-05-21 13:24:19.746 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - APP: GET - search - START
+INFO  2025-05-21 13:24:19.749 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - APP: GET - search - END
+INFO  2025-05-21 13:24:25.885 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - ACCESS: /admin/centerInfo/search
+INFO  2025-05-21 13:24:25.885 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - APP: GET - search - START
+INFO  2025-05-21 13:24:25.887 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - APP: GET - search - END
+INFO  2025-05-21 13:24:33.473 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - ACCESS: /admin/centerInfo/search
+INFO  2025-05-21 13:24:33.473 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - APP: GET - search - START
+INFO  2025-05-21 13:24:33.476 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - APP: GET - search - END
+INFO  2025-05-21 13:24:39.803 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - ACCESS: /admin/centerInfo/search
+INFO  2025-05-21 13:24:39.803 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - APP: GET - search - START
+ERROR 2025-05-21 13:24:39.803 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - ERROR: POST - handleValidationError - CenterInfoForm(centerName=aaaaaaaaaaaaaaaaaaaaa, region=, storageCapacityFrom=null, storageCapacityTo=null) センター名は20文字以内で入力してください。
+
+INFO  2025-05-21 13:27:22.626 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - ACCESS: /admin/centerInfo/search
+INFO  2025-05-21 13:27:22.626 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - APP: GET - search - START
+INFO  2025-05-21 13:27:22.629 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - APP: GET - search - END
+INFO  2025-05-21 13:27:35.810 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - ACCESS: /admin/centerInfo/search
+INFO  2025-05-21 13:27:35.810 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - APP: GET - search - START
+ERROR 2025-05-21 13:27:35.810 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - ERROR: POST - handleValidationError - CenterInfoForm(centerName=わああああああああああああああああああああ, region=, storageCapacityFrom=null, storageCapacityTo=null) センター名は20文字以内で入力してください。
+
+INFO  2025-05-21 13:27:40.692 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - ACCESS: /admin/centerInfo/search
+INFO  2025-05-21 13:27:40.692 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - APP: GET - search - START
+INFO  2025-05-21 13:27:40.695 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - APP: GET - search - END
+INFO  2025-05-21 13:29:57.232   o.s.b.a.SpringApplicationAdminMXBeanRegistrar$SpringApplicationAdmin - Application shutdown requested.
+INFO  2025-05-21 13:29:57.234   o.a.coyote.http11.Http11NioProtocol - Stopping ProtocolHandler ["http-nio-8080"]
+INFO  2025-05-21 13:29:57.259   o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+INFO  2025-05-21 13:29:57.261   com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+INFO  2025-05-21 13:29:57.266   com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+INFO  2025-05-21 13:29:58.856   c.d.w.DroneInventorySystemApplication - Starting DroneInventorySystemApplication using Java 17.0.10 with PID 2252 (C:\Users\KoheiNakamura\Desktop\OJT\development-PGcourse-DroneInventorySystem\DroneInventorySystem\target\classes started by KoheiNakamura in C:\Users\KoheiNakamura\Desktop\OJT\development-PGcourse-DroneInventorySystem\DroneInventorySystem)
+INFO  2025-05-21 13:29:58.857   c.d.w.DroneInventorySystemApplication - No active profile set, falling back to 1 default profile: "default"
+INFO  2025-05-21 13:29:58.886   o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+INFO  2025-05-21 13:29:58.886   o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+INFO  2025-05-21 13:29:59.320   o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+INFO  2025-05-21 13:29:59.359   o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 34 ms. Found 3 JPA repository interfaces.
+INFO  2025-05-21 13:29:59.712   o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+INFO  2025-05-21 13:29:59.719   o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+INFO  2025-05-21 13:29:59.721   o.a.catalina.core.StandardService - Starting service [Tomcat]
+INFO  2025-05-21 13:29:59.721   o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.28]
+INFO  2025-05-21 13:29:59.753   o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+INFO  2025-05-21 13:29:59.753   o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 867 ms
+INFO  2025-05-21 13:29:59.773   com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+INFO  2025-05-21 13:29:59.947   com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@7eb4b53d
+INFO  2025-05-21 13:29:59.948   com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+INFO  2025-05-21 13:29:59.954   o.s.b.a.h.H2ConsoleAutoConfiguration - H2 console available at '/h2-console'. Database available at 'jdbc:mysql://localhost:3306/stock_mng'
+INFO  2025-05-21 13:30:00.266   o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+INFO  2025-05-21 13:30:00.961   o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+INFO  2025-05-21 13:30:01.113   o.s.d.j.r.query.QueryEnhancerFactory - Hibernate is in classpath; If applicable, HQL parser will be used.
+WARN  2025-05-21 13:30:01.452   o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+INFO  2025-05-21 13:30:01.621   o.s.s.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@6533954b, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@109655db, org.springframework.security.web.context.SecurityContextHolderFilter@21841448, org.springframework.security.web.header.HeaderWriterFilter@4d7f520, org.springframework.security.web.csrf.CsrfFilter@1902511, org.springframework.security.web.authentication.logout.LogoutFilter@2767a796, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@7504058, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@6a2ea24b, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@4c2e6f85, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@15418511, org.springframework.security.web.access.ExceptionTranslationFilter@27d1b28a, org.springframework.security.web.access.intercept.AuthorizationFilter@7fb14c2a]
+INFO  2025-05-21 13:30:01.773   o.s.b.d.a.OptionalLiveReloadServer - LiveReload server is running on port 35729
+INFO  2025-05-21 13:30:01.785   o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+INFO  2025-05-21 13:30:01.796   o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path ''
+INFO  2025-05-21 13:30:01.802   c.d.w.DroneInventorySystemApplication - Started DroneInventorySystemApplication in 3.151 seconds (process running for 3.627)
+INFO  2025-05-21 15:36:42.954   o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+INFO  2025-05-21 15:36:42.954   o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+INFO  2025-05-21 15:36:42.955   o.s.web.servlet.DispatcherServlet - Completed initialization in 1 ms
+INFO  2025-05-21 15:36:43.020 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - ACCESS: /admin/centerInfo/search
+INFO  2025-05-21 15:36:43.021 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - APP: GET - search - START
+INFO  2025-05-21 15:36:43.081 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - APP: GET - search - END
+INFO  2025-05-21 15:36:47.215 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - ACCESS: /admin/centerInfo/search
+INFO  2025-05-21 15:36:47.215 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - APP: GET - search - START
+ERROR 2025-05-21 15:36:47.216 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - ERROR: POST - handleValidationError - CenterInfoForm(centerName=, region=, storageCapacityFrom=null, storageCapacityTo=null) すべてのフィールドが空です。少なくとも1つのフィールドに値を入力してください。
+
+INFO  2025-05-21 15:36:50.741 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - ACCESS: /admin/centerInfo/search
+INFO  2025-05-21 15:36:50.741 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - APP: GET - search - START
+ERROR 2025-05-21 15:36:50.741 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - ERROR: POST - handleValidationError - CenterInfoForm(centerName=*, region=, storageCapacityFrom=null, storageCapacityTo=null) 不正な文字列を検出しました。
+
+INFO  2025-05-21 15:36:53.257 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - ACCESS: /admin/centerInfo/search
+INFO  2025-05-21 15:36:53.258 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - APP: GET - search - START
+INFO  2025-05-21 15:36:53.263 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - APP: GET - search - END
+INFO  2025-05-21 15:36:55.174 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - ACCESS: /admin/centerInfo/search
+INFO  2025-05-21 15:36:55.174 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - APP: GET - search - START
+INFO  2025-05-21 15:36:55.176 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - APP: GET - search - END
+INFO  2025-05-21 15:36:57.291 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - ACCESS: /admin/centerInfo/search
+INFO  2025-05-21 15:36:57.291 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - APP: GET - search - START
+INFO  2025-05-21 15:36:57.293 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - APP: GET - search - END
+INFO  2025-05-21 15:36:59.240 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - ACCESS: /admin/centerInfo/search
+INFO  2025-05-21 15:36:59.241 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - APP: GET - search - START
+INFO  2025-05-21 15:36:59.245 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - APP: GET - search - END
+INFO  2025-05-21 15:37:01.834 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - ACCESS: /admin/centerInfo
+INFO  2025-05-21 15:37:01.834 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - APP: GET - index - START
+INFO  2025-05-21 15:37:01.853 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - APP: GET - index - END
+INFO  2025-05-21 16:27:51.912 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - ACCESS: /admin/centerInfo/search
+INFO  2025-05-21 16:27:51.912 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - APP: GET - search - START
+ERROR 2025-05-21 16:27:51.912 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - ERROR: POST - handleValidationError - CenterInfoForm(centerName=ｓｓｓｓｓｓｓｓｓｓｓｓｓｓｓｓｓｓｓｓｓｓｓｓｓｓｓｓ, region=, storageCapacityFrom=null, storageCapacityTo=null) センター名は20文字以内で入力してください。
+
+INFO  2025-05-21 16:28:00.799 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - ACCESS: /admin/centerInfo/search
+INFO  2025-05-21 16:28:00.799 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - APP: GET - search - START
+ERROR 2025-05-21 16:28:00.799 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - ERROR: POST - handleValidationError - CenterInfoForm(centerName=, region=, storageCapacityFrom=null, storageCapacityTo=null) すべてのフィールドが空です。少なくとも1つのフィールドに値を入力してください。
+
+INFO  2025-05-21 16:29:49.650 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - ACCESS: /admin/centerInfo/search
+INFO  2025-05-21 16:29:49.650 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - APP: GET - search - START
+INFO  2025-05-21 16:29:49.655 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - APP: GET - search - END
+INFO  2025-05-21 16:29:54.414 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - ACCESS: /admin/centerInfo/search
+INFO  2025-05-21 16:29:54.414 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - APP: GET - search - START
+INFO  2025-05-21 16:29:54.417 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - APP: GET - search - END
+INFO  2025-05-21 16:29:57.847 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - ACCESS: /admin/centerInfo/search
+INFO  2025-05-21 16:29:57.847 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - APP: GET - search - START
+INFO  2025-05-21 16:29:57.850 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - APP: GET - search - END
+INFO  2025-05-21 16:30:00.630 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - ACCESS: /admin/centerInfo/search
+INFO  2025-05-21 16:30:00.631 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - APP: GET - search - START
+INFO  2025-05-21 16:30:00.634 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - APP: GET - search - END
+INFO  2025-05-21 16:30:06.464 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - ACCESS: /admin/centerInfo/search
+INFO  2025-05-21 16:30:06.464 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - APP: GET - search - START
+INFO  2025-05-21 16:30:06.466 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - APP: GET - search - END
+INFO  2025-05-21 16:30:10.413 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - ACCESS: /admin/centerInfo/search
+INFO  2025-05-21 16:30:10.414 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - APP: GET - search - START
+INFO  2025-05-21 16:30:10.417 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - APP: GET - search - END
+INFO  2025-05-21 16:30:14.498 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - ACCESS: /admin/centerInfo/search
+INFO  2025-05-21 16:30:14.498 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - APP: GET - search - START
+INFO  2025-05-21 16:30:14.502 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - APP: GET - search - END
+INFO  2025-05-21 16:39:23.824   o.s.b.d.a.LocalDevToolsAutoConfiguration$RestartingClassPathChangeChangedEventListener - Restarting due to 1 class path change (0 additions, 0 deletions, 1 modification)
+INFO  2025-05-21 16:39:23.830   o.a.coyote.http11.Http11NioProtocol - Stopping ProtocolHandler ["http-nio-8080"]
+INFO  2025-05-21 16:39:23.871   o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+INFO  2025-05-21 16:39:23.873   com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+INFO  2025-05-21 16:39:23.876   com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+INFO  2025-05-21 16:39:23.942   c.d.w.DroneInventorySystemApplication - Starting DroneInventorySystemApplication using Java 17.0.10 with PID 2252 (C:\Users\KoheiNakamura\Desktop\OJT\development-PGcourse-DroneInventorySystem\DroneInventorySystem\target\classes started by KoheiNakamura in C:\Users\KoheiNakamura\Desktop\OJT\development-PGcourse-DroneInventorySystem\DroneInventorySystem)
+INFO  2025-05-21 16:39:23.942   c.d.w.DroneInventorySystemApplication - No active profile set, falling back to 1 default profile: "default"
+INFO  2025-05-21 16:39:24.222   o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+INFO  2025-05-21 16:39:24.231   o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 9 ms. Found 3 JPA repository interfaces.
+INFO  2025-05-21 16:39:24.320   o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+INFO  2025-05-21 16:39:24.321   o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+INFO  2025-05-21 16:39:24.321   o.a.catalina.core.StandardService - Starting service [Tomcat]
+INFO  2025-05-21 16:39:24.321   o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.28]
+INFO  2025-05-21 16:39:24.336   o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+INFO  2025-05-21 16:39:24.337   o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 393 ms
+INFO  2025-05-21 16:39:24.347   com.zaxxer.hikari.HikariDataSource - HikariPool-2 - Starting...
+INFO  2025-05-21 16:39:24.357   com.zaxxer.hikari.pool.HikariPool - HikariPool-2 - Added connection com.mysql.cj.jdbc.ConnectionImpl@7892a30e
+INFO  2025-05-21 16:39:24.357   com.zaxxer.hikari.HikariDataSource - HikariPool-2 - Start completed.
+INFO  2025-05-21 16:39:24.357   o.s.b.a.h.H2ConsoleAutoConfiguration - H2 console available at '/h2-console'. Database available at 'jdbc:mysql://localhost:3306/stock_mng'
+INFO  2025-05-21 16:39:24.395   o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+INFO  2025-05-21 16:39:24.470   o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+WARN  2025-05-21 16:39:24.535   o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+INFO  2025-05-21 16:39:24.585   o.s.s.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@5222d542, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@5100d982, org.springframework.security.web.context.SecurityContextHolderFilter@413f62be, org.springframework.security.web.header.HeaderWriterFilter@509baad1, org.springframework.security.web.csrf.CsrfFilter@288ecb22, org.springframework.security.web.authentication.logout.LogoutFilter@13df7978, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@5d1b5844, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@1fb67660, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@248f3f0f, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@5bf49630, org.springframework.security.web.access.ExceptionTranslationFilter@3d00d041, org.springframework.security.web.access.intercept.AuthorizationFilter@3567f329]
+INFO  2025-05-21 16:39:24.631   o.s.b.d.a.OptionalLiveReloadServer - LiveReload server is running on port 35729
+INFO  2025-05-21 16:39:24.637   o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+INFO  2025-05-21 16:39:24.639   o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path ''
+INFO  2025-05-21 16:39:24.642   c.d.w.DroneInventorySystemApplication - Started DroneInventorySystemApplication in 0.722 seconds (process running for 11366.467)
+INFO  2025-05-21 16:39:24.643   o.s.b.d.a.ConditionEvaluationDeltaLoggingListener - Condition evaluation unchanged
+INFO  2025-05-21 16:39:44.551   o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+INFO  2025-05-21 16:39:44.551   o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+INFO  2025-05-21 16:39:44.551   o.s.web.servlet.DispatcherServlet - Completed initialization in 0 ms
+INFO  2025-05-21 16:39:44.561 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - ACCESS: /admin/centerInfo/search
+INFO  2025-05-21 16:39:44.561 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - APP: GET - search - START
+INFO  2025-05-21 16:39:44.565 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - APP: GET - search - END
+INFO  2025-05-21 16:39:47.592 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - ACCESS: /admin/centerInfo/search
+INFO  2025-05-21 16:39:47.593 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - APP: GET - search - START
+INFO  2025-05-21 16:39:47.596 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - APP: GET - search - END
+INFO  2025-05-21 16:39:49.509 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - ACCESS: /admin/centerInfo/search
+INFO  2025-05-21 16:39:49.509 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - APP: GET - search - START
+INFO  2025-05-21 16:39:49.511 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - APP: GET - search - END
+INFO  2025-05-21 16:39:51.510 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - ACCESS: /admin/centerInfo/search
+INFO  2025-05-21 16:39:51.510 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - APP: GET - search - START
+INFO  2025-05-21 16:39:51.513 0:0:0:0:0:0:0:1 dotlife c.d.w.controller.AbstractController - APP: GET - search - END

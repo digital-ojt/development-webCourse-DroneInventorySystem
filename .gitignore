@@ -3,6 +3,7 @@
 .project
 .metadata/
 .settings/
+.vscode/
 bin/
 tmp/
 Servers/
