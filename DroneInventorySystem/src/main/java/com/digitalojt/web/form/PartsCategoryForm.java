@@ -1,9 +1,10 @@
 package com.digitalojt.web.form;
 
-import com.digitalojt.web.validation.PartsCategoryFormValidator;
-
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+
+import com.digitalojt.web.validation.PartsCategoryFormValidator;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -28,7 +29,7 @@ public class PartsCategoryForm {
 	
 	// 部品カテゴリー名
 	@NotBlank(message = "{category.name.required}")
-	@Size(max = 20, message = "{category.name.invalid.length}")
+	@Size(max = 20, message = "{category.name.length}")
 	private String categoryName;
     
     // 削除フラグ
