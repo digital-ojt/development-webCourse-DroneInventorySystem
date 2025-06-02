@@ -28,7 +28,7 @@ public class PartsCategoryForm {
 	
 	// 部品カテゴリー名
 	@NotBlank(message = "{category.name.required}")
-	@Size(max = 20, message = "{category.name.invalid.length}")
+	@Size(max = 20, message = "{category.name.length}")
 	private String categoryName;
     
     // 削除フラグ

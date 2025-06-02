@@ -42,7 +42,7 @@ public class UrlConsts {
 	public static final String PARTS_CATEGORY_REGISTER = "/admin/partsCategory/register";
 	
 	// 部品カテゴリー管理画面　更新
-	public static final String PARTS_CATEGORY_UPDATE = "admin/partsCategory/update";
+	public static final String PARTS_CATEGORY_UPDATE = "/admin/partsCategory/update";
 	
 	// 部品カテゴリー管理画面 削除
 	public static final String PARTS_CATEGORY_DELETE = "/admin/partsCategory/delete";
