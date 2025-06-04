@@ -46,4 +46,10 @@ public class ErrorMessage {
 	
 	// 不正なデータ更新/削除に関するエラーメッセージ
 	public static final String ININVALID_UPDATE_ERROR_MESSAGE = "invalid.update";
+	
+	// 禁止文字チェック（{ } ; = $ & ）が含まれている場合のエラーメッセージキー
+	public static final String STOCK_NAME_FORBIDDEN_ERROR_MESSAGE = "stock.name.forbidden";
+	
+	// 数値範囲チェックのエラーメッセージキー
+	public static final String STOCK_AMOUNT_RANGE_ERROR_MESSAGE = "stock.amount.range";
 }

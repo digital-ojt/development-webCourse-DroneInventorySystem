@@ -29,4 +29,12 @@ public interface CenterInfoRepository extends JpaRepository<CenterInfo, Integer>
 	List<CenterInfo> findActiveCenters(
 			String centerName,
 			String region);
+	
+	/**
+	 * 論理削除フラグが 0 のセンター情報リストを取得（ID 昇順）
+	 * 
+	 * @param deleteFlag
+	 * @return センター情報リスト
+	 */
+    List<CenterInfo> findByDeleteFlagOrderByCenterIdAsc(int deleteFlag);
 }

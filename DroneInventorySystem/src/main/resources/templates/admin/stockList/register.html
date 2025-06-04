@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout/template :: layout(~{::title},~{::body/content()})}">
+
+<head>
+	<title>部品カテゴリー管理 登録画面</title>
+	<link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+	<div class="card shadow mb-4">
+		<div class="card-header py-3">
+			<h6 class="m-0 font-weight-bold text-primary">部品在庫一覧 登録画面</h6>
+		</div>
+
+		<div class="card-body">
+			<!-- エラーメッセージの表示 -->
+			<div th:if="${not #strings.isEmpty(errorMsg)}" class="text-danger">
+				<p th:utext="${errorMsg}"></p>
+			</div>
+
+			<!-- 登録フォーム -->
+			<form id="updateForm" method="post" th:action="@{/admin/stockList/register}"
+				th:object="${stockUpdateForm}">
+
+				<table class="table table-bordered">
+					<thead>
+						<tr>
+							<th colspan="2">＊必須項目</th>
+						</tr>
+					</thead>
+
+					<tbody>
+						<!-- カテゴリー -->
+						<tr>
+							<td>カテゴリー ＊</td>
+							<td>
+								<select name="categoryId" class="form-control mr-2">
+									 <option th:each="category, iterStat : ${session.categoryList}"
+									         th:value="${category.categoryId}"
+									         th:text="${category.categoryName}"
+									         th:selected="${iterStat.index == 0}">
+									 </option>
+								</select>
+							</td>
+						</tr>
+						<!-- 名称 -->
+						<tr>
+							<td>名称 ＊</td>
+							<td>
+								<input type="text" name="name" th:field="*{name}" class="form-control" maxlength="255">
+							</td>
+						</tr>
+						<!-- 在庫センター -->
+						<tr>
+							<td>在庫センター ＊</td>
+							<td>
+								<select name="centerId" class="form-control mr-2">
+									 <option th:each="center, iterStat : ${session.centerList}"
+									         th:value="${center.centerId}"
+									         th:text="${center.centerName}"
+									         th:selected="${iterStat.index == 0}">
+									 </option>
+								</select>
+							</td>
+						</tr>
+						<!-- 説明 -->
+						<tr>
+							<td>説明</td>
+							<td>
+								<input type="text" name="description" th:field="*{description}" class="form-control"
+									maxlength="255">
+							</td>
+						</tr>
+						<!-- 個数 -->
+						<tr>
+							<td>個数 ＊</td>
+							<td>
+								<input type="number" name="amount" th:field="*{amount}" class="form-control"
+									max="100000" min="0">
+							</td>
+						</tr>
+					</tbody>
+				</table>
+
+				<!-- ボタンエリア -->
+				<div class="d-flex justify-content-between mt-4">
+					<!-- キャンセルボタン -->
+					<button type="button" class="btn btn-secondary" onclick="goBack()">キャンセル</button>
+
+					<!-- 登録ボタン -->
+					<input type="hidden" name="confirmFlag" id="confirmFlag" value="false">
+					<button id="registerBtn" class="btn btn-success ml-2"
+						style="background-color: #f8c471; border: none; border-radius: 5px;">
+						登録
+					</button>
+				</div>
+			</form>
+
+		</div>
+	</div>
+
+	<!-- 前のページに戻る -->
+	<script>
+		function goBack() {
+			window.history.back();
+		}
+	</script>
+
+</body>
+
+</html>

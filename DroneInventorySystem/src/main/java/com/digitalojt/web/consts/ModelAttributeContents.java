@@ -39,4 +39,10 @@ public class ModelAttributeContents {
 	
 	// 部品カテゴリー フォーム情報
 	public static final String PARTS_CATEGORY_UPDATE_FORM = "partsCategoryUpdateForm";
+    
+	// 在庫一覧画面情報一覧
+	public static final String STOCK_LIST = "stockList";
+	
+	// 在庫一覧画面 フォーム情報
+	public static final String STOCK_UPDATE_FORM = "stockUpdateForm";
 }

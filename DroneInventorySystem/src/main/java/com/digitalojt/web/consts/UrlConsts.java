@@ -24,10 +24,16 @@ public class UrlConsts {
 	public static final String STOCK_LIST = "/admin/stockList";
 
 	// 在庫一覧画面 初期
-	public static final String STOCK_LIST_INDEX = "admin/stockList/stocklist";
+	public static final String STOCK_LIST_INDEX = "admin/stockList/stockList";
 
 	// 在庫一覧画面 検索
 	public static final String STOCK_LIST_SEARCH = "/admin/stockList/search";
+	
+	// 在庫一覧画面 登録
+	public static final String STOCK_LIST_REGISTER = "/admin/stockList/register";
+	
+	// 在庫一覧画面　更新
+	public static final String STOCK_LIST_UPDATE = "/admin/stockList/update";
 	
 	// 部品カテゴリー管理画面 初期処理
 	public static final String PARTS_CATEGORY = "/admin/partsCategory";
@@ -42,7 +48,7 @@ public class UrlConsts {
 	public static final String PARTS_CATEGORY_REGISTER = "/admin/partsCategory/register";
 	
 	// 部品カテゴリー管理画面　更新
-	public static final String PARTS_CATEGORY_UPDATE = "admin/partsCategory/update";
+	public static final String PARTS_CATEGORY_UPDATE = "/admin/partsCategory/update";
 	
 	// 部品カテゴリー管理画面 削除
 	public static final String PARTS_CATEGORY_DELETE = "/admin/partsCategory/delete";
