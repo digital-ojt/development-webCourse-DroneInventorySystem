@@ -1,0 +1,254 @@
+<?xml version="1.0"?>
+<!DOCTYPE module PUBLIC
+    "-//Checkstyle//DTD Checkstyle Configuration 1.3//EN"
+    "https://checkstyle.org/dtds/configuration_1_3.dtd">
+
+<module name="Checker">
+    <!-- 文字エンコーディング -->
+    <property name="charset" value="UTF-8"/>
+
+    <!-- 重要度を error に設定（厳格化） -->
+    <property name="severity" value="error"/>
+
+    <!-- ファイル拡張子の確認 -->
+    <property name="fileExtensions" value="java, properties, xml"/>
+
+    <!-- 行長: 80-120文字（厳格） -->
+    <module name="LineLength">
+        <property name="max" value="120"/>
+        <property name="ignorePattern" value="^package.*|^import.*|a href|href|http://|https://|ftp://"/>
+        <property name="severity" value="error"/>
+    </module>
+
+    <!-- ファイルサイズチェック -->
+    <module name="FileLength">
+        <property name="max" value="1000"/>
+        <property name="severity" value="error"/>
+    </module>
+
+    <module name="TreeWalker">
+        <!-- ========== 命名規則（自動補正対象） ========== -->
+        <!-- クラス名: PascalCase -->
+        <module name="TypeName">
+            <property name="format" value="^[A-Z][a-zA-Z0-9]*$"/>
+            <property name="severity" value="warning"/>
+            <message key="name.invalidPattern" value="クラス名はPascalCase（例：UserService）で記述してください。自動補正されます。"/>
+        </module>
+
+        <!-- メソッド名: camelCase -->
+        <module name="MethodName">
+            <property name="format" value="^[a-z][a-zA-Z0-9]*$"/>
+            <property name="severity" value="warning"/>
+            <message key="name.invalidPattern" value="メソッド名はcamelCase（例：getUserById）で記述してください。自動補正されます。"/>
+        </module>
+
+        <!-- 変数名: camelCase -->
+        <module name="LocalVariableName">
+            <property name="format" value="^[a-z][a-zA-Z0-9]*$"/>
+            <property name="severity" value="warning"/>
+            <message key="name.invalidPattern" value="変数名はcamelCase（例：userName）で記述してください。自動補正されます。"/>
+        </module>
+
+        <module name="MemberName">
+            <property name="format" value="^[a-z][a-zA-Z0-9]*$"/>
+            <property name="severity" value="warning"/>
+            <message key="name.invalidPattern" value="フィールド名はcamelCase（例：orderList）で記述してください。自動補正されます。"/>
+        </module>
+
+        <!-- 定数名: 全大文字＋アンダースコア -->
+        <module name="ConstantName">
+            <property name="format" value="^[A-Z][A-Z0-9]*(_[A-Z0-9]+)*$"/>
+            <property name="severity" value="warning"/>
+            <message key="name.invalidPattern" value="定数名は全大文字＋アンダースコア（例：MAX_RETRY_COUNT）で記述してください。自動補正されます。"/>
+        </module>
+
+        <!-- パッケージ名 -->
+        <module name="PackageName">
+            <property name="format" value="^[a-z]+(\.[a-z][a-z0-9]*)*$"/>
+            <property name="severity" value="warning"/>
+        </module>
+
+        <!-- ========== コードスタイル（自動補正対象） ========== -->
+        <!-- 波かっこの配置 -->
+        <module name="LeftCurly">
+            <property name="option" value="eol"/>
+            <property name="severity" value="warning"/>
+            <message key="line.alone" value="開始括弧は同じ行に配置してください。自動補正されます。"/>
+        </module>
+
+        <module name="RightCurly">
+            <property name="option" value="same"/>
+            <property name="severity" value="warning"/>
+        </module>
+
+        <!-- 必須の波かっこ -->
+        <module name="NeedBraces">
+            <property name="severity" value="warning"/>
+            <message key="needBraces" value="if/for/while等では波かっこを必ず使用してください。自動補正されます。"/>
+        </module>
+
+        <!-- 空白の使用（自動補正対象） -->
+        <module name="WhitespaceAround">
+            <property name="severity" value="warning"/>
+        </module>
+        <module name="WhitespaceAfter">
+            <property name="severity" value="warning"/>
+        </module>
+        <module name="NoWhitespaceBefore">
+            <property name="severity" value="warning"/>
+        </module>
+
+        <!-- ========== JavaDoc（厳格エラー） ========== -->
+        <!-- 欠落JavaDoc（強めのエラー） -->
+        <module name="MissingJavadocMethod">
+            <property name="minLineCount" value="1"/>
+            <property name="allowedAnnotations" value="Override, Test, PostConstruct, PreDestroy"/>
+            <property name="severity" value="error"/>
+            <message key="javadoc.missing" value="【ERROR】publicメソッドにはJavaDocが必須です。"/>
+        </module>
+
+        <module name="MissingJavadocType">
+            <property name="severity" value="error"/>
+            <message key="javadoc.missing" value="【ERROR】publicクラスにはJavaDocが必須です。"/>
+        </module>
+
+        <!-- JavaDocスタイル（厳格） -->
+        <module name="JavadocStyle">
+            <property name="checkEmptyJavadoc" value="true"/>
+            <property name="severity" value="error"/>
+            <message key="javadoc.empty" value="【ERROR】空のJavaDocは禁止です。目的・意図を簡潔に記述してください。"/>
+        </module>
+
+        <module name="JavadocMethod">
+            <property name="validateThrows" value="true"/>
+            <property name="severity" value="error"/>
+            <message key="javadoc.missing" value="【ERROR】publicメソッドには@param、@returnの記述が必須です。"/>
+        </module>
+
+        <!-- ========== 品質・構造（厳格エラー） ========== -->
+        <!-- マジックナンバー禁止（厳格） -->
+        <module name="MagicNumber">
+            <property name="ignoreNumbers" value="-1, 0, 1, 2"/>
+            <property name="ignoreHashCodeMethod" value="true"/>
+            <property name="ignoreAnnotation" value="true"/>
+            <property name="ignoreFieldDeclaration" value="false"/>
+            <property name="severity" value="error"/>
+            <message key="magic.number" value="【ERROR】マジックナンバーは禁止です。定数として定義してください。"/>
+        </module>
+
+        <!-- メソッドの長さ（厳格：30行） -->
+        <module name="MethodLength">
+            <property name="max" value="30"/>
+            <property name="countEmpty" value="false"/>
+            <property name="severity" value="error"/>
+            <message key="maxLen.method" value="【ERROR】メソッドは30行以下にしてください。複数の小さなメソッドに分割してください。"/>
+        </module>
+
+        <!-- パラメータ数制限（厳格） -->
+        <module name="ParameterNumber">
+            <property name="max" value="5"/>
+            <property name="severity" value="error"/>
+            <message key="maxLen.parameters" value="【ERROR】パラメータは5個以下にしてください。DTOクラスの使用を検討してください。"/>
+        </module>
+
+        <!-- ネストの深さ（厳格） -->
+        <module name="NestedIfDepth">
+            <property name="max" value="2"/>
+            <property name="severity" value="error"/>
+            <message key="nested.if.depth" value="【ERROR】if文のネストは2レベル以下にしてください。"/>
+        </module>
+
+        <module name="NestedForDepth">
+            <property name="max" value="2"/>
+            <property name="severity" value="error"/>
+            <message key="nested.for.depth" value="【ERROR】for文のネストは2レベル以下にしてください。"/>
+        </module>
+
+        <module name="NestedTryDepth">
+            <property name="max" value="1"/>
+            <property name="severity" value="error"/>
+            <message key="nested.try.depth" value="【ERROR】try文のネストは1レベル以下にしてください。"/>
+        </module>
+
+        <!-- 複雑度制限（厳格） -->
+        <module name="CyclomaticComplexity">
+            <property name="max" value="7"/>
+            <property name="severity" value="error"/>
+            <message key="cyclomaticComplexity" value="【ERROR】循環複雑度は7以下にしてください。メソッドを分割してください。"/>
+        </module>
+
+        <!-- 重複コード・不要コード（厳格） -->
+        <module name="ModifierOrder">
+            <property name="severity" value="error"/>
+        </module>
+        <module name="RedundantModifier">
+            <property name="severity" value="error"/>
+            <message key="redundantModifier" value="【ERROR】冗長な修飾子を削除してください。"/>
+        </module>
+
+        <!-- 不要なimport（厳格） -->
+        <module name="UnusedImports">
+            <property name="severity" value="error"/>
+            <message key="import.unused" value="【ERROR】不要なimportを削除してください。"/>
+        </module>
+        <module name="RedundantImport">
+            <property name="severity" value="error"/>
+            <message key="import.redundant" value="【ERROR】冗長なimportを削除してください。"/>
+        </module>
+
+        <!-- 空のブロック（厳格） -->
+        <module name="EmptyBlock">
+            <property name="severity" value="error"/>
+            <message key="block.empty" value="【ERROR】空のブロックは削除してください。"/>
+        </module>
+
+        <!-- Boolean式の簡略化（厳格） -->
+        <module name="SimplifyBooleanExpression">
+            <property name="severity" value="error"/>
+            <message key="simplify.expression" value="【ERROR】Boolean式を簡略化してください。"/>
+        </module>
+
+        <module name="SimplifyBooleanReturn">
+            <property name="severity" value="error"/>
+            <message key="simplify.boolReturn" value="【ERROR】Boolean戻り値を簡略化してください。"/>
+        </module>
+
+        <!-- クラス設計（厳格） -->
+        <module name="VisibilityModifier">
+            <property name="packageAllowed" value="false"/>
+            <property name="protectedAllowed" value="true"/>
+            <property name="severity" value="error"/>
+            <message key="variable.notPrivate" value="【ERROR】フィールドはprivateにしてください。"/>
+        </module>
+
+        <!-- 例外処理（厳格） -->
+        <module name="IllegalCatch">
+            <property name="severity" value="error"/>
+            <message key="illegal.catch" value="【ERROR】Exception、RuntimeException、Throwableの直接catchは禁止です。"/>
+        </module>
+
+        <module name="IllegalThrows">
+            <property name="severity" value="error"/>
+            <message key="illegal.throw" value="【ERROR】Exception、RuntimeException、Throwableの直接throwsは禁止です。"/>
+        </module>
+
+        <!-- equals()とhashCode()の整合性（厳格） -->
+        <module name="EqualsHashCode">
+            <property name="severity" value="error"/>
+            <message key="equals.noHashCode" value="【ERROR】equals()を実装する場合はhashCode()も実装してください。"/>
+        </module>
+
+        <!-- 文字列リテラルの==比較禁止（厳格） -->
+        <module name="StringLiteralEquality">
+            <property name="severity" value="error"/>
+            <message key="string.literal.equality" value="【ERROR】文字列の比較には==ではなくequals()を使用してください。"/>
+        </module>
+
+        <!-- final修飾子の使用推奨（品質向上） -->
+        <module name="FinalLocalVariable">
+            <property name="severity" value="warning"/>
+            <message key="final.variable" value="変更されないローカル変数にはfinalを付けることを推奨します。"/>
+        </module>
+
+    </module>
+</module>

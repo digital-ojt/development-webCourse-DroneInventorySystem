@@ -9,13 +9,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
  * Bean定義クラス
  *
  * @author dotlife
- * 
  */
 @Configuration
 public class BeanDefine {
 
-    @Bean
-    PasswordEncoder passwordEncoder() {
-		return new BCryptPasswordEncoder();
-	}
+  @Bean
+  PasswordEncoder passwordEncoder() {
+    return new BCryptPasswordEncoder();
+  }
 }

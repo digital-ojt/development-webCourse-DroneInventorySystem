@@ -1,0 +1,180 @@
+<?xml version="1.0"?>
+<ruleset name="Strict PMD Rules for DroneInventorySystem"
+    xmlns="http://pmd.sourceforge.net/ruleset/2.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://pmd.sourceforge.net/ruleset/2.0.0 https://pmd.sourceforge.io/ruleset_2_0_0.xsd">
+
+    <description>厳格なPMDルールセット - コーディング規約完全準拠</description>
+
+    <!-- 基本ルール（厳格化） -->
+    <rule ref="category/java/codestyle.xml">
+        <exclude name="AtLeastOneConstructor"/>
+        <exclude name="CallSuperInConstructor"/>
+        <exclude name="CommentDefaultAccessModifier"/>
+        <exclude name="DefaultPackage"/>
+        <exclude name="TooManyStaticImports"/>
+    </rule>
+
+    <rule ref="category/java/design.xml">
+        <exclude name="LawOfDemeter"/>
+        <exclude name="LoosePackageCoupling"/>
+    </rule>
+
+    <rule ref="category/java/errorprone.xml">
+        <exclude name="BeanMembersShouldSerialize"/>
+        <exclude name="DataflowAnomalyAnalysis"/>
+    </rule>
+
+    <rule ref="category/java/performance.xml"/>
+
+    <!-- 厳格なルール設定 -->
+
+    <!-- クラスの責務（厳格：1つのクラス1つの責務） -->
+    <rule ref="category/java/design.xml/NcssCount">
+        <properties>
+            <property name="classReportLevel" value="200"/>
+            <property name="methodReportLevel" value="30"/>
+        </properties>
+    </rule>
+
+    <!-- パラメータ数制限（厳格：5個） -->
+    <rule ref="category/java/design.xml/ExcessiveParameterList">
+        <properties>
+            <property name="minimum" value="5"/>
+        </properties>
+    </rule>
+
+    <!-- ネストの深さ制限（厳格：2レベル） -->
+    <rule ref="category/java/design.xml/AvoidDeeplyNestedIfStmts">
+        <properties>
+            <property name="problemDepth" value="2"/>
+        </properties>
+    </rule>
+
+    <!-- 複雑度制限（厳格：7） -->
+    <rule ref="category/java/design.xml/CyclomaticComplexity">
+        <properties>
+            <property name="classReportLevel" value="40"/>
+            <property name="methodReportLevel" value="7"/>
+        </properties>
+    </rule>
+
+    <!-- 重複コード検出（厳格） -->
+    <rule ref="category/java/codestyle.xml/UnnecessaryImport"/>
+
+    <!-- マジックナンバー（厳格） -->
+    <rule ref="category/java/errorprone.xml/AvoidLiteralsInIfCondition">
+        <properties>
+            <property name="ignoreMagicNumbers" value="-1,0,1,2"/>
+        </properties>
+    </rule>
+
+    <!-- コメント品質（厳格） -->
+    <rule ref="category/java/documentation.xml/CommentRequired">
+        <properties>
+            <property name="methodWithOverrideCommentRequirement" value="Ignored"/>
+            <property name="accessorCommentRequirement" value="Required"/>
+            <property name="classCommentRequirement" value="Required"/>
+            <property name="fieldCommentRequirement" value="Ignored"/>
+            <property name="publicMethodCommentRequirement" value="Required"/>
+            <property name="protectedMethodCommentRequirement" value="Required"/>
+            <property name="enumCommentRequirement" value="Required"/>
+            <property name="serialVersionUIDCommentRequired" value="Ignored"/>
+            <property name="serialPersistentFieldsCommentRequired" value="Ignored"/>
+        </properties>
+    </rule>
+
+    <rule ref="category/java/documentation.xml/CommentSize">
+        <properties>
+            <property name="maxLines" value="20"/>
+            <property name="maxLineLength" value="120"/>
+        </properties>
+    </rule>
+
+    <!-- ログ管理（厳格なルール） -->
+    <rule name="ProperLoggingUsage"
+          language="java"
+          message="【ERROR】ログ出力には適切なレベル（DEBUG, INFO, WARN, ERROR）を使用してください"
+          class="net.sourceforge.pmd.lang.rule.XPathRule">
+        <description>ログ出力の適切な使用方法をチェック</description>
+        <priority>1</priority>
+        <properties>
+            <property name="xpath">
+                <value><![CDATA[
+//PrimaryExpression[PrimaryPrefix/Name[@Image='System.out'] or PrimaryPrefix/Name[@Image='System.err']]
+                ]]></value>
+            </property>
+        </properties>
+    </rule>
+
+    <rule name="AvoidSystemOutPrintln"
+          language="java"
+          message="【ERROR】System.out.println()の使用は禁止です。ログフレームワーク（SLF4J等）を使用してください"
+          class="net.sourceforge.pmd.lang.rule.XPathRule">
+        <description>System.out.println()の使用を禁止</description>
+        <priority>1</priority>
+        <properties>
+            <property name="xpath">
+                <value><![CDATA[
+//PrimaryExpression[PrimaryPrefix/Name[@Image='System.out.println' or @Image='System.err.println']]
+                ]]></value>
+            </property>
+        </properties>
+    </rule>
+
+    <!-- 定数の外出し（厳格） -->
+    <rule name="AvoidHardCodedLiterals"
+          language="java"
+          message="【ERROR】ハードコードされた文字列は定数として定義してください"
+          class="net.sourceforge.pmd.lang.rule.XPathRule">
+        <description>ハードコードされた文字列リテラルの使用を制限</description>
+        <priority>2</priority>
+        <properties>
+            <property name="xpath">
+                <value><![CDATA[
+//Literal[@Image and string-length(@Image) > 5 and not(ancestor::Annotation)]
+[not(ancestor::VariableDeclarator[@Name='serialVersionUID'])]
+[not(starts-with(@Image, '""'))]
+                ]]></value>
+            </property>
+        </properties>
+    </rule>
+
+    <!-- 条件式の順序・肯定形優先 -->
+    <rule ref="category/java/codestyle.xml/AvoidNegatedBooleanExpressions"/>
+
+    <!-- 不要なコード削除（厳格） -->
+    <rule ref="category/java/codestyle.xml/UnnecessaryLocalBeforeReturn"/>
+    <rule ref="category/java/codestyle.xml/UnnecessaryReturn"/>
+    <rule ref="category/java/errorprone.xml/UnusedPrivateField"/>
+    <rule ref="category/java/errorprone.xml/UnusedPrivateMethod"/>
+    <rule ref="category/java/errorprone.xml/UnusedLocalVariable"/>
+
+    <!-- Spring Boot特有のログ管理 -->
+    <rule name="PreferLoggerOverSystemOut"
+          language="java"
+          message="【ERROR】Spring Bootアプリケーションでは@Slf4jアノテーションまたはLoggerを使用してください"
+          class="net.sourceforge.pmd.lang.rule.XPathRule">
+        <description>Spring BootでのLogger使用を強制</description>
+        <priority>1</priority>
+        <properties>
+            <property name="xpath">
+                <value><![CDATA[
+//ClassOrInterfaceDeclaration[
+    .//MethodDeclaration//PrimaryExpression[PrimaryPrefix/Name[@Image='System.out' or @Image='System.err']]
+    and not(.//Annotation//Name[@Image='Slf4j'])
+    and not(.//FieldDeclaration[Type/ReferenceType/ClassOrInterfaceType[@Image='Logger']])
+]
+                ]]></value>
+            </property>
+        </properties>
+    </rule>
+
+    <!-- API設計の品質向上 -->
+    <rule ref="category/java/bestpractices.xml/MethodReturnsInternalArray"/>
+    <rule ref="category/java/bestpractices.xml/ArrayIsStoredDirectly"/>
+
+    <!-- セキュリティ関連（厳格） -->
+    <rule ref="category/java/security.xml"/>
+
+</ruleset>

@@ -4,20 +4,15 @@ import lombok.Data;
 
 /**
  * ログイン画面のフォームクラス
- * 
- * @author dotlife
  *
+ * @author dotlife
  */
 @Data
 public class LoginForm {
 
-	/**
-	 * 管理者ID
-	 */
-	private String adminId;
+  /** 管理者ID */
+  private String adminId;
 
-	/**
-	 * パスワード
-	 */
-	private String password;
+  /** パスワード */
+  private String password;
 }
