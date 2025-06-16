@@ -191,35 +191,15 @@
 					<violationSeverity>error</violationSeverity>
 					<linkXRef>false</linkXRef>
 				</configuration>
-			</plugin>
-
-			<!-- SpotBugs Plugin -->
-			<plugin>
-				<groupId>com.github.spotbugs</groupId>
-				<artifactId>spotbugs-maven-plugin</artifactId>
-				<version>4.7.3.6</version>
-				<configuration>
-					<effort>Max</effort>
-					<threshold>Low</threshold>
-					<xmlOutput>true</xmlOutput>
-					<failOnError>true</failOnError>
-					<includeTests>false</includeTests>
-				</configuration>
-			</plugin>
-
-			<!-- Google Java Format Plugin (Enhanced) -->
-			<plugin>
-				<groupId>com.spotify.fmt</groupId>
-				<artifactId>fmt-maven-plugin</artifactId>
-				<version>2.21.1</version>
-				<configuration>
-					<style>google</style>
-					<sourceDirectory>src/main/java</sourceDirectory>
-					<testSourceDirectory>src/test/java</testSourceDirectory>
-					<verbose>true</verbose>
-					<failOnError>false</failOnError>
-				</configuration>
-				<!-- executions無効化 -->
+				<executions>
+					<execution>
+						<id>validate</id>
+						<phase>validate</phase>
+						<goals>
+							<goal>check</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 
 			<!-- PMD Plugin -->
@@ -237,8 +217,96 @@
 					<failOnViolation>true</failOnViolation>
 					<verbose>true</verbose>
 				</configuration>
+				<executions>
+					<execution>
+						<id>pmd-check</id>
+						<phase>validate</phase>
+						<goals>
+							<goal>check</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<!-- SpotBugs Plugin -->
+			<plugin>
+				<groupId>com.github.spotbugs</groupId>
+				<artifactId>spotbugs-maven-plugin</artifactId>
+				<version>4.7.3.6</version>
+				<configuration>
+					<effort>Max</effort>
+					<threshold>Low</threshold>
+					<xmlOutput>true</xmlOutput>
+					<failOnError>true</failOnError>
+					<includeTests>false</includeTests>
+				</configuration>
+				<executions>
+					<execution>
+						<id>spotbugs-check</id>
+						<phase>verify</phase>
+						<goals>
+							<goal>check</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<!-- Google Java Format Plugin -->
+			<plugin>
+				<groupId>com.spotify.fmt</groupId>
+				<artifactId>fmt-maven-plugin</artifactId>
+				<version>2.21.1</version>
+				<configuration>
+					<style>google</style>
+					<sourceDirectory>src/main/java</sourceDirectory>
+					<testSourceDirectory>src/test/java</testSourceDirectory>
+					<verbose>true</verbose>
+					<failOnError>false</failOnError>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>
+
+	<!-- レポート生成設定 -->
+	<reporting>
+		<plugins>
+			<!-- Checkstyle Report Plugin -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-checkstyle-plugin</artifactId>
+				<version>3.3.0</version>
+				<configuration>
+					<configLocation>checkstyle-strict.xml</configLocation>
+					<encoding>UTF-8</encoding>
+				</configuration>
+			</plugin>
+
+			<!-- PMD Report Plugin -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-pmd-plugin</artifactId>
+				<version>3.21.0</version>
+				<configuration>
+					<sourceEncoding>UTF-8</sourceEncoding>
+					<minimumTokens>100</minimumTokens>
+					<targetJdk>17</targetJdk>
+					<rulesets>
+						<ruleset>pmd-basic.xml</ruleset>
+					</rulesets>
+				</configuration>
+			</plugin>
+
+			<!-- SpotBugs Report Plugin -->
+			<plugin>
+				<groupId>com.github.spotbugs</groupId>
+				<artifactId>spotbugs-maven-plugin</artifactId>
+				<version>4.7.3.6</version>
+				<configuration>
+					<effort>Max</effort>
+					<threshold>Low</threshold>
+				</configuration>
+			</plugin>
+		</plugins>
+	</reporting>
 
 </project>
