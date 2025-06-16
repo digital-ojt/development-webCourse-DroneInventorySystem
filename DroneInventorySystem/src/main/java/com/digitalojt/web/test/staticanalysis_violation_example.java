@@ -14,6 +14,7 @@ public class staticanalysis_violation_example {
   // フィールド名: 違反 - PascalCaseになっている（camelCaseであるべき）
   private String UserName;
   private String PASSWORD = "12345"; // 違反 - ハードコードされたパスワード
+  private String NEW_VIOLATION_FIELD = "test"; // 新しい違反追加
 
   // 定数名: 違反 - camelCaseになっている（UPPER_CASEであるべき）
   public static final int maxRetryCount = 5;

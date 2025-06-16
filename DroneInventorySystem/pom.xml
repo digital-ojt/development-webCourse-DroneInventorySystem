@@ -187,6 +187,8 @@
 					<encoding>UTF-8</encoding>
 					<consoleOutput>true</consoleOutput>
 					<failsOnError>true</failsOnError>
+					<failOnViolation>true</failOnViolation>
+					<violationSeverity>warning</violationSeverity>
 					<linkXRef>false</linkXRef>
 				</configuration>
 			</plugin>
@@ -201,6 +203,7 @@
 					<threshold>Low</threshold>
 					<xmlOutput>true</xmlOutput>
 					<failOnError>true</failOnError>
+					<includeTests>false</includeTests>
 				</configuration>
 			</plugin>
 
@@ -231,7 +234,8 @@
 					<rulesets>
 						<ruleset>pmd-basic.xml</ruleset>
 					</rulesets>
-					<failOnViolation>false</failOnViolation>
+					<failOnViolation>true</failOnViolation>
+					<verbose>true</verbose>
 				</configuration>
 			</plugin>
 		</plugins>
