@@ -15,26 +15,26 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class CenterInfoService {
 
-  /** センター情報テーブル リポジトリー */
-  private final CenterInfoRepository repository;
+	/** センター情報テーブル リポジトリー */
+	private final CenterInfoRepository repository;
 
-  /**
-   * 在庫センター情報を全建検索で取得
-   *
-   * @return
-   */
-  public List<CenterInfo> getCenterInfoData() {
-    return repository.findAll();
-  }
+	/**
+	 * 在庫センター情報を全建検索で取得
+	 *
+	 * @return
+	 */
+	public List<CenterInfo> getCenterInfoData() {
+		return repository.findAll();
+	}
 
-  /**
-   * 引数に合致する在庫センター情報を取得
-   *
-   * @param centerName
-   * @param region
-   * @return
-   */
-  public List<CenterInfo> getCenterInfoData(String centerName, String region) {
-    return repository.findActiveCenters(centerName, region);
-  }
+	/**
+	 * 引数に合致する在庫センター情報を取得
+	 *
+	 * @param centerName
+	 * @param region
+	 * @return
+	 */
+	public List<CenterInfo> getCenterInfoData(String centerName, String region) {
+		return repository.findActiveCenters(centerName, region);
+	}
 }

@@ -6,28 +6,28 @@ package com.digitalojt.web.consts;
  * @author dotlife
  */
 public enum InvalidCharacter {
-  CURLY_BRACE_OPEN('{'),
-  CURLY_BRACE_CLOSE('}'),
-  PARENTHESIS_OPEN('('),
-  PARENTHESIS_CLOSE(')'),
-  EQUAL_SIGN('='),
-  AMPERSAND('&'),
-  SEMICOLON(';'),
-  DOLLAR_SIGN('$'),
-  QUESTION_MARK('?'),
-  ASTERISK('*'),
-  DABLE_COTE('"'),
-  SHINGLE_COTE('\''),
-  ZENBRANK('　'),
-  BRANK(' ');
+	CURLY_BRACE_OPEN('{'),
+	CURLY_BRACE_CLOSE('}'),
+	PARENTHESIS_OPEN('('),
+	PARENTHESIS_CLOSE(')'),
+	EQUAL_SIGN('='),
+	AMPERSAND('&'),
+	SEMICOLON(';'),
+	DOLLAR_SIGN('$'),
+	QUESTION_MARK('?'),
+	ASTERISK('*'),
+	DABLE_COTE('"'),
+	SHINGLE_COTE('\''),
+	ZENBRANK('　'),
+	BRANK(' ');
 
-  private final char character;
+	private final char character;
 
-  InvalidCharacter(char character) {
-    this.character = character;
-  }
+	InvalidCharacter(char character) {
+		this.character = character;
+	}
 
-  public char getCharacter() {
-    return character;
-  }
+	public char getCharacter() {
+		return character;
+	}
 }

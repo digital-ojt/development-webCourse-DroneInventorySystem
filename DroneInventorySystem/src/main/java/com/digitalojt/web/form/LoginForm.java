@@ -10,9 +10,9 @@ import lombok.Data;
 @Data
 public class LoginForm {
 
-  /** 管理者ID */
-  private String adminId;
+	/** 管理者ID */
+	private String adminId;
 
-  /** パスワード */
-  private String password;
+	/** パスワード */
+	private String password;
 }

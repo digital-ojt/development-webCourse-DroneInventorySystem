@@ -1,5 +1,6 @@
 #!/bin/bash
 # Pre-commit hook for strict quality gate - BLOCKS commits on violations
+# 🎨 2024年6月17日更新: prettier-java + Eclipse統合フォーマット環境対応
 
 # 除外ブランチリスト（静的解析をスキップするブランチ）
 SKIP_BRANCHES=(
@@ -23,21 +24,37 @@ for skip_branch in "${SKIP_BRANCHES[@]}"; do
     fi
 done
 
-echo "🚀 Pre-commit hook: 厳格な品質ゲート開始"
+echo "🚀 Pre-commit hook: 統合フォーマット環境 + 厳格な品質ゲート開始"
 echo "📍 現在のブランチ: $CURRENT_BRANCH"
+echo "🎨 統合フォーマット: Prettier Java + Eclipse Formatter"
 echo "⚠️  注意: 品質違反が検出された場合、コミットは阻止されます"
 
 # プロジェクトディレクトリに移動
 cd DroneInventorySystem
 
-# Phase 1: 自動フォーマット（Google Java Format）
-echo "📝 自動フォーマット実行中..."
-if mvn fmt:format -q 2>/dev/null; then
-    echo "✅ 自動フォーマット完了"
+# Phase 1: 統合フォーマット実行 🎨 NEW
+echo "🎨 統合フォーマット実行中..."
+if [ -f "./format-and-check.sh" ]; then
+    echo "  • 統合フォーマットスクリプト実行: ./format-and-check.sh"
+    if ./format-and-check.sh > /dev/null 2>&1; then
+        echo "✅ 統合フォーマット完了 (Space→Tab変換 + Prettier Java + Eclipse Formatter)"
+    else
+        echo "❌ 統合フォーマットエラーが発生しました"
+        echo "  手動実行して確認してください: cd DroneInventorySystem && ./format-and-check.sh"
+        echo "コミットを中断します。"
+        exit 1
+    fi
 else
-    echo "❌ フォーマットエラーが発生しました"
-    echo "コミットを中断します。"
-    exit 1
+    echo "⚠️  統合フォーマットスクリプトが見つかりません"
+    echo "  レガシーフォーマット（Google Java Format）にフォールバック..."
+    
+    if mvn fmt:format -q 2>/dev/null; then
+        echo "✅ Google Java Format完了（レガシー）"
+    else
+        echo "❌ フォーマットエラーが発生しました"
+        echo "コミットを中断します。"
+        exit 1
+    fi
 fi
 
 # フォーマット後の変更をステージングエリアに追加
@@ -118,10 +135,15 @@ echo "✅ SpotBugsバグ検出完了"
 
 echo ""
 echo "🎉 全ての品質チェックに合格しました！"
-echo "✅ 自動フォーマット: 適用済み"
+echo "✅ 統合フォーマット: 適用済み (Prettier Java + Eclipse Formatter)"
 echo "✅ コンパイル: 成功"
 echo "✅ Checkstyle: 合格"
 echo "✅ PMD: 合格"  
 echo "✅ SpotBugs: 合格"
+echo ""
+echo "🎨 統合フォーマット環境の特徴:"
+echo "  • タブインデント統一 (tabWidth: 4)"
+echo "  • Cross-IDE対応 (Eclipse + VS Code + Prettier)"
+echo "  • 設定ファイル駆動フォーマット"
 echo ""
 echo "📊 品質ゲート: 通過 - コミットを続行します"

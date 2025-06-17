@@ -15,32 +15,29 @@ import lombok.Data;
 @CenterInfoFormValidator
 public class CenterInfoForm {
 
-  /** センター名 */
-  @Size(
-      max = ModelAttributeContents.MAX_CENTER_NAME_LENGTH,
-      message = "{centerName.length.wrongInput}")
-  private String centerName;
+	/** センター名 */
+	@Size(max = ModelAttributeContents.MAX_CENTER_NAME_LENGTH, message = "{centerName.length.wrongInput}")
+	private String centerName;
 
-  /** 都道府県 */
-  private String region;
+	/** 都道府県 */
+	private String region;
 
-  /** 容量(From) */
-  private Integer storageCapacityFrom;
+	/** 容量(From) */
+	private Integer storageCapacityFrom;
 
-  /** 容量(To) */
-  private Integer storageCapacityTo;
+	/** 容量(To) */
+	private Integer storageCapacityTo;
 
-  /**
-   * 容量(From)のデフォルト値を設定
-   *
-   * @return
-   */
-  @PostConstruct
-  public Integer init() {
-
-    if (storageCapacityTo != null && storageCapacityFrom == null) {
-      return ModelAttributeContents.INITIAL_CAPACITY_FROM;
-    }
-    return storageCapacityFrom;
-  }
+	/**
+	 * 容量(From)のデフォルト値を設定
+	 *
+	 * @return
+	 */
+	@PostConstruct
+	public Integer init() {
+		if (storageCapacityTo != null && storageCapacityFrom == null) {
+			return ModelAttributeContents.INITIAL_CAPACITY_FROM;
+		}
+		return storageCapacityFrom;
+	}
 }

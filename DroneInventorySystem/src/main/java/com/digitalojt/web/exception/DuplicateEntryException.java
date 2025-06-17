@@ -7,7 +7,7 @@ package com.digitalojt.web.exception;
  */
 public class DuplicateEntryException extends RuntimeException {
 
-  public DuplicateEntryException(String messageCode) {
-    super(ErrorMessageHelper.getMessage(messageCode));
-  }
+	public DuplicateEntryException(String messageCode) {
+		super(ErrorMessageHelper.getMessage(messageCode));
+	}
 }

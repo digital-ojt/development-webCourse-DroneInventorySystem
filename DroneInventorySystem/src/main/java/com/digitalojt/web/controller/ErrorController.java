@@ -14,17 +14,16 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 @Controller
 public class ErrorController extends AbstractController {
 
-  /**
-   * エラーコントローラー
-   *
-   * @param エラーメッセージ
-   * @return エラーページ（error.html）
-   */
-  @GetMapping(UrlConsts.ERROR)
-  public String handleError(@ModelAttribute("errorMsg") String errorMsg) {
+	/**
+	 * エラーコントローラー
+	 *
+	 * @param エラーメッセージ
+	 * @return エラーページ（error.html）
+	 */
+	@GetMapping(UrlConsts.ERROR)
+	public String handleError(@ModelAttribute("errorMsg") String errorMsg) {
+		logException(LogMessage.HTTP_GET, errorMsg != null ? errorMsg : "不明なエラー");
 
-    logException(LogMessage.HTTP_GET, errorMsg != null ? errorMsg : "不明なエラー");
-
-    return UrlConsts.ERROR_VIEW;
-  }
+		return UrlConsts.ERROR_VIEW;
+	}
 }

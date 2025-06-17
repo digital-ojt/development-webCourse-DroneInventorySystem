@@ -177,6 +177,56 @@
 				</configuration>
 			</plugin>
 
+			<!-- Prettier Maven Plugin for Java Formatting with Tab Support -->
+			<plugin>
+				<groupId>com.hubspot.maven.plugins</groupId>
+				<artifactId>prettier-maven-plugin</artifactId>
+				<version>0.22</version>
+				<configuration>
+					<prettierJavaVersion>2.5.0</prettierJavaVersion>
+					<printWidth>120</printWidth>
+					<tabWidth>4</tabWidth>
+					<useTabs>true</useTabs>
+					<ignoreConfigFile>false</ignoreConfigFile>
+					<ignoreEditorConfig>false</ignoreEditorConfig>
+					<inputGlobs>
+						<inputGlob>src/main/java/**/*.java</inputGlob>
+						<inputGlob>src/test/java/**/*.java</inputGlob>
+					</inputGlobs>
+				</configuration>
+				<executions>
+					<execution>
+						<phase>validate</phase>
+						<goals>
+							<goal>write</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<!-- Eclipse Code Formatter Plugin (タブ使用) -->
+			<plugin>
+				<groupId>net.revelc.code.formatter</groupId>
+				<artifactId>formatter-maven-plugin</artifactId>
+				<version>2.23.0</version>
+				<configuration>
+					<configFile>${project.basedir}/eclipse-format.xml</configFile>
+					<lineEnding>LF</lineEnding>
+					<encoding>UTF-8</encoding>
+					<includes>
+						<include>src/main/java/**/*.java</include>
+						<include>src/test/java/**/*.java</include>
+					</includes>
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>format</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
 			<!-- Checkstyle Plugin -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>

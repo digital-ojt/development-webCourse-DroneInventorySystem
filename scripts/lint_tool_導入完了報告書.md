@@ -4,7 +4,9 @@
 
 lint_tool_request.md の要求に基づき、Java 静的解析ツール（Checkstyle、PMD、SpotBugs）を Drone Inventory System プロジェクトに導入しました。
 
-Maven コマンドの不具合を修正し、すべての静的解析コマンドが正常に動作することを確認済みです。
+**🔧 2024年6月17日更新**: Maven コマンドの不具合を修正し、すべての静的解析コマンドが正常に動作することを確認済みです。
+
+**🎨 2024年6月17日追加**: prettier-javaとEclipse設定を統合したタブインデント環境を構築し、IDE横断的なフォーマット統一を実現しました。
 
 ## ✅ 導入完了項目
 
@@ -48,7 +50,37 @@ Maven コマンドの不具合を修正し、すべての静的解析コマン�
 - 推奨拡張機能リスト
 - Java 開発に必要な拡張機能
 
-### 4. Git Hook 設定
+### 4. フォーマット・コード整形設定
+
+**ファイル**: `package.json`
+
+- Prettier + prettier-plugin-java設定
+- タブインデント対応のNode.js環境
+
+**ファイル**: `.prettierrc`
+
+- Prettier設定（タブ使用、幅120文字）
+- Java専用フォーマット設定
+
+**ファイル**: `eclipse-format.xml`
+
+- Eclipse IDE用フォーマット設定
+- タブインデント強制設定
+- プロファイル: "Java Coding Standards - Tab Indentation"
+
+**ファイル**: `Eclipse設定手順書.md`
+
+- Eclipse IDE設定の詳細手順
+- フォーマッター設定のインポート方法
+- 保存時自動フォーマット設定
+
+**ファイル**: `format-and-check.sh`
+
+- 統合フォーマット・チェックスクリプト
+- スペース→タブ変換、Prettier実行、静的解析チェック
+- Eclipse Formatter連携
+
+### 5. Git Hook 設定
 
 **ファイル**: `.git/hooks/pre-commit`
 
@@ -56,7 +88,7 @@ Maven コマンドの不具合を修正し、すべての静的解析コマン�
 - Checkstyle → PMD → SpotBugs 順に実行
 - エラー時にコミット阻止
 
-### 5. CI/CD 連携
+### 6. CI/CD 連携
 
 **ファイル**: `.github/workflows/static-analysis.yml`
 
@@ -64,7 +96,7 @@ Maven コマンドの不具合を修正し、すべての静的解析コマン�
 - 静的解析レポート生成・アップロード
 - Java 17 環境での実行
 
-### 6. ドキュメント整備
+### 7. ドキュメント整備
 
 **ファイル**: `静的解析ツール運用手順書.md`
 
@@ -97,6 +129,20 @@ Maven コマンドの不具合を修正し、すべての静的解析コマン�
    - Pre-commit hook: コミット前チェック
    - GitHub Actions: PR 時チェック
 
+4. **✅ IDE横断的フォーマット統一（2024年6月17日追加）**
+
+   - prettier-java: Node.js環境でのJavaフォーマット
+   - Eclipse Formatter: Eclipse IDE連携
+   - VS Code設定: Prettier拡張機能連携
+   - 統合スクリプト: format-and-check.sh
+
+5. **✅ タブインデント完全対応（2024年6月17日追加）**
+
+   - .editorconfig: エディタ横断設定
+   - Eclipse設定: eclipse-format.xml
+   - Prettier設定: .prettierrc
+   - 自動変換: スペース→タブ変換スクリプト
+
 ## 🔧 コーディング規約準拠
 
 ### 命名規則
@@ -121,6 +167,15 @@ Maven コマンドの不具合を修正し、すべての静的解析コマン�
 
 ## 🚀 使用方法
 
+### 統合フォーマット・チェック（推奨）
+
+```bash
+cd DroneInventorySystem
+
+# 統合実行: タブ変換 + フォーマット + 静的解析
+./format-and-check.sh
+```
+
 ### 手動実行
 
 ```bash
@@ -133,6 +188,19 @@ mvn compile checkstyle:check pmd:check spotbugs:check
 mvn checkstyle:check    # Checkstyle のみ
 mvn pmd:check          # PMD のみ
 mvn spotbugs:check     # SpotBugs のみ
+```
+
+### フォーマット実行
+
+```bash
+# Eclipse Formatter実行
+mvn formatter:format
+
+# Prettier実行
+npm run format
+
+# 手動タブ変換（緊急時）
+find src/main/java -name "*.java" | xargs sed -i '' 's/^    /\t/g'
 ```
 
 ### レポート生成

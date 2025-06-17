@@ -19,37 +19,37 @@ import org.springframework.web.bind.annotation.GetMapping;
 @RequiredArgsConstructor
 public class LoginController extends AbstractController {
 
-  /**
-   * 初期表示
-   *
-   * @param model モデル
-   * @param session HTTPセッション
-   * @return ビュー名
-   */
-  @GetMapping(UrlConsts.LOGIN)
-  public String view(Model model, HttpSession session) {
-    logStart(LogMessage.HTTP_GET);
-    logEnd(LogMessage.HTTP_GET);
+	/**
+	 * 初期表示
+	 *
+	 * @param model モデル
+	 * @param session HTTPセッション
+	 * @return ビュー名
+	 */
+	@GetMapping(UrlConsts.LOGIN)
+	public String view(Model model, HttpSession session) {
+		logStart(LogMessage.HTTP_GET);
+		logEnd(LogMessage.HTTP_GET);
 
-    return UrlConsts.LOGIN_INDEX;
-  }
+		return UrlConsts.LOGIN_INDEX;
+	}
 
-  /**
-   * ログインエラー画面表示
-   *
-   * @param model モデル
-   * @param session HTTPセッション
-   * @return ビュー名
-   */
-  @GetMapping(value = UrlConsts.LOGIN, params = "error")
-  public String error(Model model, HttpSession session) {
-    logStart(LogMessage.HTTP_GET);
+	/**
+	 * ログインエラー画面表示
+	 *
+	 * @param model モデル
+	 * @param session HTTPセッション
+	 * @return ビュー名
+	 */
+	@GetMapping(value = UrlConsts.LOGIN, params = "error")
+	public String error(Model model, HttpSession session) {
+		logStart(LogMessage.HTTP_GET);
 
-    Exception errorInfo = (Exception) session.getAttribute(WebAttributes.AUTHENTICATION_EXCEPTION);
-    logException(LogMessage.HTTP_GET, errorInfo.getMessage());
-    model.addAttribute(ModelAttributeContents.ERROR_MSG, errorInfo.getMessage());
+		Exception errorInfo = (Exception) session.getAttribute(WebAttributes.AUTHENTICATION_EXCEPTION);
+		logException(LogMessage.HTTP_GET, errorInfo.getMessage());
+		model.addAttribute(ModelAttributeContents.ERROR_MSG, errorInfo.getMessage());
 
-    logEnd(LogMessage.HTTP_GET);
-    return UrlConsts.LOGIN_INDEX;
-  }
+		logEnd(LogMessage.HTTP_GET);
+		return UrlConsts.LOGIN_INDEX;
+	}
 }

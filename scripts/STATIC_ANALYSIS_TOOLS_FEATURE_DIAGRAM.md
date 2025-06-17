@@ -3,6 +3,8 @@
 ## 概要
 DroneInventorySystemプロジェクトで利用している静的解析ツールの特徴、設定方法、およびカスタマイズ手順を図解したドキュメントです。
 
+**🎨 2024年6月17日更新**: prettier-java + Eclipse統合フォーマット環境対応、タブインデント統一設定を追加
+
 ## 静的解析ツール全体構成図
 
 ```mermaid
@@ -10,15 +12,21 @@ graph TB
     subgraph "静的解析エコシステム"
         SA[静的解析システム]
         
+        subgraph "統合フォーマットレイヤー 🎨 NEW"
+            IFS[format-and-check.sh<br/>統合フォーマットスクリプト]
+            ST[Space→Tab変換]
+            PJ[Prettier Java<br/>npm + prettier-plugin-java]
+            EF[Eclipse Code Formatter<br/>formatter-maven-plugin]
+        end
+        
         subgraph "コード品質チェック"
             CS[Checkstyle]
             PMD[PMD]
             SB[SpotBugs]
         end
         
-        subgraph "コードフォーマット"
-            GJF[Google Java Format]
-            EF[Eclipse Formatter]
+        subgraph "レガシーフォーマット"
+            GJF[Google Java Format<br/>※タブ対応不可]
         end
         
         subgraph "自動化レイヤー"
@@ -27,40 +35,50 @@ graph TB
             MS[Maven Scripts]
         end
         
-        subgraph "設定ファイル"
+        subgraph "設定ファイル 🎨 UPDATED"
             CSC[checkstyle-simple.xml<br/>checkstyle-strict.xml]
             PMDC[pmd-basic.xml]
-            EFC[eclipse-format.xml]
-            POM[pom.xml]
+            EFC[eclipse-format.xml<br/>TAB設定統合]
+            PRC[.prettierrc<br/>useTabs: true]
+            PCJ[package.json<br/>prettier + prettier-plugin-java]
+            POM[pom.xml<br/>formatter-maven-plugin統合]
+        end
+        
+        subgraph "クロスIDE設定 🎨 NEW"
+            VSC[.vscode/settings.json<br/>Prettier統合設定]
+            EC[.editorconfig<br/>タブ設定統一]
+            EPR[Eclipse設定手順書.md]
         end
     end
+    
+    SA --> IFS
+    IFS --> ST
+    IFS --> PJ
+    IFS --> EF
     
     SA --> CS
     SA --> PMD
     SA --> SB
     SA --> GJF
-    SA --> EF
+    
+    ST --> EFC
+    PJ --> PRC
+    PJ --> PCJ
+    EF --> EFC
+    EF --> POM
     
     CS --> CSC
     PMD --> PMDC
-    EF --> EFC
     GJF --> POM
     SB --> POM
     
-    PC --> CS
-    PC --> PMD
-    PC --> SB
-    PC --> GJF
+    PJ --> VSC
+    EF --> EPR
+    ST --> EC
     
-    CI --> CS
-    CI --> PMD
-    CI --> SB
-    CI --> GJF
-    
-    MS --> CS
-    MS --> PMD
-    MS --> SB
-    MS --> GJF
+    PC --> IFS
+    CI --> IFS
+    MS --> IFS
 ```
 
 ## 各ツールの特徴と役割マトリックス
@@ -93,12 +111,31 @@ graph LR
             SB5[セキュリティ脆弱性検出]
         end
         
-        subgraph "Google Java Format特徴"
+        subgraph "Prettier Java特徴 🎨 NEW"
+            PJ1[タブベースフォーマット]
+            PJ2[Node.js/npm生態系統合]
+            PJ3[設定ファイル駆動フォーマット]
+            PJ4[VS Code拡張統合]
+            PJ5[prettier-plugin-java利用]
+        end
+        
+        subgraph "Eclipse Code Formatter特徴"
+            EF1[Eclipse設定ファイル適用]
+            EF2[詳細フォーマットルール]
+            EF3[タブインデント完全対応]
+            EF4[Maven Plugin統合]
+            EF5[エンタープライズ品質保証]
+        end
+        
+        subgraph "Google Java Format特徴 ⚠️ LEGACY"
             GJF1[自動コードフォーマット]
             GJF2[Googleスタイル準拠]
-            GJF3[インデント統一]
+            GJF3[スペースインデント固定]
             GJF4[改行・スペース統一]
             GJF5[インポート文整理]
+        end
+    end
+```
         end
     end
 ```
@@ -248,45 +285,89 @@ flowchart TD
     J1 --> END[カスタマイズ完了]
 ```
 
-## Google Java Format設定カスタマイズフロー
+## 統合フォーマット設定カスタマイズフロー 🎨 NEW
+
+```mermaid
+flowchart TD
+    START[統合フォーマット設定開始]
+    
+    START --> A1[タブインデント統一方針決定]
+    A1 --> A2[tabWidth: 4, useTabs: true]
+    
+    A2 --> B1[環境別設定ファイル作成]
+    B1 --> B2[.prettierrc<br/>Prettier設定]
+    B1 --> B3[eclipse-format.xml<br/>Eclipse設定]
+    B1 --> B4[.editorconfig<br/>エディタ統一設定]
+    B1 --> B5[.vscode/settings.json<br/>VS Code設定]
+    
+    B2 --> C1[Node.js環境セットアップ]
+    C1 --> C2[package.json作成]
+    C2 --> C3[prettier + prettier-plugin-java<br/>依存関係追加]
+    
+    B3 --> D1[Eclipse設定手順書作成]
+    D1 --> D2[プロファイル作成手順]
+    D2 --> D3[タブ設定詳細化]
+    
+    B4 --> E1[クロスエディタ設定]
+    E1 --> E2[root = true<br/>*.java = tab]
+    
+    B5 --> F1[VS Code Prettier統合]
+    F1 --> F2[formatOnSave: true<br/>editor.insertSpaces: false]
+    
+    C3 --> G1[統合スクリプト作成]
+    D3 --> G1
+    E2 --> G1
+    F2 --> G1
+    
+    G1 --> G2[format-and-check.sh<br/>統合実行スクリプト]
+    G2 --> G3[Phase1: Space→Tab変換]
+    G3 --> G4[Phase2: Prettier Java実行]
+    G4 --> G5[Phase3: Eclipse Formatter実行]
+    G5 --> G6[Phase4: 品質チェック実行]
+    
+    G6 --> H1[統合テスト]
+    H1 --> H2[47個Javaファイル処理確認]
+    H2 --> H3[タブインデント統一確認]
+    H3 --> H4[Eclipse + VS Code動作確認]
+    
+    H4 --> I1{統合テスト結果}
+    I1 -->|失敗| J1[設定調整]
+    I1 -->|成功| K1[統合フォーマット環境完成]
+    
+    J1 --> B1
+    K1 --> END[統合設定完了]
+```
+
+## Google Java Format設定カスタマイズフロー ⚠️ LEGACY
 
 ```mermaid
 flowchart TD
     START[Google Java Formatカスタマイズ開始]
     
-    START --> A1[フォーマットスタイル選択]
+    START --> WARNING[⚠️ タブインデント非対応警告]
+    WARNING --> A1[フォーマットスタイル選択]
     A1 --> B1{スタイル選択}
     
-    B1 -->|Google| B2[GOOGLE style<br/>Googleコーディング規約]
-    B1 -->|AOSP| B3[AOSP style<br/>Android Open Source Project]
+    B1 -->|Google| B2[GOOGLE style<br/>Googleコーディング規約<br/>※スペースのみ]
+    B1 -->|AOSP| B3[AOSP style<br/>Android Open Source Project<br/>※スペースのみ]
     
     B2 --> C1[基本設定適用]
     B3 --> C2[AOSP設定適用]
     
-    C1 --> D1[eclipse-format.xml作成]
-    C2 --> D1
+    C1 --> RECOMMEND[💡 推奨: 統合フォーマット環境への移行]
+    C2 --> RECOMMEND
     
-    D1 --> E1[カスタム設定追加]
-    E1 --> F1{カスタマイズ項目}
+    RECOMMEND --> D1[現在の設定維持 or 移行選択]
+    D1 --> E1{移行判断}
     
-    F1 -->|インデント| F2[インデント幅設定<br/>2 or 4 spaces]
-    F1 -->|改行| F3[改行位置設定<br/>line length]
-    F1 -->|インポート| F4[インポート順序設定]
-    F1 -->|括弧| F5[括弧位置設定]
+    E1 -->|移行| F1[統合フォーマット環境セットアップ]
+    E1 -->|維持| G1[Google Java Format継続使用]
     
-    F2 --> G1[pom.xml plugin設定]
-    F3 --> G1
-    F4 --> G1
-    F5 --> G1
+    F1 --> F2[format-and-check.sh利用]
+    G1 --> G2[mvn fmt:format継続]
     
-    G1 --> H1[フォーマット実行<br/>mvn fmt:format]
-    H1 --> I1{結果確認}
-    
-    I1 -->|調整必要| J1[設定調整]
-    I1 -->|OK| K1[設定確定]
-    
-    J1 --> E1
-    K1 --> END[カスタマイズ完了]
+    F2 --> END[統合環境移行完了]
+    G2 --> END[Google Java Format継続]
 ```
 
 ## 自動化設定統合フロー

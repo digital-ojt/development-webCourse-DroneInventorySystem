@@ -2,11 +2,20 @@
 
 # 静的解析失敗テスト実行スクリプト
 # 各ツールを段階的に実行して、期待される失敗を確認
+# 🎨 2024年6月17日更新: prettier-java + Eclipse統合フォーマット環境対応
 
-echo "🧪 静的解析失敗テスト開始"
+echo "🧪 静的解析失敗テスト開始 (統合フォーマット環境対応)"
 echo "========================================"
 
-cd "$(dirname "$0")/DroneInventorySystem"
+# ディレクトリ確認
+if [ ! -d "$(dirname "$0")/../DroneInventorySystem" ]; then
+    echo "❌ DroneInventorySystemディレクトリが見つかりません"
+    echo "現在のディレクトリ: $(pwd)"
+    echo "期待されるパス: $(dirname "$0")/../DroneInventorySystem"
+    exit 1
+fi
+
+cd "$(dirname "$0")/../DroneInventorySystem"
 
 # カウンター初期化
 failed_tests=0
@@ -28,19 +37,86 @@ record_test_result() {
     fi
 }
 
+# Phase 0: 統合フォーマット環境テスト 🎨 NEW
+echo ""
+echo "🎨 Phase 0: 統合フォーマット環境テスト"
+echo "----------------------------------------"
+
+# format-and-check.sh の存在確認
+if [ -f "./format-and-check.sh" ]; then
+    echo "統合フォーマットスクリプトの動作確認..."
+    ./format-and-check.sh > /dev/null 2>&1
+    integrated_format_result=$?
+    
+    if [ $integrated_format_result -eq 0 ]; then
+        record_test_result "統合フォーマット実行" "成功" "成功"
+    else
+        record_test_result "統合フォーマット実行" "成功" "失敗"
+    fi
+else
+    echo "⚠️  統合フォーマットスクリプトが見つかりません"
+    record_test_result "統合フォーマットスクリプト" "存在" "不存在"
+fi
+
+# Prettier環境確認
+if [ -f "./package.json" ] && [ -f "./.prettierrc" ]; then
+    echo "Prettier Java環境の確認..."
+    if command -v npm >/dev/null 2>&1; then
+        npm run format > /dev/null 2>&1
+        prettier_result=$?
+        
+        if [ $prettier_result -eq 0 ]; then
+            record_test_result "Prettier Java実行" "成功" "成功"
+        else
+            record_test_result "Prettier Java実行" "成功" "失敗"
+        fi
+    else
+        echo "⚠️  npm コマンドが見つかりません"
+        record_test_result "npm環境" "利用可能" "利用不可"
+    fi
+else
+    echo "⚠️  Prettier設定ファイルが見つかりません"
+    record_test_result "Prettier設定" "存在" "不存在"
+fi
+
+# Eclipse Formatter テスト
+echo "Eclipse Code Formatterの確認..."
+mvn net.revelc.code.formatter:formatter-maven-plugin:format > /dev/null 2>&1
+eclipse_formatter_result=$?
+
+if [ $eclipse_formatter_result -eq 0 ]; then
+    record_test_result "Eclipse Formatter実行" "成功" "成功"
+else
+    record_test_result "Eclipse Formatter実行" "成功" "失敗"
+fi
+
 # Phase 1: フォーマットチェック
 echo ""
 echo "📝 Phase 1: フォーマットチェック"
 echo "----------------------------------------"
 
-echo "Google Java Formatでのフォーマット前の状態確認..."
+# 統合フォーマット後の状態チェック
+echo "統合フォーマット適用後のGoogle Java Formatチェック..."
 mvn fmt:check > /dev/null 2>&1
 format_check_result=$?
 
+# 注意: 統合フォーマット環境では、タブインデントによりGoogle Java Formatは失敗することが期待される
 if [ $format_check_result -ne 0 ]; then
-    record_test_result "フォーマットチェック" "失敗" "失敗"
+    record_test_result "Google Java Formatチェック" "失敗(タブ使用のため)" "失敗"
 else
-    record_test_result "フォーマットチェック" "失敗" "成功"
+    echo "⚠️  予期しない結果: Google Java Formatがタブインデントを受け入れました"
+    record_test_result "Google Java Formatチェック" "失敗(タブ使用のため)" "成功"
+fi
+
+# Eclipse Formatterによる検証チェック
+echo "Eclipse Formatterによる検証チェック..."
+mvn net.revelc.code.formatter:formatter-maven-plugin:validate > /dev/null 2>&1
+eclipse_validate_result=$?
+
+if [ $eclipse_validate_result -eq 0 ]; then
+    record_test_result "Eclipse Formatter検証" "成功" "成功"
+else
+    record_test_result "Eclipse Formatter検証" "成功" "失敗"
 fi
 
 # Phase 2: 基本Checkstyleチェック（警告レベル）
@@ -130,7 +206,7 @@ fi
 
 # 結果サマリー
 echo ""
-echo "📊 テスト結果サマリー"
+echo "📊 テスト結果サマリー (統合フォーマット環境)"
 echo "========================================"
 echo "総テスト数: $total_tests"
 echo "失敗テスト数: $failed_tests"
@@ -138,7 +214,12 @@ echo "成功率: $(( (total_tests - failed_tests) * 100 / total_tests ))%"
 
 if [ $failed_tests -eq 0 ]; then
     echo "🎉 すべてのテストが期待通りの結果となりました！"
-    echo "   静的解析ツールが正しく問題を検出しています。"
+    echo "   統合フォーマット環境 + 静的解析ツールが正しく動作しています。"
+    echo ""
+    echo "🎨 統合フォーマット環境の特徴:"
+    echo "   ✅ Prettier Java + Eclipse Formatter = タブインデント統一"
+    echo "   ✅ Google Java Format = タブ非対応により予期された失敗"
+    echo "   ✅ Checkstyle/PMD/SpotBugs = 品質問題を正しく検出"
 else
     echo "⚠️  $failed_tests 個のテストが期待と異なる結果となりました。"
     echo "   設定の見直しが必要な可能性があります。"
@@ -150,8 +231,11 @@ echo "mvn checkstyle:checkstyle pmd:pmd spotbugs:spotbugs"
 echo ""
 echo "📁 レポート確認場所:"
 echo "- Checkstyle: target/site/checkstyle.html"
-echo "- PMD: target/site/pmd.html"
+echo "- PMD: target/site/pmd.html" 
 echo "- SpotBugs: target/site/spotbugs.html"
+echo ""
+echo "🔧 統合フォーマット実行:"
+echo "./format-and-check.sh  # 統合フォーマット + 品質チェック"
 
 # 詳細レポート生成
 echo ""
@@ -165,4 +249,5 @@ else
 fi
 
 echo ""
-echo "🧪 静的解析失敗テスト完了"
+echo "🧪 統合フォーマット環境対応 静的解析失敗テスト完了"
+echo "    prettier-java + Eclipse統合環境での品質検証が完了しました"

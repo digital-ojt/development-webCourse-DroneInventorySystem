@@ -1,0 +1,57 @@
+{
+    "editor.detectIndentation": false,
+    "editor.insertSpaces": false,
+    "editor.tabSize": 4,
+    "editor.useTabStops": true,
+    "editor.formatOnSave": true,
+    "editor.formatOnPaste": true,
+    "editor.formatOnType": true,
+    
+    // Prettier設定
+    "prettier.useTabs": true,
+    "prettier.tabWidth": 4,
+    "prettier.printWidth": 120,
+    "prettier.configPath": "./.prettierrc",
+    
+    // Java 固有の設定
+    "[java]": {
+        "editor.insertSpaces": false,
+        "editor.tabSize": 4,
+        "editor.detectIndentation": false,
+        "editor.formatOnSave": true
+    },
+    
+    // XML ファイルの設定
+    "[xml]": {
+        "editor.insertSpaces": false,
+        "editor.tabSize": 4,
+        "editor.detectIndentation": false
+    },
+    
+    // プロパティファイルの設定
+    "[properties]": {
+        "editor.insertSpaces": false,
+        "editor.tabSize": 4,
+        "editor.detectIndentation": false
+    },
+    
+    // Java フォーマッター設定
+    "java.format.settings.url": "./eclipse-format.xml",
+    "java.format.settings.profile": "Java Coding Standards - Tab Indentation",
+    "java.format.enabled": true,
+    
+    // Checkstyle 設定
+    "java.checkstyle.configuration": "./checkstyle-simple.xml",
+    "java.checkstyle.version": "10.12.4",
+    
+    // ファイル保存時の自動アクション
+    "editor.codeActionsOnSave": {
+        "source.organizeImports": "explicit",
+        "source.fixAll": "explicit"
+    },
+    
+    // 末尾の空白を自動削除
+    "files.trimTrailingWhitespace": true,
+    "files.insertFinalNewline": true,
+    "files.trimFinalNewlines": true
+}

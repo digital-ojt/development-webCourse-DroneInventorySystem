@@ -1,19 +1,22 @@
 # 静的解析システム 包括的動作フローシーケンス図
 
 ## 概要
-DroneInventorySystemプロジェクトにおける静的解析ツール統合の詳細な動作フローを表現したシーケンス図です。手動実行、自動化、CI/CD統合のすべてのフローを網羅しています。
+DroneInventorySystemプロジェクトにおける静的解析ツール統合の詳細な動作フローを表現したシーケンス図です。手動実行、自動化、CI/CD統合、prettier-java + Eclipse統合フォーマットのすべてのフローを網羅しています。
+
+**🎨 2024年6月17日更新**: prettier-javaとEclipse設定統合による統合フォーマット環境対応
 
 ## 目次
 - [静的解析システム 包括的動作フローシーケンス図](#静的解析システム-包括的動作フローシーケンス図)
   - [概要](#概要)
   - [目次](#目次)
   - [1. 手動実行フロー（manual-static-analysis.sh）](#1-手動実行フローmanual-static-analysissh)
-  - [2. CI/CD自動実行フロー（GitHub Actions）](#2-cicd自動実行フローgithub-actions)
-  - [3. Pre-commitフック実行フロー](#3-pre-commitフック実行フロー)
-  - [4. GitHub Actions CI/CDフロー](#4-github-actions-cicdフロー)
-  - [5. 統合テストフロー（comprehensive-integration-test.sh）](#5-統合テストフローcomprehensive-integration-testsh)
-  - [6. エラーハンドリングフロー](#6-エラーハンドリングフロー)
-  - [7. ツール間連携フロー](#7-ツール間連携フロー)
+  - [2. 統合フォーマット実行フロー（format-and-check.sh）](#2-統合フォーマット実行フローformat-and-checksh)
+  - [3. CI/CD自動実行フロー（GitHub Actions）](#3-cicd自動実行フローgithub-actions)
+  - [4. Pre-commitフック実行フロー](#4-pre-commitフック実行フロー)
+  - [5. GitHub Actions CI/CDフロー](#5-github-actions-cicdフロー)
+  - [6. 統合テストフロー（comprehensive-integration-test.sh）](#6-統合テストフローcomprehensive-integration-testsh)
+  - [7. エラーハンドリングフロー](#7-エラーハンドリングフロー)
+  - [8. ツール間連携フロー](#8-ツール間連携フロー)
   - [まとめ](#まとめ)
     - [主要なフロー](#主要なフロー)
     - [検出される品質問題](#検出される品質問題)
@@ -25,7 +28,9 @@ DroneInventorySystemプロジェクトにおける静的解析ツール統合の
 sequenceDiagram
     participant Dev as 開発者
     participant Script as manual-static-analysis.sh
+    participant Format as format-and-check.sh
     participant Maven as Maven
+    participant Node as Node.js/Prettier
     participant Java as Java/JVM
     participant Git as Git
     participant Files as ファイルシステム
@@ -34,21 +39,47 @@ sequenceDiagram
     Dev->>Script: ./manual-static-analysis.sh 実行
     Script->>Files: DroneInventorySystemディレクトリ存在確認
     Files-->>Script: 存在確認結果
-    Script->>Git: pre-commitフック状態確認
-    Git-->>Script: フック状態返却
+    Script->>Files: 設定ファイル確認（package.json, .prettierrc, eclipse-format.xml等）
+    Files-->>Script: 設定状況返却
     
-    alt pre-commitフック有効の場合
-        Script->>Dev: 無効化確認プロンプト
-        Dev->>Script: y/n選択
-        Script->>Git: pre-commit → pre-commit.backup
-        Git-->>Script: 無効化完了
+    Note over Dev, Files: Phase 2: 実行方式選択
+    Script->>Dev: 実行方式選択プロンプト
+    Dev->>Script: 1:統合実行 or 2:手動実行
+    
+    alt 統合実行選択の場合
+        Script->>Format: ./format-and-check.sh 実行
+        Format->>Format: 統合フォーマット・チェック処理
+        Format-->>Script: 完了
+        Script->>Dev: 統合実行完了
+    else 手動実行選択の場合
+        Note over Dev, Files: Phase 3: スペース→タブ変換
+        Script->>Dev: Phase 1実行確認
+        Dev->>Script: Enter（実行）
+        Script->>Files: find + sed によるタブ変換
+        Files-->>Script: 変換完了
+        
+        Note over Dev, Files: Phase 4: Prettier実行（オプション）
+        alt Prettier環境が利用可能
+            Script->>Dev: Phase 2実行確認
+            Dev->>Script: Enter（実行）
+            Script->>Node: npm run format
+            Node->>Files: Prettier Java フォーマット（タブ設定）
+            Files-->>Node: フォーマット完了
+            Node-->>Script: 実行結果
+        else Prettier環境未設定
+            Script->>Dev: Prettier環境未設定のためスキップ
+        end
+        
+        Note over Dev, Files: Phase 5: Eclipse Formatter実行
+        Script->>Dev: Phase 3実行確認
+        Dev->>Script: Enter（実行）
+        Script->>Maven: mvn formatter:format
+        Maven->>Java: Eclipse Code Formatter実行
+        Java->>Files: eclipse-format.xml使用でタブフォーマット
+        Files-->>Java: フォーマット完了
+        Java-->>Maven: 実行結果
+        Maven-->>Script: フォーマット成功
     end
-    
-    Note over Dev, Files: Phase 2: フォーマット状態確認
-    Script->>Dev: Phase 1実行確認
-    Dev->>Script: Enter（実行）
-    Script->>Maven: mvn fmt:check
-    Maven->>Java: Google Java Format実行
     Java->>Files: フォーマット状態チェック
     Files-->>Java: フォーマット違反情報
     Java-->>Maven: 違反数・詳細
@@ -190,7 +221,149 @@ sequenceDiagram
     Script->>Dev: 実行完了・参考資料案内
 ```
 
-## 2. CI/CD自動実行フロー（GitHub Actions）
+## 2. 統合フォーマット実行フロー（format-and-check.sh）
+
+```mermaid
+sequenceDiagram
+    participant Dev as 開発者
+    participant Script as format-and-check.sh
+    participant Maven as Maven
+    participant Node as Node.js/Prettier
+    participant Java as Java/JVM
+    participant Files as ファイルシステム
+    participant Reports as レポート
+    participant Git as Git
+    
+    Note over Dev, Reports: 🚀 統合フォーマット・チェック開始
+    Dev->>Script: ./format-and-check.sh 実行
+    Script->>Dev: 🎯 DroneInventorySystem 統合フォーマット・品質チェック開始
+    
+    Note over Script, Reports: Phase 1: 環境確認・セットアップ
+    Script->>Files: DroneInventorySystemディレクトリ存在確認
+    Files-->>Script: ディレクトリ確認完了
+    Script->>Files: pom.xml, package.json, .prettierrc, eclipse-format.xml存在確認
+    Files-->>Script: 設定ファイル確認結果
+    Script->>Java: Java環境確認
+    Java-->>Script: Java 17.0.9 LTS確認
+    Script->>Maven: Maven環境確認
+    Maven-->>Script: Apache Maven 3.9.x確認
+    Script->>Dev: 🔧 環境確認完了 - すべての設定ファイルが存在
+    
+    Note over Script, Reports: Phase 2: バックアップ＆スペース→タブ変換
+    Script->>Files: 変更前バックアップ作成
+    Files-->>Script: バックアップ完了
+    Script->>Files: find src/main/java -name "*.java" -type f
+    Files-->>Script: 47個のJavaファイル検出
+    
+    loop 各Javaファイル
+        Script->>Files: sed 's/    /\t/g' (4スペース→タブ)
+        Files-->>Script: ファイル変換完了
+    end
+    
+    Script->>Dev: ✅ Step 1: タブ変換完了 (47ファイル処理)
+    
+    Note over Script, Reports: Phase 3: Prettier Java実行
+    alt package.json & .prettierrcが存在
+        Script->>Node: npm run format (prettier-plugin-java)
+        Note over Node, Files: .prettierrc設定: useTabs=true, tabWidth=4
+        Node->>Files: prettier --write "src/**/*.java"
+        Files->>Files: Prettier+Java plugin適用
+        Files-->>Node: フォーマット完了
+        Node-->>Script: Prettier実行成功
+        Script->>Dev: ✅ Step 2: Prettier Java フォーマット完了
+    else Node.js/Prettier環境未設定
+        Script->>Dev: ⚠️ Step 2: Prettier環境未設定 - スキップ
+    end
+    
+    Note over Script, Reports: Phase 4: Eclipse Code Formatter実行
+    Script->>Maven: mvn net.revelc.code.formatter:formatter-maven-plugin:format -q
+    Maven->>Java: Eclipse Code Formatter plugin実行
+    Note over Java, Files: eclipse-format.xml設定: tab_char=tab, tab_size=4
+    Java->>Files: Eclipse formatter rules適用
+    Files-->>Java: フォーマット適用完了
+    Java-->>Maven: BUILD SUCCESS
+    Maven-->>Script: Eclipse Formatter実行完了
+    Script->>Dev: ✅ Step 3: Eclipse Code Formatter完了
+    
+    Note over Script, Reports: Phase 5: フォーマット検証
+    Script->>Maven: mvn net.revelc.code.formatter:formatter-maven-plugin:validate
+    Maven->>Java: フォーマット状態チェック
+    Java->>Files: フォーマット差分確認
+    Files-->>Java: フォーマット状態返却
+    Java-->>Maven: 検証結果
+    Maven-->>Script: フォーマット検証完了
+    Script->>Dev: 🔍 Step 4: フォーマット検証完了
+    
+    Note over Script, Reports: Phase 6: 静的解析実行（並列）
+    Script->>Dev: 🚀 静的解析開始...
+    
+    par Checkstyle Simple
+        Script->>Maven: mvn checkstyle:check -Dcheckstyle.config.location=checkstyle-simple.xml -q
+        Maven->>Java: Checkstyle basic rules実行
+        Java->>Files: 構文・スタイルチェック
+        Files-->>Java: 違反情報検出
+        Java-->>Maven: 結果（警告レベル多数）
+        Maven-->>Script: BUILD SUCCESS (警告のみ)
+    and PMD品質チェック
+        Script->>Maven: mvn pmd:check -q
+        Maven->>Java: PMD code quality analysis実行
+        Java->>Files: コード品質分析
+        Files-->>Java: 17件の品質問題検出
+        Java-->>Maven: BUILD FAILURE (failOnViolation=false)
+        Maven-->>Script: PMD: 17件違反検出
+    and SpotBugsバグ検出
+        Script->>Maven: mvn compile spotbugs:check -q
+        Maven->>Java: SpotBugs bytecode analysis実行
+        Java->>Files: バイトコード解析
+        Files-->>Java: 9件のバグパターン検出
+        Java-->>Maven: BUILD FAILURE (9 bugs found)
+        Maven-->>Script: SpotBugs: 9件バグ検出
+    end
+    
+    Note over Script, Reports: Phase 7: レポート生成
+    Script->>Maven: mvn checkstyle:checkstyle pmd:pmd spotbugs:spotbugs -q
+    Maven->>Java: 全ツールレポート生成
+    
+    par Checkstyleレポート
+        Java->>Files: target/site/checkstyle.html生成
+    and PMDレポート  
+        Java->>Files: target/site/pmd.html生成
+    and SpotBugsレポート
+        Java->>Files: target/site/spotbugs.html生成
+    end
+    
+    Files-->>Java: レポート生成完了
+    Java-->>Maven: BUILD SUCCESS
+    Maven-->>Script: レポート生成完了
+    
+    Note over Script, Reports: Phase 8: Git差分確認
+    Script->>Git: git diff --name-only
+    Git->>Files: 変更ファイル検索
+    Files-->>Git: 変更されたJavaファイル一覧
+    Git-->>Script: 差分ファイル情報
+    
+    Note over Script, Reports: Phase 9: 結果サマリー＆表示
+    Script->>Script: 実行結果集計・分析
+    Script->>Files: レポートファイル存在確認
+    Files-->>Script: HTMLレポート確認完了
+    
+    Script->>Dev: 📊 ═══ 実行結果サマリー ═══
+    Script->>Dev: ✅ タブ変換: 47ファイル処理完了
+    Script->>Dev: ✅ Prettier Java: フォーマット適用
+    Script->>Dev: ✅ Eclipse Formatter: 統一スタイル適用
+    Script->>Dev: ⚠️ 品質チェック結果:
+    Script->>Dev:     - PMD: 17件の品質問題
+    Script->>Dev:     - SpotBugs: 9件のバグパターン
+    Script->>Dev: 📁 詳細レポート: target/site/*.html
+    Script->>Dev: 🔗 統合設定ファイル:
+    Script->>Dev:     - .prettierrc (Prettier+Java設定)
+    Script->>Dev:     - eclipse-format.xml (Eclipse設定)
+    Script->>Dev:     - pom.xml (Maven plugin設定)
+    Script->>Dev: 💡 Tips: VS Code使用時は Prettier拡張を有効化
+    Script->>Dev: 🎉 統合フォーマット・品質チェック完了
+```
+
+## 3. CI/CD自動実行フロー（GitHub Actions）
 
 ```mermaid
 sequenceDiagram

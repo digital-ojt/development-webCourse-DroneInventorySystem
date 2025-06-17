@@ -1,8 +1,18 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <profiles version="18">
-<profile kind="CodeFormatterProfile" name="Java Coding Standards" version="18">
-<setting id="org.eclipse.jdt.core.formatter.alignment_for_parameters_in_constructor_declaration" value="16"/>
-<setting id="org.eclipse.jdt.core.formatter.alignment_for_parameters_in_method_declaration" value="16"/>
+<profile kind="CodeFormatterProfile" name="Java Coding Standards - Tab Indentation" version="18">
+<!-- インデント設定 - タブを強制 -->
+<setting id="org.eclipse.jdt.core.formatter.indentation.char" value="tab"/>
+<setting id="org.eclipse.jdt.core.formatter.indentation.size" value="1"/>
+<setting id="org.eclipse.jdt.core.formatter.tab_size" value="4"/>
+<setting id="org.eclipse.jdt.core.formatter.tab_char" value="tab"/>
+<setting id="org.eclipse.jdt.core.formatter.use_tabs_only_for_leading_indentations" value="true"/>
+
+<!-- 基本設定 -->
+<setting id="org.eclipse.jdt.core.formatter.lineSplit" value="120"/>
+<setting id="org.eclipse.jdt.core.formatter.number_of_empty_lines_to_preserve" value="1"/>
+
+<!-- 括弧の配置 -->
 <setting id="org.eclipse.jdt.core.formatter.brace_position_for_block" value="end_of_line"/>
 <setting id="org.eclipse.jdt.core.formatter.brace_position_for_constructor_declaration" value="end_of_line"/>
 <setting id="org.eclipse.jdt.core.formatter.brace_position_for_method_declaration" value="end_of_line"/>
@@ -10,21 +20,25 @@
 <setting id="org.eclipse.jdt.core.formatter.brace_position_for_if_statement" value="end_of_line"/>
 <setting id="org.eclipse.jdt.core.formatter.brace_position_for_for_statement" value="end_of_line"/>
 <setting id="org.eclipse.jdt.core.formatter.brace_position_for_while_statement" value="end_of_line"/>
+
+<!-- パラメータの配置 -->
+<setting id="org.eclipse.jdt.core.formatter.alignment_for_parameters_in_constructor_declaration" value="16"/>
+<setting id="org.eclipse.jdt.core.formatter.alignment_for_parameters_in_method_declaration" value="16"/>
+
+<!-- スペースの設定 -->
+<setting id="org.eclipse.jdt.core.formatter.insert_space_after_comma_in_method_invocation_arguments" value="insert"/>
+<setting id="org.eclipse.jdt.core.formatter.insert_space_before_opening_paren_in_method_declaration" value="do not insert"/>
+<setting id="org.eclipse.jdt.core.formatter.insert_space_before_opening_paren_in_method_invocation" value="do not insert"/>
+
+<!-- 改行設定 -->
+<setting id="org.eclipse.jdt.core.formatter.insert_new_line_after_opening_brace_in_array_initializer" value="do not insert"/>
+<setting id="org.eclipse.jdt.core.formatter.insert_new_line_before_closing_brace_in_array_initializer" value="do not insert"/>
+<setting id="org.eclipse.jdt.core.formatter.put_empty_statement_on_new_line" value="true"/>
+
+<!-- コメントフォーマット -->
 <setting id="org.eclipse.jdt.core.formatter.comment.clear_blank_lines_in_javadoc_comment" value="false"/>
 <setting id="org.eclipse.jdt.core.formatter.comment.format_javadoc_comments" value="true"/>
 <setting id="org.eclipse.jdt.core.formatter.comment.format_line_comments" value="true"/>
 <setting id="org.eclipse.jdt.core.formatter.comment.format_block_comments" value="true"/>
-<setting id="org.eclipse.jdt.core.formatter.indentation.char" value="tab"/>
-<setting id="org.eclipse.jdt.core.formatter.indentation.size" value="4"/>
-<setting id="org.eclipse.jdt.core.formatter.insert_new_line_after_opening_brace_in_array_initializer" value="do not insert"/>
-<setting id="org.eclipse.jdt.core.formatter.insert_new_line_before_closing_brace_in_array_initializer" value="do not insert"/>
-<setting id="org.eclipse.jdt.core.formatter.insert_space_after_comma_in_method_invocation_arguments" value="insert"/>
-<setting id="org.eclipse.jdt.core.formatter.insert_space_before_opening_paren_in_method_declaration" value="do not insert"/>
-<setting id="org.eclipse.jdt.core.formatter.insert_space_before_opening_paren_in_method_invocation" value="do not insert"/>
-<setting id="org.eclipse.jdt.core.formatter.lineSplit" value="120"/>
-<setting id="org.eclipse.jdt.core.formatter.number_of_empty_lines_to_preserve" value="1"/>
-<setting id="org.eclipse.jdt.core.formatter.put_empty_statement_on_new_line" value="true"/>
-<setting id="org.eclipse.jdt.core.formatter.tab_char" value="tab"/>
-<setting id="org.eclipse.jdt.core.formatter.use_tabs_only_for_leading_indentations" value="false"/>
 </profile>
 </profiles>

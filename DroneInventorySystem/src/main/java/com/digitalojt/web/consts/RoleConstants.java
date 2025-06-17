@@ -7,8 +7,8 @@ package com.digitalojt.web.consts;
  */
 public class RoleConstants {
 
-  // USER
-  public static final String ROLE_USER = "USER";
-  // 管理者IDのname属性
-  public static final String ADMIN_ID = "adminId";
+	// USER
+	public static final String ROLE_USER = "USER";
+	// 管理者IDのname属性
+	public static final String ADMIN_ID = "adminId";
 }
