@@ -6,18 +6,18 @@
 echo "🔧 プリコミットフック セットアップ開始 (統合フォーマット環境対応)"
 
 # プロジェクトルートディレクトリの確認
-if [ ! -f "development-webCourse-DroneInventorySystem/DroneInventorySystem/pom.xml" ]; then
+if [ ! -f "DroneInventorySystem/pom.xml" ]; then
     echo "❌ エラー: プロジェクトルートディレクトリで実行してください"
-    echo "   期待される場所: 静的解析対応_202506/ ディレクトリ"
+    echo "   期待される場所: development-webCourse-DroneInventorySystem ディレクトリ"
     echo "   必要なファイル: development-webCourse-DroneInventorySystem/DroneInventorySystem/pom.xml"
     exit 1
 fi
 
 # 統合フォーマット環境の確認
 echo "🎨 統合フォーマット環境の確認..."
-DRONE_DIR="development-webCourse-DroneInventorySystem/DroneInventorySystem"
+DRONE_DIR="DroneInventorySystem"
 
-if [ -f "$DRONE_DIR/format-and-check.sh" ]; then
+if [ -f "$DRONE_DIR/scripts/format-and-check.sh" ]; then
     echo "✅ 統合フォーマットスクリプト: $DRONE_DIR/format-and-check.sh"
 else
     echo "⚠️  統合フォーマットスクリプトが見つかりません"
