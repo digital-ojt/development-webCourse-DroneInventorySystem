@@ -6,3 +6,4 @@
 /logs/
 /.vscode/
 DroneInventorySystem/.editorconfig
+DroneInventorySystem/logs/*.log
