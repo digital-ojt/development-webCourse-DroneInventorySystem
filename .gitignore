@@ -3,4 +3,6 @@
 /Servers/
 .vscode/settings.json
 /bin/
-logs/*.log
+/logs/
+/.vscode/
+DroneInventorySystem/.editorconfig
