@@ -67,26 +67,44 @@ cat > .git/hooks/pre-commit << 'EOF'
 
 echo "🔍 Pre-commit checks を実行中..."
 
+# プロジェクトルートディレクトリを保存
+PROJECT_ROOT=$(pwd)
+
 # 統合フォーマット環境での静的解析実行
 cd DroneInventorySystem
-./format-and-check.sh > ../.git/pre-commit-last-run.log 2>&1
+
+# format-and-check.shの実行結果を保存
+echo "実行時間: $(date)" > "$PROJECT_ROOT/.git/pre-commit-last-run.log"
+echo "ディレクトリ: $(pwd)" >> "$PROJECT_ROOT/.git/pre-commit-last-run.log"
+echo "=== 静的解析実行結果 ===" >> "$PROJECT_ROOT/.git/pre-commit-last-run.log"
+
+./format-and-check.sh >> "$PROJECT_ROOT/.git/pre-commit-last-run.log" 2>&1
 exit_code=$?
 
+echo "=== 実行完了 (終了コード: $exit_code) ===" >> "$PROJECT_ROOT/.git/pre-commit-last-run.log"
+
 # Eclipse で確認しやすい場所にコピー
-cp ../.git/pre-commit-last-run.log ../pre-commit-result.txt
+cp "$PROJECT_ROOT/.git/pre-commit-last-run.log" "$PROJECT_ROOT/pre-commit-result.txt"
+
+# プロジェクトルートに戻る
+cd "$PROJECT_ROOT"
 
 if [ $exit_code -ne 0 ]; then
     echo ""
-    echo "❌ Pre-commit checks に失敗しました"
+    echo "❌ Pre-commit checks に失敗しました (終了コード: $exit_code)"
     echo ""
     echo "📋 詳細確認方法："
     echo "   Eclipse のPackage Explorerで 'pre-commit-result.txt' を開いてください"
     echo ""
     echo "🔧 修正後、再度コミットを試してください"
     echo ""
-    exit 1
+    # コミットを確実に停止
+    exit $exit_code
 else
     echo "✅ Pre-commit checks が成功しました"
+    # 成功時はresultファイルに成功メッセージも追加
+    echo "" >> "$PROJECT_ROOT/pre-commit-result.txt"
+    echo "✅ 静的解析が正常に完了しました" >> "$PROJECT_ROOT/pre-commit-result.txt"
 fi
 
 exit 0
@@ -132,6 +150,14 @@ if ! grep -q "pre-commit-result.txt" .gitignore 2>/dev/null; then
 fi
 
 echo "✅ プリコミットフックのインストール完了"
+echo ""
+echo "🧪 pre-commitフックのテスト実行中..."
+if .git/hooks/pre-commit; then
+    echo "✅ pre-commitフックテスト: 成功"
+else
+    echo "⚠️  pre-commitフックテスト: 静的解析エラーが検出されました"
+    echo "   詳細は pre-commit-result.txt を確認してください"
+fi
 echo ""
 echo "📋 統合フォーマット環境の設定内容:"
 echo "   🎨 統合フォーマット: ./format-and-check.sh"

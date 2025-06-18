@@ -125,3 +125,17 @@ echo ""
 echo "💡 Tips: Eclipseで開発する場合は eclipse-format.xml を"
 echo "    Window → Preferences → Java → Code Style → Formatter"
 echo "    でインポートしてください。"
+
+# 🔧 重要: 静的解析の結果に基づいて適切な終了コードを返す
+if [ $CHECKSTYLE_RESULT -eq 0 ] && [ $PMD_RESULT -eq 0 ] && [ $SPOTBUGS_RESULT -eq 0 ]; then
+    echo ""
+    echo "✅ 統合チェック完了: すべて合格"
+    exit 0
+else
+    echo ""
+    echo "❌ 統合チェック失敗: 静的解析エラーを修正してください"
+    echo "   Checkstyle: $([ $CHECKSTYLE_RESULT -eq 0 ] && echo "✅" || echo "❌")"
+    echo "   PMD: $([ $PMD_RESULT -eq 0 ] && echo "✅" || echo "❌")"
+    echo "   SpotBugs: $([ $SPOTBUGS_RESULT -eq 0 ] && echo "✅" || echo "❌")"
+    exit 1
+fi
