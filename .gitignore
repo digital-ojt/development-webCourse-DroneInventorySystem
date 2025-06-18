@@ -7,3 +7,4 @@
 /.vscode/
 DroneInventorySystem/.editorconfig
 DroneInventorySystem/logs/*.log
+pre-commit-result.txt

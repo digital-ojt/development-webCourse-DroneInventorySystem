@@ -49,6 +49,88 @@ cp scripts/hooks/pre-commit .git/hooks/pre-commit
 # 実行権限を付与
 chmod +x .git/hooks/pre-commit
 
+echo "⚙️  Git設定でpre-commitの詳細出力を設定中..."
+
+# pre-commitの詳細出力設定
+git config --local core.hooksPath .git/hooks
+git config --local commit.verbose true
+git config --local advice.detachedHead false
+git config --local pre-commit.verbose true
+
+echo "✅ pre-commitの詳細出力設定が完了しました"
+
+echo "📋 Eclipse用の確認ファイルを作成中..."
+
+# カスタムpre-commitフックでEclipse用の結果ファイルを生成
+cat > .git/hooks/pre-commit << 'EOF'
+#!/bin/bash
+
+echo "🔍 Pre-commit checks を実行中..."
+
+# 統合フォーマット環境での静的解析実行
+cd DroneInventorySystem
+./format-and-check.sh > ../.git/pre-commit-last-run.log 2>&1
+exit_code=$?
+
+# Eclipse で確認しやすい場所にコピー
+cp ../.git/pre-commit-last-run.log ../pre-commit-result.txt
+
+if [ $exit_code -ne 0 ]; then
+    echo ""
+    echo "❌ Pre-commit checks に失敗しました"
+    echo ""
+    echo "📋 詳細確認方法："
+    echo "   Eclipse のPackage Explorerで 'pre-commit-result.txt' を開いてください"
+    echo ""
+    echo "🔧 修正後、再度コミットを試してください"
+    echo ""
+    exit 1
+else
+    echo "✅ Pre-commit checks が成功しました"
+fi
+
+exit 0
+EOF
+
+# 実行権限を再設定
+chmod +x .git/hooks/pre-commit
+
+# Eclipse用の説明ファイルを作成
+cat > ./PRE-COMMIT-GUIDE.md << 'EOF'
+# Pre-commit結果の確認方法（Eclipse）
+
+## コミット失敗時の確認手順
+
+1. **プロジェクトルートの `pre-commit-result.txt` を開く**
+   - Package Explorerでプロジェクトルート直下の `pre-commit-result.txt` をダブルクリック
+   - ここにpre-commitの詳細結果が記録されています
+
+2. **手動でpre-commitを実行したい場合**
+   ```bash
+   # macOSのターミナル.appで実行
+   cd [プロジェクトパス]
+   cd DroneInventorySystem
+   ./format-and-check.sh
+   ```
+
+## 自動生成されるファイル
+- `pre-commit-result.txt`: 最新のpre-commit実行結果
+- このファイルは `.gitignore` に追加済みです
+
+## 静的解析の内容
+- 🎨 統合フォーマット (Prettier Java + Eclipse Formatter)
+- 🔍 Checkstyle による品質チェック
+- 🔍 PMD による品質チェック
+- 🔍 SpotBugs による品質チェック
+
+EOF
+
+# .gitignoreに追加（重複チェック）
+if ! grep -q "pre-commit-result.txt" .gitignore 2>/dev/null; then
+    echo "pre-commit-result.txt" >> .gitignore
+    echo "✅ .gitignore に pre-commit-result.txt を追加しました"
+fi
+
 echo "✅ プリコミットフックのインストール完了"
 echo ""
 echo "📋 統合フォーマット環境の設定内容:"
@@ -58,6 +140,10 @@ echo "   🎨 Eclipse Formatter: eclipse-format.xml (タブ設定)"
 echo "   🎨 スペース→タブ変換: 自動実行"
 echo "   • 静的解析: Checkstyle, PMD, SpotBugs"
 echo "   • 除外ブランチ: main, master, develop, release/*, hotfix/*"
+echo ""
+echo "🔍 Eclipse用pre-commit結果確認:"
+echo "   📁 コミット失敗時: プロジェクトルートの 'pre-commit-result.txt' を開く"
+echo "   📋 操作ガイド: 'PRE-COMMIT-GUIDE.md' を参照"
 echo ""
 echo "🧪 テスト実行:"
 echo "   .git/hooks/pre-commit  # 手動テスト"
@@ -69,3 +155,4 @@ echo "   フォーマット設定: $DRONE_DIR/.prettierrc, $DRONE_DIR/eclipse-fo
 echo ""
 echo "🎉 統合フォーマット環境対応 プリコミットフック セットアップ完了！"
 echo "    コミット時に統合フォーマット + 品質チェックが自動実行されます"
+echo "    📋 Eclipse用: コミット失敗時は 'pre-commit-result.txt' で詳細確認"
