@@ -19,7 +19,36 @@ if [ ! -f "package.json" ]; then
     exit 1
 fi
 
-echo "✅ 環境確認完了"
+# Maven コマンドの検出と設定
+echo "🔍 Maven環境を確認中..."
+MVN_CMD=""
+
+# 一般的なMavenパスを確認
+if command -v mvn >/dev/null 2>&1; then
+    MVN_CMD="mvn"
+    echo "✅ Maven検出: $(which mvn)"
+elif [ -f "/usr/local/bin/mvn" ]; then
+    MVN_CMD="/usr/local/bin/mvn"
+    echo "✅ Maven検出: /usr/local/bin/mvn"
+elif [ -f "/opt/homebrew/bin/mvn" ]; then
+    MVN_CMD="/opt/homebrew/bin/mvn"
+    echo "✅ Maven検出: /opt/homebrew/bin/mvn"
+elif [ -f "$HOME/.m2/wrapper/maven-wrapper.jar" ]; then
+    MVN_CMD="./mvnw"
+    echo "✅ Maven Wrapper検出: ./mvnw"
+else
+    echo "❌ エラー: Mavenが見つかりません"
+    echo "   以下の方法でMavenをインストールしてください:"
+    echo "   - Homebrew: brew install maven"
+    echo "   - 手動インストール: https://maven.apache.org/install.html"
+    echo ""
+    echo "🔧 Eclipse使用時は以下も確認してください:"
+    echo "   - Eclipse -> Preferences -> Maven -> Installations"
+    echo "   - システムPATHにMavenが追加されているか"
+    exit 1
+fi
+
+echo "✅ Maven環境確認完了: $MVN_CMD"
 echo ""
 
 # Phase 1: スペースからタブへの変換
@@ -46,7 +75,7 @@ if [ -f "node_modules/.bin/prettier" ]; then
     npm run format 2>/dev/null || echo "⚠️  Prettier実行中にエラーが発生しましたが続行します"
 else
     echo "⚠️  Prettier未インストール。Maven pluginを使用します"
-    mvn prettier:write -q 2>/dev/null || echo "⚠️  Maven prettier plugin未設定"
+    $MVN_CMD prettier:write -q 2>/dev/null || echo "⚠️  Maven prettier plugin未設定"
 fi
 echo "✅ Prettierフォーマット完了"
 echo ""
@@ -54,7 +83,7 @@ echo ""
 # Phase 3: Eclipse Formatter実行
 echo "🌟 Phase 3: Eclipse Formatter実行"
 echo "-----------------------------------"
-mvn formatter:format -q 2>/dev/null || echo "⚠️  Eclipse Formatter実行中にエラーが発生しましたが続行します"
+$MVN_CMD formatter:format -q 2>/dev/null || echo "⚠️  Eclipse Formatter実行中にエラーが発生しましたが続行します"
 echo "✅ Eclipse Formatter完了"
 echo ""
 
@@ -64,7 +93,7 @@ echo "----------------------------"
 
 # Checkstyle Simple
 echo "📋 Checkstyle (Simple) 実行中..."
-mvn checkstyle:check -Dcheckstyle.config.location=checkstyle-simple.xml -q
+$MVN_CMD checkstyle:check -Dcheckstyle.config.location=checkstyle-simple.xml -q
 CHECKSTYLE_RESULT=$?
 if [ $CHECKSTYLE_RESULT -eq 0 ]; then
     echo "✅ Checkstyle (Simple): 合格"
@@ -74,7 +103,7 @@ fi
 
 # PMD
 echo "📋 PMD実行中..."
-mvn pmd:check -q
+$MVN_CMD pmd:check -q
 PMD_RESULT=$?
 if [ $PMD_RESULT -eq 0 ]; then
     echo "✅ PMD: 合格"
@@ -84,7 +113,7 @@ fi
 
 # SpotBugs
 echo "📋 SpotBugs実行中..."
-mvn spotbugs:check -q
+$MVN_CMD spotbugs:check -q
 SPOTBUGS_RESULT=$?
 if [ $SPOTBUGS_RESULT -eq 0 ]; then
     echo "✅ SpotBugs: 合格"
@@ -112,7 +141,7 @@ else
     echo "   3. target/site/spotbugs.html でSpotBugs結果を確認"
     echo ""
     echo "📝 レポート生成コマンド:"
-    echo "   mvn checkstyle:checkstyle pmd:pmd spotbugs:spotbugs"
+    echo "   $MVN_CMD checkstyle:checkstyle pmd:pmd spotbugs:spotbugs"
 fi
 
 echo ""
