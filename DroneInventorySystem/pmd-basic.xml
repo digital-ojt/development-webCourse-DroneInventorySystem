@@ -19,6 +19,16 @@
     <!-- 基本的なデザインルール -->
     <rule ref="category/java/design.xml/SimplifyBooleanReturns"/>
     <rule ref="category/java/design.xml/SimplifyBooleanExpressions"/>
+    
+    <!-- 循環複雑度（警告レベル） -->
+    <rule ref="category/java/design.xml/CyclomaticComplexity">
+        <properties>
+            <property name="classReportLevel" value="80"/>
+            <property name="methodReportLevel" value="10"/>
+            <property name="cycloOptions" value=""/>
+        </properties>
+        <priority>3</priority>
+    </rule>
 
     <!-- エラープローン -->
     <rule ref="category/java/errorprone.xml/AvoidBranchingStatementAsLastInLoop"/>

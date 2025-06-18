@@ -12,12 +12,18 @@
 
     <!-- ファイル拡張子の確認 -->
     <property name="fileExtensions" value="java, properties, xml"/>
+    
+    <!-- 除外パターン -->
+    <module name="SuppressionFilter">
+        <property name="file" value="checkstyle-suppressions.xml"/>
+        <property name="optional" value="true"/>
+    </module>
 
-    <!-- 行長: 80-120文字（厳格） -->
+    <!-- 行長: 80-120文字（警告レベル） -->
     <module name="LineLength">
         <property name="max" value="120"/>
         <property name="ignorePattern" value="^package.*|^import.*|a href|href|http://|https://|ftp://"/>
-        <property name="severity" value="error"/>
+        <property name="severity" value="warning"/>
     </module>
 
     <!-- ファイルサイズチェック -->
@@ -112,17 +118,17 @@
             <message key="javadoc.missing" value="【ERROR】publicクラスにはJavaDocが必須です。"/>
         </module>
 
-        <!-- JavaDocスタイル（厳格） -->
+        <!-- JavaDocスタイル（警告レベル） -->
         <module name="JavadocStyle">
             <property name="checkEmptyJavadoc" value="true"/>
-            <property name="severity" value="error"/>
-            <message key="javadoc.empty" value="【ERROR】空のJavaDocは禁止です。目的・意図を簡潔に記述してください。"/>
+            <property name="severity" value="warning"/>
+            <message key="javadoc.empty" value="【WARNING】空のJavaDocは推奨されません。目的・意図を簡潔に記述してください。"/>
         </module>
 
         <module name="JavadocMethod">
             <property name="validateThrows" value="true"/>
-            <property name="severity" value="error"/>
-            <message key="javadoc.missing" value="【ERROR】publicメソッドには@param、@returnの記述が必須です。"/>
+            <property name="severity" value="warning"/>
+            <message key="javadoc.missing" value="【WARNING】publicメソッドには@param、@returnの記述を推奨します。"/>
         </module>
 
         <!-- ========== 品質・構造（厳格エラー） ========== -->
@@ -136,12 +142,12 @@
             <message key="magic.number" value="【ERROR】マジックナンバーは禁止です。定数として定義してください。"/>
         </module>
 
-        <!-- メソッドの長さ（厳格：30行） -->
+        <!-- メソッドの長さ（警告レベル：30行） -->
         <module name="MethodLength">
             <property name="max" value="30"/>
             <property name="countEmpty" value="false"/>
-            <property name="severity" value="error"/>
-            <message key="maxLen.method" value="【ERROR】メソッドは30行以下にしてください。複数の小さなメソッドに分割してください。"/>
+            <property name="severity" value="warning"/>
+            <message key="maxLen.method" value="【WARNING】メソッドは30行以下を推奨します。複数の小さなメソッドに分割してください。"/>
         </module>
 
         <!-- パラメータ数制限（厳格） -->

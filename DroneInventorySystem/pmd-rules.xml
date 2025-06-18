@@ -6,6 +6,9 @@
 
     <description>厳格なPMDルールセット - コーディング規約完全準拠</description>
 
+    <!-- 除外設定 -->
+    <exclude-pattern>.*/test\.bak/.*</exclude-pattern>
+
     <!-- 基本ルール（厳格化） -->
     <rule ref="category/java/codestyle.xml">
         <exclude name="AtLeastOneConstructor"/>
