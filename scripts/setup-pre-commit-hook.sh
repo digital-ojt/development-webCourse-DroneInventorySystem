@@ -65,7 +65,30 @@ echo "📋 Eclipse用の確認ファイルを作成中..."
 cat > .git/hooks/pre-commit << 'EOF'
 #!/bin/bash
 
+# 除外ブランチリスト（静的解析をスキップするブランチ）
+SKIP_BRANCHES=(
+    "main"
+    "master" 
+    "master-test"
+    "develop"
+    "release/*"
+    "hotfix/*"
+)
+
+# 現在のブランチ名を取得
+CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
+
+# ブランチ除外チェック
+for skip_branch in "${SKIP_BRANCHES[@]}"; do
+    if [[ "$CURRENT_BRANCH" == $skip_branch ]]; then
+        echo "🔄 ブランチ '$CURRENT_BRANCH' は静的解析をスキップします"
+        echo "✅ コミットを続行します（品質チェック無し）"
+        exit 0
+    fi
+done
+
 echo "🔍 Pre-commit checks を実行中..."
+echo "📍 現在のブランチ: $CURRENT_BRANCH"
 
 # プロジェクトルートディレクトリを保存
 PROJECT_ROOT=$(pwd)
@@ -75,6 +98,7 @@ cd DroneInventorySystem
 
 # format-and-check.shの実行結果を保存
 echo "実行時間: $(date)" > "$PROJECT_ROOT/.git/pre-commit-last-run.log"
+echo "ブランチ: $CURRENT_BRANCH" >> "$PROJECT_ROOT/.git/pre-commit-last-run.log"
 echo "ディレクトリ: $(pwd)" >> "$PROJECT_ROOT/.git/pre-commit-last-run.log"
 echo "=== 静的解析実行結果 ===" >> "$PROJECT_ROOT/.git/pre-commit-last-run.log"
 
@@ -113,36 +137,6 @@ EOF
 # 実行権限を再設定
 chmod +x .git/hooks/pre-commit
 
-# Eclipse用の説明ファイルを作成
-cat > ./PRE-COMMIT-GUIDE.md << 'EOF'
-# Pre-commit結果の確認方法（Eclipse）
-
-## コミット失敗時の確認手順
-
-1. **プロジェクトルートの `pre-commit-result.txt` を開く**
-   - Package Explorerでプロジェクトルート直下の `pre-commit-result.txt` をダブルクリック
-   - ここにpre-commitの詳細結果が記録されています
-
-2. **手動でpre-commitを実行したい場合**
-   ```bash
-   # macOSのターミナル.appで実行
-   cd [プロジェクトパス]
-   cd DroneInventorySystem
-   ./format-and-check.sh
-   ```
-
-## 自動生成されるファイル
-- `pre-commit-result.txt`: 最新のpre-commit実行結果
-- このファイルは `.gitignore` に追加済みです
-
-## 静的解析の内容
-- 🎨 統合フォーマット (Prettier Java + Eclipse Formatter)
-- 🔍 Checkstyle による品質チェック
-- 🔍 PMD による品質チェック
-- 🔍 SpotBugs による品質チェック
-
-EOF
-
 # .gitignoreに追加（重複チェック）
 if ! grep -q "pre-commit-result.txt" .gitignore 2>/dev/null; then
     echo "pre-commit-result.txt" >> .gitignore
@@ -170,15 +164,17 @@ echo ""
 echo "🔍 Eclipse用pre-commit結果確認:"
 echo "   📁 コミット失敗時: プロジェクトルートの 'pre-commit-result.txt' を開く"
 echo "   📋 操作ガイド: 'PRE-COMMIT-GUIDE.md' を参照"
+echo "   🚫 除外ブランチ: main, master, master-test, develop, release/*, hotfix/*"
 echo ""
 echo "🧪 テスト実行:"
 echo "   .git/hooks/pre-commit  # 手動テスト"
 echo "   cd $DRONE_DIR && ./format-and-check.sh  # 統合フォーマットテスト"
 echo ""
 echo "🔧 カスタマイズ:"
-echo "   除外ブランチを変更: scripts/hooks/pre-commit 内の SKIP_BRANCHES 配列"
+echo "   除外ブランチを変更: .git/hooks/pre-commit 内の SKIP_BRANCHES 配列"
 echo "   フォーマット設定: $DRONE_DIR/.prettierrc, $DRONE_DIR/eclipse-format.xml"
 echo ""
 echo "🎉 統合フォーマット環境対応 プリコミットフック セットアップ完了！"
 echo "    コミット時に統合フォーマット + 品質チェックが自動実行されます"
 echo "    📋 Eclipse用: コミット失敗時は 'pre-commit-result.txt' で詳細確認"
+echo "    🚫 除外ブランチでは静的解析がスキップされます"

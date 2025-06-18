@@ -174,6 +174,28 @@ mvn checkstyle:check pmd:check spotbugs:check
 
 ---
 
-**更新日**: 2024年6月17日  
-**対象バージョン**: Eclipse 2023-06以降  
-**プロジェクト**: DroneInventorySystem
+# Pre-commit結果の確認方法（Eclipse）
+
+## コミット失敗時の確認手順
+
+1. **プロジェクトルートの `pre-commit-result.txt` を開く**
+   - Package Explorerでプロジェクトルート直下の `pre-commit-result.txt` をダブルクリック
+   - ここにpre-commitの詳細結果が記録されています
+
+2. **手動でpre-commitを実行したい場合**
+   ```bash
+   # macOSのターミナル.appで実行
+   cd [プロジェクトパス]
+   cd DroneInventorySystem
+   ./format-and-check.sh
+   ```
+
+## 自動生成されるファイル
+- `pre-commit-result.txt`: 最新のpre-commit実行結果
+- このファイルは `.gitignore` に追加済みです
+
+## 静的解析の内容
+- 🎨 統合フォーマット (Prettier Java + Eclipse Formatter)
+- 🔍 Checkstyle による品質チェック
+- 🔍 PMD による品質チェック
+- 🔍 SpotBugs による品質チェック
