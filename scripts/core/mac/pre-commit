@@ -1,0 +1,177 @@
+#!/bin/bash
+
+# =============================================================================
+# macOS用 Pre-commit Hook - 統合静的解析システム
+# =============================================================================
+# 
+# macOS環境に最適化されたpre-commitフックです。
+# コミット時に統合フォーマット・静的解析を実行し、品質ゲートを制御します。
+#
+# 除外ブランチ: main, master, develop, release/*, hotfix/*  
+# 実行内容: 統合フォーマット + Checkstyle + PMD + SpotBugs
+#
+# =============================================================================
+
+set -e
+
+# プロジェクトルート取得
+PROJECT_ROOT="$(git rev-parse --show-toplevel)"
+
+# 除外ブランチリスト（静的解析をスキップするブランチ）
+SKIP_BRANCHES=(
+    "main"
+    "master" 
+    "master-test"
+    "develop"
+    "release/*"
+    "hotfix/*"
+)
+
+# 現在のブランチ名を取得
+CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
+
+# ログ出力関数
+log_info() {
+    echo "🔧 $1"
+}
+
+log_success() {
+    echo "✅ $1"
+}
+
+log_warning() {
+    echo "⚠️  $1"
+}
+
+log_error() {
+    echo "❌ $1"
+}
+
+log_skip() {
+    echo "🔄 $1"
+}
+
+# ブランチ除外チェック
+check_branch_exclusion() {
+    for skip_branch in "${SKIP_BRANCHES[@]}"; do
+        if [[ "$CURRENT_BRANCH" == $skip_branch ]]; then
+            log_skip "ブランチ '$CURRENT_BRANCH' は静的解析をスキップします"
+            log_success "コミットを続行します（品質チェック無し）"
+            exit 0
+        fi
+    done
+}
+
+# 結果ログ生成
+generate_result_log() {
+    local exit_code=$1
+    local log_file="$PROJECT_ROOT/.git/pre-commit-last-run.log"
+    local result_file="$PROJECT_ROOT/pre-commit-result.txt"
+    
+    # 詳細ログ生成
+    {
+        echo "=== macOS用 Pre-commit Hook 実行結果 ==="
+        echo "実行時間: $(date)"
+        echo "ブランチ: $CURRENT_BRANCH"
+        echo "実行環境: macOS $(sw_vers -productVersion)"
+        echo "Java版: $(java -version 2>&1 | head -n1)"
+        echo ""
+        echo "=== 実行内容 ==="
+        echo "1. macOS用統合フォーマット・静的解析スクリプト実行"
+        echo "2. scripts/core/mac/format-and-check.sh"
+        echo ""
+        echo "=== 実行結果詳細 ==="
+    } > "$log_file"
+    
+    # 結果をファイルに追記
+    cat >> "$log_file"
+    
+    # Eclipse/IntelliJ IDEA用の結果ファイル生成
+    cp "$log_file" "$result_file"
+    
+    # 結果に応じたメッセージ追加
+    if [ $exit_code -eq 0 ]; then
+        echo "" >> "$result_file"
+        echo "✅ 全ての品質チェックに合格しました" >> "$result_file"
+        echo "🎉 コミットが正常に完了しました" >> "$result_file"
+    else
+        echo "" >> "$result_file"
+        echo "❌ 品質チェックで問題が検出されました" >> "$result_file"
+        echo "🔧 修正後、再度コミットを実行してください" >> "$result_file"
+        echo "" >> "$result_file"
+        echo "📋 macOS用トラブルシューティング:" >> "$result_file"
+        echo "  - PRE-COMMIT-GUIDE-MAC.md を確認してください" >> "$result_file"
+        echo "  - 手動実行: cd DroneInventorySystem && ../scripts/core/mac/format-and-check.sh" >> "$result_file"
+        echo "  - Homebrew更新: brew update && brew upgrade" >> "$result_file"
+    fi
+}
+
+# エラー時の詳細ガイド表示
+show_error_guide() {
+    log_error "Pre-commit checks に失敗しました"
+    echo ""
+    log_info "📋 詳細確認方法（macOS用）:"
+    echo ""
+    echo "  【Eclipse IDE】"
+    echo "    Package Explorer で 'pre-commit-result.txt' を開いてください"
+    echo ""
+    echo "  【IntelliJ IDEA】"
+    echo "    Project toolwindow で 'pre-commit-result.txt' を開いてください"
+    echo ""
+    echo "  【VS Code】"  
+    echo "    Explorer で 'pre-commit-result.txt' を開いてください"
+    echo ""
+    echo "  【手動実行（ターミナル）】"
+    echo "    cd DroneInventorySystem"
+    echo "    ../scripts/core/mac/format-and-check.sh"
+    echo ""
+    log_info "macOS用 Pre-commit Hook by development-webCourse-DroneInventorySystem"
+}
+
+# メイン処理
+main() {
+    log_info "macOS用 Pre-commit Hook: 統合静的解析システム開始"
+    echo "📍 現在のブランチ: $CURRENT_BRANCH"
+    echo "🎨 統合フォーマット: Space→Tab + Prettier Java + Eclipse Formatter"
+    echo "🔍 静的解析: Checkstyle + PMD + SpotBugs (JDK 17対応)"
+    echo "⚠️  注意: 品質違反が検出された場合、コミットは阻止されます"
+    echo ""
+    
+    # ブランチ除外チェック
+    check_branch_exclusion
+    
+    # DroneInventorySystemディレクトリに移動
+    if [ ! -d "$PROJECT_ROOT/DroneInventorySystem" ]; then
+        log_error "DroneInventorySystemディレクトリが見つかりません"
+        exit 1
+    fi
+    
+    cd "$PROJECT_ROOT/DroneInventorySystem"
+    
+    # macOS用統合フォーマット・静的解析スクリプト実行
+    log_info "macOS用統合フォーマット・静的解析実行中..."
+    
+    if [ -f "../scripts/core/mac/format-and-check.sh" ]; then
+        # 実行権限確認
+        chmod +x "../scripts/core/mac/format-and-check.sh"
+        
+        # 実行結果をキャプチャ
+        if ../scripts/core/mac/format-and-check.sh 2>&1 | generate_result_log 0; then
+            log_success "macOS用統合静的解析: 全て合格"
+            log_success "コミットを続行します"
+            exit 0
+        else
+            # エラー時の処理
+            ../scripts/core/mac/format-and-check.sh 2>&1 | generate_result_log 1
+            show_error_guide
+            exit 1
+        fi
+    else
+        log_error "macOS用統合フォーマット・静的解析スクリプトが見つかりません"
+        log_error "期待される場所: scripts/core/mac/format-and-check.sh"
+        exit 1
+    fi
+}
+
+# スクリプト実行
+main "$@"

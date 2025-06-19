@@ -1,52 +1,93 @@
 #!/bin/bash
 
-# 統合フォーマット・チェックスクリプト
-# prettier-java + Eclipse + タブインデント対応
+# =============================================================================
+# クロスプラットフォーム 統合フォーマット・静的解析 スクリプト
+# =============================================================================
+# 
+# このスクリプトは、実行環境のOSを自動判定し、適切なOS別スクリプトを呼び出します。
+# Mac/Windows環境に対応した統合フォーマット・静的解析を実行します。
+#
+# 実行場所: DroneInventorySystem/ ディレクトリ
+# 対応OS: macOS, Windows (Git Bash)
+#
+# =============================================================================
 
-echo "🔧 Java タブインデント統合フォーマット・チェックシステム 🔧"
-echo "========================================================"
-echo ""
+set -e
 
-# 環境チェック
-echo "📋 環境確認中..."
-if [ ! -f "pom.xml" ]; then
-    echo "❌ エラー: DroneInventorySystemディレクトリで実行してください"
-    exit 1
-fi
+# 色付きログ出力関数
+log_info() {
+    echo "🔧 $1"
+}
 
-if [ ! -f "package.json" ]; then
-    echo "❌ エラー: Node.js環境が設定されていません"
-    exit 1
-fi
+log_success() {
+    echo "✅ $1"
+}
 
-# Maven コマンドの検出と設定
-echo "🔍 Maven環境を確認中..."
-MVN_CMD=""
+log_warning() {
+    echo "⚠️  $1"
+}
 
-# 一般的なMavenパスを確認
-if command -v mvn >/dev/null 2>&1; then
-    MVN_CMD="mvn"
-    echo "✅ Maven検出: $(which mvn)"
-elif [ -f "/usr/local/bin/mvn" ]; then
-    MVN_CMD="/usr/local/bin/mvn"
-    echo "✅ Maven検出: /usr/local/bin/mvn"
-elif [ -f "/opt/homebrew/bin/mvn" ]; then
-    MVN_CMD="/opt/homebrew/bin/mvn"
-    echo "✅ Maven検出: /opt/homebrew/bin/mvn"
-elif [ -f "$HOME/.m2/wrapper/maven-wrapper.jar" ]; then
-    MVN_CMD="./mvnw"
-    echo "✅ Maven Wrapper検出: ./mvnw"
-else
-    echo "❌ エラー: Mavenが見つかりません"
-    echo "   以下の方法でMavenをインストールしてください:"
-    echo "   - Homebrew: brew install maven"
-    echo "   - 手動インストール: https://maven.apache.org/install.html"
-    echo ""
-    echo "🔧 Eclipse使用時は以下も確認してください:"
-    echo "   - Eclipse -> Preferences -> Maven -> Installations"
-    echo "   - システムPATHにMavenが追加されているか"
-    exit 1
-fi
+log_error() {
+    echo "❌ $1"
+}
+
+# OS判定関数
+detect_os() {
+    if [[ "$OSTYPE" == "darwin"* ]]; then
+        echo "mac"
+    elif [[ "$OSTYPE" == "msys" ]] || [[ "$OSTYPE" == "cygwin" ]] || [[ "$OSTYPE" == "win32" ]]; then
+        echo "windows"
+    else
+        echo "unknown"
+    fi
+}
+
+# メイン処理
+main() {
+    log_info "クロスプラットフォーム 統合フォーマット・静的解析システム"
+    
+    # OS判定
+    OS=$(detect_os)
+    log_info "OS検出: $OS"
+    
+    # 実行ディレクトリ確認
+    if [ ! -f "pom.xml" ]; then
+        log_error "DroneInventorySystemディレクトリで実行してください"
+        exit 1
+    fi
+    
+    # OS別スクリプト実行
+    case $OS in
+        "mac")
+            log_info "macOS用統合フォーマット・静的解析スクリプトを実行します"
+            if [ -f "../scripts/core/mac/format-and-check.sh" ]; then
+                chmod +x "../scripts/core/mac/format-and-check.sh"
+                exec "../scripts/core/mac/format-and-check.sh" "$@"
+            else
+                log_error "macOS用スクリプトが見つかりません: ../scripts/core/mac/format-and-check.sh"
+                exit 1
+            fi
+            ;;
+        "windows")
+            log_info "Windows用統合フォーマット・静的解析スクリプトを実行します"
+            if [ -f "../scripts/core/windows/format-and-check.sh" ]; then
+                chmod +x "../scripts/core/windows/format-and-check.sh"
+                exec "../scripts/core/windows/format-and-check.sh" "$@"
+            else
+                log_error "Windows用スクリプトが見つかりません: ../scripts/core/windows/format-and-check.sh"
+                exit 1
+            fi
+            ;;
+        *)
+            log_error "サポートされていないOS: $OS"
+            log_error "対応OS: macOS, Windows (Git Bash)"
+            exit 1
+            ;;
+    esac
+}
+
+# スクリプト実行
+main "$@"
 
 echo "✅ Maven環境確認完了: $MVN_CMD"
 
