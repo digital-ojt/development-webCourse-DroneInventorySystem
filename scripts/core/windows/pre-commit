@@ -15,7 +15,8 @@
 #
 # =============================================================================
 
-set -e
+# エラーハンドリング: 最後まで実行してからexitする
+# set -e  # ファイル生成を確実に実行するため、関数内で個別に制御
 
 # プロジェクトルート取得
 PROJECT_ROOT="$(git rev-parse --show-toplevel)"
@@ -180,8 +181,6 @@ main() {
         ../scripts/core/windows/format-and-check.sh > "$temp_output" 2>&1
         local exit_code=$?
         
-        echo "🔧 DEBUG: Windows用静的解析完了 exit_code=$exit_code" >&2
-        
         # 結果ログを直接生成（Windows版）
         local result_file="$PROJECT_ROOT/pre-commit-result.txt"
         
@@ -226,8 +225,6 @@ main() {
             echo "  - Java環境の確認: java -version" >> "$result_file"
             echo "  - Maven環境の確認: mvn -version" >> "$result_file"
         fi
-        
-        echo "🔧 DEBUG: Windows用結果ファイル生成完了: $result_file" >&2
         
         # exit codeに応じてコミット制御
         if [ $exit_code -eq 0 ]; then
