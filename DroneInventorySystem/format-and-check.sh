@@ -49,6 +49,61 @@ else
 fi
 
 echo "✅ Maven環境確認完了: $MVN_CMD"
+
+# JDK 17環境の確認と設定
+echo "☕ JDK 17環境の確認と設定..."
+
+# JDK 17のパスを検索
+JDK17_PATHS=(
+    "/Library/Java/JavaVirtualMachines/temurin-17.jdk/Contents/Home"
+    "/Library/Java/JavaVirtualMachines/openjdk-17.jdk/Contents/Home"
+    "/Library/Java/JavaVirtualMachines/jdk-17.jdk/Contents/Home"
+    "/usr/lib/jvm/java-17-openjdk"
+    "/usr/lib/jvm/temurin-17-jdk"
+)
+
+JAVA_17_HOME=""
+for jdk_path in "${JDK17_PATHS[@]}"; do
+    if [ -d "$jdk_path" ]; then
+        JAVA_17_HOME="$jdk_path"
+        break
+    fi
+done
+
+# 現在のJavaバージョンを確認
+CURRENT_JAVA_VERSION=$(java -version 2>&1 | head -n1 | cut -d'"' -f2)
+CURRENT_JAVA_MAJOR=$(echo $CURRENT_JAVA_VERSION | cut -d'.' -f1)
+
+if [ -n "$JAVA_17_HOME" ]; then
+    echo "✅ JDK 17検出: $JAVA_17_HOME"
+    # JDK 17を使用するための環境変数設定
+    export JAVA_HOME="$JAVA_17_HOME"
+    export PATH="$JAVA_17_HOME/bin:$PATH"
+    
+    # 設定後のJavaバージョンを確認
+    JAVA_VERSION=$(java -version 2>&1 | head -n1 | cut -d'"' -f2)
+    JAVA_MAJOR=$(echo $JAVA_VERSION | cut -d'.' -f1)
+    echo "✅ 使用Java: $JAVA_VERSION (JDK $JAVA_MAJOR)"
+    
+    if [ "$JAVA_MAJOR" != "17" ]; then
+        echo "⚠️  警告: JDK 17に設定しましたが、現在のJavaは$JAVA_MAJORです"
+    fi
+else
+    echo "❌ エラー: JDK 17が見つかりません"
+    echo "   現在のJava: $CURRENT_JAVA_VERSION (JDK $CURRENT_JAVA_MAJOR)"
+    echo ""
+    echo "🔧 JDK 17のインストール方法:"
+    echo "   1. Homebrew: brew install openjdk@17"
+    echo "   2. Eclipse Temurin: https://adoptium.net/temurin/releases/?version=17"
+    echo "   3. Oracle JDK: https://www.oracle.com/java/technologies/downloads/#java17"
+    echo ""
+    echo "📋 Eclipse/IntelliJ設定確認:"
+    echo "   - Eclipse: Preferences → Java → Installed JREs → JDK 17を選択"
+    echo "   - IntelliJ: File → Project Structure → SDKs → JDK 17を選択"
+    echo ""
+    echo "⚠️  このプロジェクトはJDK 17での動作を前提としています"
+    exit 1
+fi
 echo ""
 
 # Phase 1: スペースからタブへの変換
@@ -74,8 +129,14 @@ if [ -f "node_modules/.bin/prettier" ]; then
     echo "Prettierでタブフォーマット確認中..."
     npm run format 2>/dev/null || echo "⚠️  Prettier実行中にエラーが発生しましたが続行します"
 else
-    echo "⚠️  Prettier未インストール。Maven pluginを使用します"
-    $MVN_CMD prettier:write -q 2>/dev/null || echo "⚠️  Maven prettier plugin未設定"
+    echo "⚠️  Prettier未インストール。Maven pluginチェック中..."
+    # Maven prettier pluginが設定されているか確認
+    if $MVN_CMD help:describe -Dplugin=com.hubspot.maven.plugins:prettier-maven-plugin -q >/dev/null 2>&1; then
+        echo "Maven prettier plugin実行中..."
+        $MVN_CMD prettier:write -q 2>/dev/null || echo "⚠️  Maven prettier plugin実行エラー（続行します）"
+    else
+        echo "⚠️  Maven prettier plugin未設定（フォーマットをスキップ）"
+    fi
 fi
 echo "✅ Prettierフォーマット完了"
 echo ""
@@ -113,6 +174,7 @@ fi
 
 # SpotBugs
 echo "📋 SpotBugs実行中..."
+echo "   使用Java: $(java -version 2>&1 | head -n1 | cut -d'"' -f2)"
 $MVN_CMD spotbugs:check -q
 SPOTBUGS_RESULT=$?
 if [ $SPOTBUGS_RESULT -eq 0 ]; then
@@ -127,6 +189,7 @@ echo "===================="
 echo "🔧 タブインデント: ✅ 適用済み"
 echo "🎨 Prettier: ✅ 実行済み"
 echo "🌟 Eclipse Formatter: ✅ 実行済み"
+echo "☕ 使用Java: $(java -version 2>&1 | head -n1 | cut -d'"' -f2)"
 
 if [ $CHECKSTYLE_RESULT -eq 0 ] && [ $PMD_RESULT -eq 0 ] && [ $SPOTBUGS_RESULT -eq 0 ]; then
     echo "🎉 すべてのチェック: ✅ 合格"
@@ -158,7 +221,7 @@ echo "    でインポートしてください。"
 # 🔧 重要: 静的解析の結果に基づいて適切な終了コードを返す
 if [ $CHECKSTYLE_RESULT -eq 0 ] && [ $PMD_RESULT -eq 0 ] && [ $SPOTBUGS_RESULT -eq 0 ]; then
     echo ""
-    echo "✅ 統合チェック完了: すべて合格"
+    echo "✅ 統合チェック完了: すべて合格 (JDK 17環境)"
     exit 0
 else
     echo ""
