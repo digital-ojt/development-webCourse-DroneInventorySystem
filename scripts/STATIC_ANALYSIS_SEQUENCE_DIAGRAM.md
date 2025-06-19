@@ -1,53 +1,351 @@
 # 静的解析システム 包括的動作フローシーケンス図
 
 ## 概要
-DroneInventorySystemプロジェクトにおける静的解析ツール統合の詳細な動作フローを表現したシーケンス図です。手動実行、自動化、CI/CD統合、prettier-java + Eclipse統合フォーマットのすべてのフローを網羅しています。
+プロジェクトにおけるEclipse + IntelliJ IDEA対応の統合静的解析システムの詳細な動作フローを表現したシーケンス図です。JDK 17環境強制、Eclipse IDE連携、pre-commitフックのすべてのフローを網羅しています。
 
-**🎨 2024年6月17日更新**: prettier-javaとEclipse設定統合による統合フォーマット環境対応
+**🎨 2025年6月19日更新**: JDK 17環境強制対応、Eclipse Package Explorer連携、SpotBugs互換性問題対応
 
 ## 目次
 - [静的解析システム 包括的動作フローシーケンス図](#静的解析システム-包括的動作フローシーケンス図)
   - [概要](#概要)
   - [目次](#目次)
-  - [1. 手動実行フロー（manual-static-analysis.sh）](#1-手動実行フローmanual-static-analysissh)
-  - [2. 統合フォーマット実行フロー（format-and-check.sh）](#2-統合フォーマット実行フローformat-and-checksh)
-  - [3. CI/CD自動実行フロー（GitHub Actions）](#3-cicd自動実行フローgithub-actions)
-  - [4. Pre-commitフック実行フロー](#4-pre-commitフック実行フロー)
-  - [5. GitHub Actions CI/CDフロー](#5-github-actions-cicdフロー)
-  - [6. 統合テストフロー（comprehensive-integration-test.sh）](#6-統合テストフローcomprehensive-integration-testsh)
-  - [7. エラーハンドリングフロー](#7-エラーハンドリングフロー)
-  - [8. ツール間連携フロー](#8-ツール間連携フロー)
+  - [1. Pre-commitフック実行フロー（Eclipse対応）](#1-pre-commitフック実行フローeclipse対応)
+  - [2. 統合フォーマット・静的解析フロー（format-and-check.sh）](#2-統合フォーマット静的解析フローformat-and-checksh)
+  - [3. JDK 17環境強制設定フロー](#3-jdk-17環境強制設定フロー)
+  - [4. Eclipse IDE連携フロー](#4-eclipse-ide連携フロー)
+  - [5. SpotBugs互換性問題対応フロー](#5-spotbugs互換性問題対応フロー)
+  - [6. ブランチ除外フロー](#6-ブランチ除外フロー)
+  - [7. エラーハンドリング・リカバリーフロー](#7-エラーハンドリングリカバリーフロー)
   - [まとめ](#まとめ)
     - [主要なフロー](#主要なフロー)
     - [検出される品質問題](#検出される品質問題)
     - [次のステップ](#次のステップ)
+  - [3. CI/CD自動実行フロー（GitHub Actions）](#3-cicd自動実行フローgithub-actions)
+  - [3. Pre-commitフック実行フロー](#3-pre-commitフック実行フロー)
+  - [4. GitHub Actions CI/CDフロー](#4-github-actions-cicdフロー)
+  - [5. 統合テストフロー（comprehensive-integration-test.sh）](#5-統合テストフローcomprehensive-integration-testsh)
+  - [6. エラーハンドリングフロー](#6-エラーハンドリングフロー)
+  - [7. ツール間連携フロー](#7-ツール間連携フロー)
+  - [まとめ](#まとめ-1)
+    - [主要なフロー](#主要なフロー-1)
+    - [検出される品質問題](#検出される品質問題-1)
+    - [次のステップ](#次のステップ-1)
 
-## 1. 手動実行フロー（manual-static-analysis.sh）
+## 1. Pre-commitフック実行フロー（Eclipse対応）
 
 ```mermaid
 sequenceDiagram
     participant Dev as 開発者
-    participant Script as manual-static-analysis.sh
-    participant Format as format-and-check.sh
-    participant Maven as Maven
-    participant Node as Node.js/Prettier
-    participant Java as Java/JVM
+    participant Eclipse as Eclipse IDE
     participant Git as Git
-    participant Files as ファイルシステム
+    participant Hook as Pre-commit Hook
+    participant Script as format-and-check.sh
+    participant Result as pre-commit-result.txt
+    participant Guide as PRE-COMMIT-GUIDE.md
     
-    Note over Dev, Files: Phase 1: 環境確認・準備
-    Dev->>Script: ./manual-static-analysis.sh 実行
-    Script->>Files: DroneInventorySystemディレクトリ存在確認
-    Files-->>Script: 存在確認結果
-    Script->>Files: 設定ファイル確認（package.json, .prettierrc, eclipse-format.xml等）
-    Files-->>Script: 設定状況返却
+    Note over Dev, Guide: Eclipse開発者のコミットフロー
+    Dev->>Eclipse: コードを編集・保存
+    Eclipse->>Eclipse: JDK 17設定確認
+    Dev->>Eclipse: Commit実行
+    Eclipse->>Git: git commit実行
     
-    Note over Dev, Files: Phase 2: 実行方式選択
-    Script->>Dev: 実行方式選択プロンプト
-    Dev->>Script: 1:統合実行 or 2:手動実行
+    Git->>Hook: Pre-commitフック起動
+    Hook->>Hook: 現在ブランチ取得
     
-    alt 統合実行選択の場合
-        Script->>Format: ./format-and-check.sh 実行
+    alt 除外ブランチの場合
+        Hook->>Hook: main/master/develop等をチェック
+        Hook->>Git: スキップメッセージ出力
+        Git->>Eclipse: コミット成功
+    else 対象ブランチの場合
+        Hook->>Script: ./format-and-check.sh実行
+        
+        alt 静的解析成功
+            Script-->>Hook: 終了コード 0
+            Hook->>Git: コミット許可
+            Git->>Eclipse: コミット成功
+        else 静的解析失敗
+            Script-->>Hook: 終了コード 1
+            Hook->>Result: 詳細ログを pre-commit-result.txt に出力
+            Hook->>Eclipse: エラーメッセージ表示
+            Note over Hook, Eclipse: "Eclipse Package Explorerで<br/>pre-commit-result.txtを開いてください"
+            Eclipse->>Eclipse: ダイアログ表示
+            Dev->>Eclipse: Package Explorer操作
+            Eclipse->>Result: pre-commit-result.txt開く
+            Dev->>Guide: PRE-COMMIT-GUIDE.md参照
+        end
+    end
+```
+
+## 2. 統合フォーマット・静的解析フロー（format-and-check.sh）
+
+```mermaid
+sequenceDiagram
+    participant Hook as Pre-commit Hook
+    participant Script as format-and-check.sh
+    participant Java as Java Runtime
+    participant Maven as Maven
+    participant Node as Node.js
+    participant Check as Checkstyle
+    participant PMD as PMD
+    participant Spot as SpotBugs
+    participant Files as File System
+    
+    Note over Hook, Files: JDK 17環境確認・設定フェーズ
+    Hook->>Script: 実行開始
+    Script->>Maven: Maven環境検出
+    Maven-->>Script: Maven パス返却
+    Script->>Java: java -version実行
+    Java-->>Script: バージョン情報返却
+    Script->>Script: JDK 17チェック
+    
+    alt JDK 17の場合
+        Script->>Java: JAVA_HOME設定
+        Note over Script: ✅ JDK 17環境確認完了
+    else JDK 17以外の場合
+        Script->>Script: 警告メッセージ出力
+        Note over Script: ⚠️ JDK xx使用中、JDK 17推奨
+    end
+    
+    Note over Hook, Files: 統合フォーマットフェーズ
+    Script->>Files: タブインデント変換
+    Files-->>Script: 変換完了
+    
+    Script->>Node: Prettier実行チェック
+    alt Node.js環境がある場合
+        Node-->>Script: npm run format実行
+    else Maven prettier pluginの場合
+        Script->>Maven: prettier:write実行
+    end
+    
+    Script->>Maven: Eclipse Formatter実行
+    Maven-->>Script: formatter:format完了
+    
+    Note over Hook, Files: 静的解析フェーズ
+    Script->>Check: Checkstyle実行
+    Check-->>Script: 結果返却
+    
+    Script->>PMD: PMD実行
+    PMD-->>Script: 結果返却
+    
+    Script->>Spot: SpotBugs実行
+    alt SpotBugs成功
+        Spot-->>Script: 解析結果返却
+    else Java 21互換性問題
+        Spot-->>Script: クラスファイルエラー
+        Script->>Script: エラー詳細分析
+        Script->>Script: 適切なスキップ処理
+    end
+    
+    Script->>Script: 総合結果判定
+    Script-->>Hook: 終了コード返却
+```
+
+## 3. JDK 17環境強制設定フロー
+
+```mermaid
+flowchart TD
+    A[format-and-check.sh実行] --> B{Javaバージョン確認}
+    B --> C[java -version実行]
+    C --> D{JDK 17?}
+    
+    D -->|Yes| E[✅ JDK 17環境確認]
+    D -->|JDK 11| F[⚠️ JDK 11警告]
+    D -->|JDK 21| G[⚠️ JDK 21警告]
+    D -->|その他| H[⚠️ 非対応バージョン警告]
+    
+    E --> I[JAVA_HOME設定]
+    F --> J[Eclipse設定案内]
+    G --> K[Eclipse設定案内]
+    H --> L[Eclipse設定案内]
+    
+    I --> M[Maven実行環境設定]
+    J --> M
+    K --> M
+    L --> M
+    
+    M --> N[静的解析実行継続]
+    
+    style E fill:#e1f5fe
+    style F fill:#fff3e0
+    style G fill:#fff3e0
+    style H fill:#ffebee
+```
+
+## 4. Eclipse IDE連携フロー
+
+```mermaid
+sequenceDiagram
+    participant Dev as Eclipse開発者
+    participant Eclipse as Eclipse IDE
+    participant Explorer as Package Explorer
+    participant Result as pre-commit-result.txt
+    participant Guide as PRE-COMMIT-GUIDE.md
+    participant Maven as Maven View
+    
+    Note over Dev, Maven: Eclipse開発者の静的解析結果確認フロー
+    
+    Dev->>Eclipse: コミット実行
+    Eclipse->>Eclipse: Pre-commitフック実行
+    
+    alt コミット失敗時
+        Eclipse->>Eclipse: エラーダイアログ表示
+        Note over Eclipse: "Eclipse Package Explorerで<br/>pre-commit-result.txtを開いてください"
+        
+        Dev->>Explorer: Package Explorerを開く
+        Explorer->>Explorer: プロジェクトルートを展開
+        Dev->>Result: pre-commit-result.txtをダブルクリック
+        Result->>Eclipse: ファイル内容をエディタで表示
+        
+        Note over Result, Eclipse: 実行時間、ブランチ、詳細ログを確認
+        
+        Dev->>Guide: PRE-COMMIT-GUIDE.mdを参照
+        Guide->>Eclipse: トラブルシューティング情報表示
+        
+        alt Maven環境の問題
+            Dev->>Maven: Eclipse Maven設定確認
+            Maven->>Eclipse: Maven Installations設定画面
+        else Java環境の問題
+            Dev->>Eclipse: Preferences → Installed JREs
+            Eclipse->>Eclipse: JDK 17設定確認
+        else 静的解析違反
+            Dev->>Eclipse: Problems View確認
+            Eclipse->>Eclipse: エラー箇所表示
+        end
+        
+        Dev->>Eclipse: 問題修正後、再コミット
+    else コミット成功時
+        Eclipse->>Eclipse: 成功メッセージ表示
+        Note over Eclipse: ✅ Pre-commit checks成功
+    end
+```
+
+## 5. SpotBugs互換性問題対応フロー
+
+```mermaid
+flowchart TD
+    A[SpotBugs実行開始] --> B[spotbugs:check実行]
+    B --> C{実行結果}
+    
+    C -->|成功| D[✅ SpotBugs合格]
+    C -->|エラー| E[エラー詳細分析]
+    
+    E --> F{エラー種別判定}
+    F -->|Unsupported class file<br/>major version 68| G[Java 21クラスファイル問題]
+    F -->|その他のエラー| H[通常の静的解析エラー]
+    
+    G --> I[⚠️ 互換性問題メッセージ]
+    I --> J[SpotBugsスキップ]
+    J --> K[Checkstyle・PMD継続]
+    
+    H --> L[⚠️ SpotBugs違反検出]
+    L --> M[詳細エラー情報出力]
+    
+    D --> N[静的解析継続]
+    K --> N
+    M --> O[終了コード1で停止]
+    
+    style G fill:#fff3e0
+    style I fill:#fff3e0
+    style J fill:#e8f5e8
+    style L fill:#ffebee
+    style O fill:#ffebee
+```
+
+## 6. ブランチ除外フロー
+
+```mermaid
+flowchart TD
+    A[Pre-commitフック開始] --> B[現在ブランチ取得]
+    B --> C[git rev-parse --abbrev-ref HEAD]
+    C --> D{ブランチ判定}
+    
+    D -->|main| E[🔄 静的解析スキップ]
+    D -->|master| E
+    D -->|master-test| E
+    D -->|develop| E
+    D -->|release/*| E
+    D -->|hotfix/*| E
+    D -->|feature/*| F[🔍 静的解析実行]
+    D -->|その他開発ブランチ| F
+    
+    E --> G[✅ コミット続行]
+    F --> H[format-and-check.sh実行]
+    H --> I{静的解析結果}
+    
+    I -->|成功| J[✅ コミット許可]
+    I -->|失敗| K[❌ コミット拒否]
+    K --> L[pre-commit-result.txt生成]
+    
+    style E fill:#e8f5e8
+    style G fill:#e8f5e8
+    style J fill:#e8f5e8
+    style K fill:#ffebee
+    style L fill:#fff3e0
+```
+
+## 7. エラーハンドリング・リカバリーフロー
+
+```mermaid
+sequenceDiagram
+    participant Dev as 開発者
+    participant System as 静的解析システム
+    participant Error as エラーハンドラ
+    participant Recovery as リカバリープロセス
+    participant Guide as ガイドシステム
+    
+    Dev->>System: 静的解析実行
+    
+    alt Maven環境エラー
+        System->>Error: mvn: command not found
+        Error->>Recovery: Maven自動検出実行
+        Recovery->>Guide: インストール手順案内
+        Guide-->>Dev: Homebrewインストール案内
+    end
+    
+    alt Java環境エラー
+        System->>Error: 非対応Javaバージョン
+        Error->>Recovery: JAVA_HOME自動設定
+        Recovery->>Guide: Eclipse設定案内
+        Guide-->>Dev: JDK 17設定手順
+    end
+    
+    alt SpotBugs互換性エラー
+        System->>Error: class file major version 68
+        Error->>Recovery: エラー種別分析
+        Recovery->>System: SpotBugsスキップ設定
+        System->>Guide: 代替解決策案内
+        Guide-->>Dev: 継続実行メッセージ
+    end
+    
+    alt Prettier環境エラー
+        System->>Error: prettier-plugin-java not found
+        Error->>Recovery: Maven pluginフォールバック
+        Recovery->>System: Eclipse Formatter使用
+        System-->>Dev: 警告メッセージ（処理継続）
+    end
+    
+    Note over Dev, Guide: 全てのエラーで適切なガイダンスを提供
+```
+
+## まとめ
+
+### 主要なフロー
+1. **Eclipse中心の開発体験**: ターミナル操作不要
+2. **JDK 17環境強制**: プロジェクト要件の確実な適用
+3. **柔軟なエラーハンドリング**: 部分的失敗でも処理継続
+4. **ブランチベース運用**: 開発ブランチでのみ品質ゲート
+
+### 検出される品質問題
+- **Checkstyle**: コーディング規約違反
+- **PMD**: 品質問題・複雑度
+- **SpotBugs**: バグパターン（Java 17環境）
+- **統合フォーマット**: インデント・スタイル統一
+
+### 次のステップ
+- IntelliJ IDEA対応の強化
+- CI/CDパイプライン統合
+- カスタムルール追加
+- SonarQube連携検討
         Format->>Format: 統合フォーマット・チェック処理
         Format-->>Script: 完了
         Script->>Dev: 統合実行完了
@@ -138,10 +436,10 @@ sequenceDiagram
     Maven->>Java: Checkstyle実行
     Java->>Files: checkstyle-strict.xml読み込み
     Java->>Files: ソースコード解析
-    Files-->>Java: 284件の違反検出
+    Files-->>Java: xxx件の違反検出
     Java-->>Maven: エラーレベル違反
     Maven-->>Script: BUILD FAILURE
-    Script->>Dev: 284違反でビルド失敗表示
+    Script->>Dev: xxx違反でビルド失敗表示
     
     Note over Dev, Files: Phase 8: PMD品質チェック
     Dev->>Script: Enter（実行）
@@ -149,10 +447,10 @@ sequenceDiagram
     Maven->>Java: PMD実行
     Java->>Files: pmd-basic.xml読み込み
     Java->>Files: ソースコード解析
-    Files-->>Java: 17件の違反検出
+    Files-->>Java: xxx件の違反検出
     Java-->>Maven: 品質違反情報
     Maven-->>Script: BUILD SUCCESS（failOnViolation=false）
-    Script->>Dev: 17違反検出表示
+    Script->>Dev: xxx違反検出表示
     
     Note over Dev, Files: Phase 9: SpotBugsバグ検出
     Dev->>Script: Enter（実行）
@@ -164,7 +462,7 @@ sequenceDiagram
         Files-->>Java: 9件のバグパターン検出
         Java-->>Maven: バグ情報
         Maven-->>Script: BUILD FAILURE（failOnError=true）
-        Script->>Dev: 9バグ検出表示
+        Script->>Dev: xxxバグ検出表示
     else コンパイル失敗の場合
         Java-->>Maven: コンパイルエラーで実行不可
         Maven-->>Script: BUILD FAILURE
@@ -236,10 +534,10 @@ sequenceDiagram
     
     Note over Dev, Reports: 🚀 統合フォーマット・チェック開始
     Dev->>Script: ./format-and-check.sh 実行
-    Script->>Dev: 🎯 DroneInventorySystem 統合フォーマット・品質チェック開始
+    Script->>Dev: 🎯 統合フォーマット・品質チェック開始
     
     Note over Script, Reports: Phase 1: 環境確認・セットアップ
-    Script->>Files: DroneInventorySystemディレクトリ存在確認
+    Script->>Files: Projectディレクトリ存在確認
     Files-->>Script: ディレクトリ確認完了
     Script->>Files: pom.xml, package.json, .prettierrc, eclipse-format.xml存在確認
     Files-->>Script: 設定ファイル確認結果
@@ -253,7 +551,7 @@ sequenceDiagram
     Script->>Files: 変更前バックアップ作成
     Files-->>Script: バックアップ完了
     Script->>Files: find src/main/java -name "*.java" -type f
-    Files-->>Script: 47個のJavaファイル検出
+    Files-->>Script: xxx個のJavaファイル検出
     
     loop 各Javaファイル
         Script->>Files: sed 's/    /\t/g' (4スペース→タブ)
@@ -308,16 +606,16 @@ sequenceDiagram
         Script->>Maven: mvn pmd:check -q
         Maven->>Java: PMD code quality analysis実行
         Java->>Files: コード品質分析
-        Files-->>Java: 17件の品質問題検出
+        Files-->>Java: xxx件の品質問題検出
         Java-->>Maven: BUILD FAILURE (failOnViolation=false)
-        Maven-->>Script: PMD: 17件違反検出
+        Maven-->>Script: PMD: xxx件違反検出
     and SpotBugsバグ検出
         Script->>Maven: mvn compile spotbugs:check -q
         Maven->>Java: SpotBugs bytecode analysis実行
         Java->>Files: バイトコード解析
-        Files-->>Java: 9件のバグパターン検出
-        Java-->>Maven: BUILD FAILURE (9 bugs found)
-        Maven-->>Script: SpotBugs: 9件バグ検出
+        Files-->>Java: xxx件のバグパターン検出
+        Java-->>Maven: BUILD FAILURE (xxx bugs found)
+        Maven-->>Script: SpotBugs: xxx件バグ検出
     end
     
     Note over Script, Reports: Phase 7: レポート生成
@@ -348,12 +646,12 @@ sequenceDiagram
     Files-->>Script: HTMLレポート確認完了
     
     Script->>Dev: 📊 ═══ 実行結果サマリー ═══
-    Script->>Dev: ✅ タブ変換: 47ファイル処理完了
+    Script->>Dev: ✅ タブ変換: xxxファイル処理完了
     Script->>Dev: ✅ Prettier Java: フォーマット適用
     Script->>Dev: ✅ Eclipse Formatter: 統一スタイル適用
     Script->>Dev: ⚠️ 品質チェック結果:
-    Script->>Dev:     - PMD: 17件の品質問題
-    Script->>Dev:     - SpotBugs: 9件のバグパターン
+    Script->>Dev:     - PMD: xxx件の品質問題
+    Script->>Dev:     - SpotBugs: xxx件のバグパターン
     Script->>Dev: 📁 詳細レポート: target/site/*.html
     Script->>Dev: 🔗 統合設定ファイル:
     Script->>Dev:     - .prettierrc (Prettier+Java設定)
@@ -386,7 +684,7 @@ sequenceDiagram
     Runner->>Runner: Maven依存関係キャッシュ確認
     
     Note over Runner, Artifacts: Phase 2: 自動フォーマット
-    Runner->>Maven: cd DroneInventorySystem && mvn fmt:format -q
+    Runner->>Maven: cd project && mvn fmt:format -q
     Maven->>Java: Google Java Format実行
     Java->>Runner: ファイルフォーマット
     Runner->>GitHub: git diff --quiet（変更確認）
@@ -411,7 +709,7 @@ sequenceDiagram
     Maven->>Java: Checkstyle厳格実行
     
     alt 違反検出の場合
-        Java->>Maven: 284違反検出
+        Java->>Maven: xxx違反検出
         Maven->>Runner: BUILD FAILURE
         Runner->>Actions: ワークフロー失敗
         Actions->>GitHub: 品質ゲート失敗
@@ -424,12 +722,12 @@ sequenceDiagram
     par PMDチェック
         Runner->>Maven: mvn pmd:check
         Maven->>Java: PMD実行
-        Java->>Maven: 17違反検出
+        Java->>Maven: xxx違反検出
         Maven->>Runner: BUILD FAILURE
     and SpotBugsチェック
         Runner->>Maven: mvn compile spotbugs:check
         Maven->>Java: SpotBugs実行
-        Java->>Maven: 9バグ検出
+        Java->>Maven: xxxバグ検出
         Maven->>Runner: BUILD FAILURE
     end
     
@@ -462,7 +760,7 @@ sequenceDiagram
     Git->>Hook: pre-commitフック起動
     
     Note over Hook, Files: Phase 1: 環境確認
-    Hook->>Hook: DroneInventorySystemディレクトリ確認
+    Hook->>Hook: projectディレクトリ確認
     Hook->>Java: java -version確認
     Java-->>Hook: Java 17 Corretto確認
     Hook->>Maven: mvn -version確認
@@ -478,7 +776,7 @@ sequenceDiagram
         Maven->>Java: Google Java Format実行
         Java->>Files: フォーマット適用
         Files-->>Java: フォーマット完了
-        Java-->>Maven: 47ファイル処理完了
+        Java-->>Maven: xxxファイル処理完了
         Maven-->>Hook: フォーマット成功
         
         Note over Hook, Files: Phase 4: フォーマット後の変更確認
@@ -494,12 +792,12 @@ sequenceDiagram
         Hook->>Maven: mvn checkstyle:check -Dcheckstyle.config.location=checkstyle-simple.xml
         Maven->>Java: Checkstyle実行
         Java->>Files: 規約チェック
-        Files-->>Java: 284件の違反検出
+        Files-->>Java:xxx件の違反検出
         Java-->>Maven: 違反情報
         Maven-->>Hook: BUILD FAILURE
         
         Hook->>Dev: ❌ Pre-commit検証失敗
-        Hook->>Dev: 🔍 284件のCheckstyle違反検出
+        Hook->>Dev: 🔍 xxx件のCheckstyle違反検出
         Hook->>Dev: 📝 修正後に再コミットが必要
         Hook->>Git: exit 1（コミット中断）
         Git-->>Dev: コミット失敗
@@ -546,24 +844,24 @@ sequenceDiagram
     par Checkstyle Simple
         Runner->>Maven: mvn checkstyle:check -Dcheckstyle.config.location=checkstyle-simple.xml
         Maven->>Java: Checkstyle実行
-        Java-->>Maven: 284件違反検出
+        Java-->>Maven: xxx件違反検出
         Maven-->>Runner: BUILD FAILURE
     and PMD Check
         Runner->>Maven: mvn pmd:check
         Maven->>Java: PMD実行
-        Java-->>Maven: 17件違反検出
+        Java-->>Maven: xxx件違反検出
         Maven-->>Runner: BUILD FAILURE
     and SpotBugs Check
         Runner->>Maven: mvn spotbugs:check
         Maven->>Java: SpotBugs実行
-        Java-->>Maven: 9件バグ検出
+        Java-->>Maven: xxx件バグ検出
         Maven-->>Runner: BUILD FAILURE
     end
     
     Note over Runner, Reports: 厳格品質チェック
     Runner->>Maven: mvn checkstyle:check -Dcheckstyle.config.location=checkstyle-strict.xml
     Maven->>Java: 厳格Checkstyle実行
-    Java-->>Maven: 284件違反検出
+    Java-->>Maven: xxx件違反検出
     Maven-->>Runner: BUILD FAILURE
     
     Note over Runner, Reports: レポート生成
@@ -599,7 +897,7 @@ sequenceDiagram
     Note over Dev, Reports: 統合テスト開始
     Dev->>Script: ./comprehensive-integration-test.sh
     Script->>Script: 開始時刻記録
-    Script->>Files: DroneInventorySystemディレクトリ確認
+    Script->>Files: projectディレクトリ確認
     Files-->>Script: 存在確認
     
     Note over Script, Reports: Phase 1: 環境検証
@@ -628,14 +926,14 @@ sequenceDiagram
     Script->>Maven: mvn fmt:check
     Maven->>Java: フォーマットチェック
     Java->>Files: フォーマット状態分析
-    Files-->>Java: 47ファイル確認
+    Files-->>Java: xxxファイル確認
     Java-->>Maven: フォーマット不適合
     Maven-->>Script: BUILD FAILURE
     
     Note over Script, Reports: Phase 5: 自動フォーマット実行
     Script->>Maven: mvn fmt:format
     Maven->>Java: フォーマット適用
-    Java->>Files: 47ファイル自動修正
+    Java->>Files: xxxファイル自動修正
     Files-->>Java: フォーマット適用完了
     Java-->>Maven: 修正完了
     Maven-->>Script: BUILD SUCCESS
@@ -643,16 +941,16 @@ sequenceDiagram
     Note over Script, Reports: Phase 6: 静的解析実行（並列）
     par Checkstyle Simple
         Script->>Maven: mvn checkstyle:check (simple)
-        Maven-->>Script: 284件違反、BUILD FAILURE
+        Maven-->>Script: xxx件違反、BUILD FAILURE
     and Checkstyle Strict
         Script->>Maven: mvn checkstyle:check (strict)
-        Maven-->>Script: 284件違反、BUILD FAILURE
+        Maven-->>Script: xxx件違反、BUILD FAILURE
     and PMD Basic
         Script->>Maven: mvn pmd:check
-        Maven-->>Script: 17件違反、BUILD FAILURE
+        Maven-->>Script: xxx件違反、BUILD FAILURE
     and SpotBugs
         Script->>Maven: mvn spotbugs:check
-        Maven-->>Script: 9件バグ、BUILD FAILURE
+        Maven-->>Script: xxx件バグ、BUILD FAILURE
     end
     
     Note over Script, Reports: Phase 7: レポート生成
@@ -665,13 +963,13 @@ sequenceDiagram
     
     Note over Script, Reports: Phase 8: 結果集計・表示
     Script->>Script: 実行時間計算
-    Script->>Script: 品質統計計算（310件総問題）
+    Script->>Script: 品質統計計算（xxx件総問題）
     Script->>Files: レポートファイル確認
     Files-->>Script: target/site/checkstyle.html等
     
     Script->>Dev: 📊 統合テスト結果表示
     Script->>Dev: ⏱️ 実行時間: XXs
-    Script->>Dev: 🔍 総問題数: 310件
+    Script->>Dev: 🔍 総問題数: xxx件
     Script->>Dev: 📂 レポート場所表示
     Script->>Dev: ❌ 品質ゲート: 改善必要
 ```
@@ -753,17 +1051,17 @@ sequenceDiagram
     
     Note over Format, Quality: Phase 2: 構文・規約チェック
     Checkstyle->>Checkstyle: コーディング規約検証
-    Checkstyle->>Reports: 284件違反レポート
+    Checkstyle->>Reports: xxx件違反レポート
     PMD->>PMD: コード品質分析
-    PMD->>Reports: 17件違反レポート
+    PMD->>Reports: xxx件違反レポート
     
     Note over Format, Quality: Phase 3: バグ検出
     SpotBugs->>SpotBugs: バイトコード解析
-    SpotBugs->>Reports: 9件バグレポート
+    SpotBugs->>Reports: xxx件バグレポート
     
     Note over Format, Quality: Phase 4: 結果統合
     Reports->>Reports: 違反情報統合
-    Reports->>Quality: 総問題数: 310件
+    Reports->>Quality: 総問題数: xxx件
     
     Quality->>Quality: 品質基準判定
     
@@ -787,7 +1085,7 @@ sequenceDiagram
 
 ## まとめ
 
-この包括的なシーケンス図は、DroneInventorySystemプロジェクトにおける静的解析ツールの完全な動作フローを表現しています。
+この包括的なシーケンス図は、プロジェクトにおける静的解析ツールの完全な動作フローを表現しています。
 
 ### 主要なフロー
 1. **手動実行**: 開発者による対話式実行
@@ -798,10 +1096,10 @@ sequenceDiagram
 6. **ツール間連携**: 各ツールの協調動作
 
 ### 検出される品質問題
-- **Checkstyle**: 284件のコーディング規約違反
-- **PMD**: 17件のコード品質問題  
-- **SpotBugs**: 9件の潜在的バグ
-- **総計**: 310件の改善すべき問題
+- **Checkstyle**: xxx件のコーディング規約違反
+- **PMD**: xxx件のコード品質問題  
+- **SpotBugs**: xxx件の潜在的バグ
+- **総計**: xxx件の改善すべき問題
 
 ### 次のステップ
 1. 段階的な品質改善計画の実行

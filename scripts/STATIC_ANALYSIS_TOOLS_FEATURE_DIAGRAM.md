@@ -1,8 +1,9 @@
 # 静的解析ツール特徴・設定・カスタマイズ手順図
 
 ## 概要
-DroneInventorySystemプロジェクトで利用している静的解析ツールの特徴、設定方法、およびカスタマイズ手順を図解したドキュメントです。
+プロジェクトで利用している静的解析ツールの特徴、設定方法、およびカスタマイズ手順を図解したドキュメントです。
 
+**🎨 2024年12月21日更新**: IntelliJ IDEA統合対応、JDK 17環境強制、SpotBugs互換性問題対応を追加  
 **🎨 2024年6月17日更新**: prettier-java + Eclipse統合フォーマット環境対応、タブインデント統一設定を追加
 
 ## 静的解析ツール全体構成図
@@ -44,10 +45,12 @@ graph TB
             POM[pom.xml<br/>formatter-maven-plugin統合]
         end
         
-        subgraph "クロスIDE設定 🎨 NEW"
+        subgraph "クロスIDE設定 🎨 UPDATED"
             VSC[.vscode/settings.json<br/>Prettier統合設定]
             EC[.editorconfig<br/>タブ設定統一]
             EPR[Eclipse設定手順書.md]
+            IJC[IntelliJ IDEA設定<br/>Code Style設定]
+            PRT[pre-commit-result.txt<br/>IDE共通エラー表示]
         end
     end
     
@@ -75,10 +78,13 @@ graph TB
     PJ --> VSC
     EF --> EPR
     ST --> EC
+    ST --> IJC
     
     PC --> IFS
     CI --> IFS
     MS --> IFS
+    
+    IFS --> PRT
 ```
 
 ## 各ツールの特徴と役割マトリックス
@@ -285,7 +291,90 @@ flowchart TD
     J1 --> END[カスタマイズ完了]
 ```
 
-## 統合フォーマット設定カスタマイズフロー 🎨 NEW
+## IntelliJ IDEA統合設定フロー 🎨 NEW
+
+```mermaid
+flowchart TD
+    START[IntelliJ IDEA統合設定開始]
+    
+    START --> A1[Code Style設定]
+    A1 --> A2[Settings → Editor → Code Style → Java]
+    A2 --> A3[Tab size: 4, Use tab character: ON]
+    
+    A3 --> B1[Git統合設定]
+    B1 --> B2[Version Control → Git設定]    
+    B2 --> B3[Pre-commit hook有効化]
+    
+    B3 --> C1[プロジェクト設定]
+    C1 --> C2[Project Structure → Project SDK: JDK 17]
+    C2 --> C3[Maven設定確認]
+    
+    C3 --> D1[pre-commitテスト]
+    D1 --> D2[Git → Commit Changes]
+    D2 --> D3[pre-commitフック実行]
+    
+    D3 --> E1{実行結果}
+    E1 -->|成功| F1[IntelliJ IDEA統合完了]
+    E1 -->|失敗| G1[pre-commit-result.txt確認]
+    
+    G1 --> G2[Project toolwindowで詳細確認]
+    G2 --> G3[エラー修正]
+    G3 --> D1
+    
+    F1 --> H1[内蔵Terminal設定]
+    H1 --> H2[./format-and-check.sh手動実行可能]
+    H2 --> END[IntelliJ IDEA環境構築完了]
+```
+
+## Eclipse vs IntelliJ IDEA 設定比較フロー
+
+```mermaid
+flowchart TD
+    subgraph "IDE選択フロー"
+        START[IDE選択]
+        
+        START --> CHOOSE{使用IDE選択}
+        CHOOSE -->|Eclipse| ECLIP[Eclipse設定フロー]
+        CHOOSE -->|IntelliJ IDEA| INTEL[IntelliJ IDEA設定フロー]
+        CHOOSE -->|両方| BOTH[マルチIDE環境設定]
+    end
+    
+    subgraph "Eclipse設定"
+        ECLIP --> E1[Preferences → Java → Code Style]
+        E1 --> E2[Formatter設定: eclipse-format.xml]
+        E2 --> E3[Checkstyle Plugin導入]
+        E3 --> E4[External Tools設定]
+        E4 --> E5[EGit設定]
+    end
+    
+    subgraph "IntelliJ IDEA設定"
+        INTEL --> I1[Settings → Code Style → Java]
+        I1 --> I2[Tab設定: Use tab character]
+        I2 --> I3[Git統合確認]
+        I3 --> I4[Terminal設定]
+        I4 --> I5[Code Inspection設定]
+    end
+    
+    subgraph "マルチIDE環境"
+        BOTH --> M1[.editorconfig作成]
+        M1 --> M2[統一設定ファイル配置]
+        M2 --> M3[pre-commit-result.txt共通化]
+        M3 --> M4[setup-pre-commit-hook.sh実行]
+    end
+    
+    E5 --> TEST[統合テスト実行]
+    I5 --> TEST
+    M4 --> TEST
+    
+    TEST --> VERIFY{動作確認}
+    VERIFY -->|成功| SUCCESS[環境構築完了]
+    VERIFY -->|失敗| DEBUG[トラブルシューティング]
+    
+    DEBUG --> CHOOSE
+    SUCCESS --> END[統合静的解析システム運用開始]
+```
+
+## 統合フォーマット設定カスタマイズフロー 🎨 UPDATED
 
 ```mermaid
 flowchart TD
@@ -299,6 +388,7 @@ flowchart TD
     B1 --> B3[eclipse-format.xml<br/>Eclipse設定]
     B1 --> B4[.editorconfig<br/>エディタ統一設定]
     B1 --> B5[.vscode/settings.json<br/>VS Code設定]
+    B1 --> B6[IntelliJ IDEA設定<br/>Code Style設定]
     
     B2 --> C1[Node.js環境セットアップ]
     C1 --> C2[package.json作成]
@@ -314,31 +404,142 @@ flowchart TD
     B5 --> F1[VS Code Prettier統合]
     F1 --> F2[formatOnSave: true<br/>editor.insertSpaces: false]
     
-    C3 --> G1[統合スクリプト作成]
-    D3 --> G1
-    E2 --> G1
-    F2 --> G1
+    B6 --> G1[IntelliJ IDEA統合]
+    G1 --> G2[Tab character使用設定<br/>Git統合確認]
     
-    G1 --> G2[format-and-check.sh<br/>統合実行スクリプト]
-    G2 --> G3[Phase1: Space→Tab変換]
-    G3 --> G4[Phase2: Prettier Java実行]
-    G4 --> G5[Phase3: Eclipse Formatter実行]
-    G5 --> G6[Phase4: 品質チェック実行]
+    C3 --> H1[統合スクリプト作成]
+    D3 --> H1
+    E2 --> H1
+    F2 --> H1
+    G2 --> H1
     
-    G6 --> H1[統合テスト]
-    H1 --> H2[47個Javaファイル処理確認]
-    H2 --> H3[タブインデント統一確認]
-    H3 --> H4[Eclipse + VS Code動作確認]
+    H1 --> H2[format-and-check.sh<br/>統合実行スクリプト]
+    H2 --> H3[JDK 17環境強制チェック]
+    H3 --> H4[Phase1: Space→Tab変換]
+    H4 --> H5[Phase2: Prettier Java実行]
+    H5 --> H6[Phase3: Eclipse Formatter実行]
+    H6 --> H7[Phase4: 品質チェック実行]
+    H7 --> H8[SpotBugs互換性問題対応]
     
-    H4 --> I1{統合テスト結果}
-    I1 -->|失敗| J1[設定調整]
-    I1 -->|成功| K1[統合フォーマット環境完成]
+    H8 --> I1[統合テスト]
+    I1 --> I2[47個Javaファイル処理確認]
+    I2 --> I3[タブインデント統一確認]
+    I3 --> I4[Eclipse + IntelliJ IDEA + VS Code動作確認]
+    I4 --> I5[pre-commit-result.txt生成確認]
     
-    J1 --> B1
-    K1 --> END[統合設定完了]
+    I5 --> J1{統合テスト結果}
+    J1 -->|失敗| K1[設定調整]
+    J1 -->|成功| L1[統合フォーマット環境完成]
+    
+    K1 --> B1
+    L1 --> END[統合設定完了]
 ```
 
-## Google Java Format設定カスタマイズフロー ⚠️ LEGACY
+## JDK 17環境強制・SpotBugs互換性対応フロー 🎨 NEW
+
+```mermaid
+flowchart TD
+    START[静的解析システム実行開始]
+    
+    START --> A1[現在のJava環境確認]
+    A1 --> A2[java -version実行]
+    A2 --> A3[バージョン解析]
+    
+    A3 --> B1{Java Version判定}
+    B1 -->|Java 17| B2[✅ JDK 17環境確認]
+    B1 -->|Other| B3[⚠️ JDK 17以外検出]
+    
+    B2 --> C1[JAVA_HOME設定]
+    B3 --> C2[警告表示・処理継続]
+    
+    C1 --> C3[java.home プロパティ取得]
+    C3 --> C4[Maven用JAVA_HOME設定]
+    C2 --> C4
+    
+    C4 --> D1[Maven検証実行]
+    D1 --> D2[mvn -version確認]
+    D2 --> D3[Java 17での動作確認]
+    
+    D3 --> E1[静的解析ツール実行]
+    E1 --> E2[Checkstyle実行]
+    E2 --> E3[PMD実行]
+    E3 --> E4[SpotBugs実行試行]
+    
+    E4 --> F1{SpotBugs実行結果}
+    F1 -->|成功| F2[✅ SpotBugs: 合格]
+    F1 -->|失敗| F3[エラー内容詳細分析]
+    
+    F3 --> G1{エラー種別判定}
+    G1 -->|Unsupported class file major version| G2[Java 21互換性問題検出]
+    G1 -->|Other Error| G3[通常のSpotBugsエラー]
+    
+    G2 --> G4[⚠️ SpotBugs: Java 21クラスファイル互換性問題]
+    G4 --> G5[JDK 17環境でもJava 21クラス参照を検出]
+    G5 --> G6[SpotBugsスキップ・処理継続]
+    G6 --> G7[スキップ理由のログ出力]
+    
+    G3 --> G8[通常のSpotBugsエラー処理]
+    G8 --> G9[エラー詳細表示]
+    G9 --> G10[処理失敗]
+    
+    F2 --> H1[全ツール結果統合]
+    G7 --> H1
+    G10 --> H2[エラー結果統合]
+    
+    H1 --> I1[✅ 統合静的解析成功]
+    H2 --> I2[❌ 統合静的解析失敗]
+    
+    I1 --> J1[pre-commit-result.txt生成]
+    I2 --> J1
+    J1 --> J2[成功/失敗の詳細情報記録]
+    J2 --> END[結果をIDEに通知]
+```
+
+## 複数JDKベンダー対応フロー
+
+```mermaid
+flowchart TD
+    START[Java環境検出開始]
+    
+    START --> A1[システムのjavaコマンド実行]
+    A1 --> A2[java -XshowSettings:properties -version]
+    A2 --> A3[Java実行環境詳細取得]
+    
+    A3 --> B1[ベンダー情報解析]
+    B1 --> B2{JDKベンダー判定}
+    
+    B2 -->|Amazon Corretto| C1[Amazon Corretto 17検出]
+    B2 -->|Eclipse Temurin| C2[Eclipse Temurin 17検出]
+    B2 -->|Oracle JDK| C3[Oracle JDK 17検出]
+    B2 -->|OpenJDK| C4[OpenJDK 17検出]
+    B2 -->|その他| C5[その他JDK 17検出]
+    
+    C1 --> D1[/opt/homebrew/Cellar/openjdk@17/]
+    C2 --> D2[/Library/Java/JavaVirtualMachines/temurin-17.jdk/]
+    C3 --> D3[/Library/Java/JavaVirtualMachines/jdk-17.oracle.com/]
+    C4 --> D4[/usr/lib/jvm/java-17-openjdk/]
+    C5 --> D5[java.home プロパティから動的取得]
+    
+    D1 --> E1[JAVA_HOME設定]
+    D2 --> E1
+    D3 --> E1
+    D4 --> E1
+    D5 --> E1
+    
+    E1 --> F1[Maven実行環境設定]
+    F1 --> F2[export JAVA_HOME]
+    F2 --> F3[mvn -version検証]
+    
+    F3 --> G1{Maven Java版確認}
+    G1 -->|Java 17| G2[✅ Maven Java 17環境確認]
+    G1 -->|Other| G3[⚠️ Maven Java版不整合]
+    
+    G2 --> H1[静的解析実行準備完了]
+    G3 --> H2[警告表示・処理継続]
+    
+    H1 --> END[Maven + Java 17環境構築完了]
+    H2 --> END
+```
 
 ```mermaid
 flowchart TD
@@ -472,7 +673,7 @@ gantt
     レポート生成             :c5, after c4, 1s
 ```
 
-## トラブルシューティングフロー
+## トラブルシューティングフロー 🎨 UPDATED
 
 ```mermaid
 flowchart TD
@@ -484,36 +685,156 @@ flowchart TD
     A1 -->|依存関係| B2[Maven依存関係確認<br/>mvn dependency:tree]
     A1 -->|設定ファイル| B3[設定ファイル構文確認]
     A1 -->|実行エラー| B4[ログ確認]
+    A1 -->|IDE固有| B5[IDE別問題確認]
     
     B1 --> C1[JAVA_HOME設定<br/>Java 17 Corretto]
     B2 --> C2[依存関係解決<br/>mvn clean install]
     B3 --> C3[XMLスキーマ確認]
     B4 --> C4[詳細エラーログ分析]
+    B5 --> C5{IDE種別確認}
+    
+    C5 -->|Eclipse| C6[Package Explorer で pre-commit-result.txt 確認]
+    C5 -->|IntelliJ IDEA| C7[Project toolwindow で pre-commit-result.txt 確認]
+    C5 -->|VS Code| C8[Explorer で pre-commit-result.txt 確認]
     
     C1 --> D1[環境変数永続化<br/>~/.zshrc更新]
     C2 --> D2[プロジェクトクリーン<br/>mvn clean]
     C3 --> D3[設定ファイル修正]
     C4 --> D4[問題箇所特定]
+    C6 --> D5[Eclipse EGit設定確認]
+    C7 --> D6[IntelliJ IDEA Git統合確認]
+    C8 --> D7[VS Code Git拡張確認]
     
     D1 --> E1[再テスト実行]
     D2 --> E1
     D3 --> E1
     D4 --> E1
+    D5 --> E1
+    D6 --> E1
+    D7 --> E1
     
     E1 --> F1{解決確認}
-    F1 -->|No| G1[上位エスカレーション]
-    F1 -->|Yes| H1[解決完了]
+    F1 -->|No| G1[上位エスカレーション<br/>GitHub Issue作成]
+    F1 -->|Yes| H1[解決完了・記録]
     
-    G1 --> START
-    H1 --> END[問題解決]
+    G1 --> G2[問題詳細・環境情報収集]
+    G2 --> G3[再現手順作成]
+    G3 --> START
+    
+    H1 --> H2[解決手順のドキュメント化]
+    H2 --> END[問題解決完了]
+```
+
+## IDE別エラー対応フロー
+
+```mermaid
+flowchart TD
+    subgraph "Eclipse エラー対応"
+        ECL_START[Eclipse でエラー発生]
+        ECL_START --> ECL_1[コミット時に無言ダイアログ]
+        ECL_1 --> ECL_2[Package Explorer 確認]
+        ECL_2 --> ECL_3[pre-commit-result.txt 表示]
+        ECL_3 --> ECL_4[詳細エラー内容確認]
+        ECL_4 --> ECL_5[ファイル修正]
+        ECL_5 --> ECL_6[再コミット実行]
+    end
+    
+    subgraph "IntelliJ IDEA エラー対応"
+        IJ_START[IntelliJ IDEA でエラー発生]
+        IJ_START --> IJ_1[Git統合でコミット失敗]
+        IJ_1 --> IJ_2[Project toolwindow 確認]
+        IJ_2 --> IJ_3[pre-commit-result.txt 表示]
+        IJ_3 --> IJ_4[内蔵ターミナルで詳細確認]
+        IJ_4 --> IJ_5[Quick Fix で自動修正]
+        IJ_5 --> IJ_6[再コミット実行]
+    end
+    
+    subgraph "VS Code エラー対応"
+        VS_START[VS Code でエラー発生]
+        VS_START --> VS_1[Source Control でエラー]
+        VS_1 --> VS_2[Explorer で結果確認]
+        VS_2 --> VS_3[pre-commit-result.txt 表示]
+        VS_3 --> VS_4[統合ターミナルで手動実行]
+        VS_4 --> VS_5[Prettier 自動修正]
+        VS_5 --> VS_6[再コミット実行]
+    end
+    
+    ECL_6 --> SUCCESS[コミット成功]
+    IJ_6 --> SUCCESS
+    VS_6 --> SUCCESS
+    
+    SUCCESS --> END[IDE別エラー対応完了]
 ```
 
 ## まとめ
 
-このドキュメントは、DroneInventorySystemプロジェクトにおける静的解析ツールの包括的な設定・カスタマイズガイドです。各ツールの特徴を理解し、プロジェクトの要件に応じて適切な設定を選択・カスタマイズすることで、高品質なコードベースの維持が可能になります。
+このドキュメントは、プロジェクトにおける統合静的解析システムの包括的な設定・カスタマイズガイドです。
+
+### 🎯 主要な成果
+
+1. **Eclipse + IntelliJ IDEA + VS Code 統合対応**
+   - どのIDEを選択しても同じ品質ゲートを通過
+   - IDE固有の操作方法に対応した結果表示
+
+2. **JDK 17環境の強制統一**
+   - 複数JDKベンダーの自動検出・対応
+   - Maven実行時のJAVA_HOME統一設定
+
+3. **タブインデント統一フォーマット**
+   - Space→Tab変換の前処理
+   - Prettier Java + Eclipse Formatter統合
+   - クロスIDE設定ファイル管理
+
+4. **SpotBugs互換性問題の解決**
+   - Java 21クラスファイル互換性エラーの自動検出
+   - エラー時のスキップ処理とログ出力
+
+5. **統合エラーハンドリング**
+   - pre-commit-result.txt による詳細エラー表示
+   - IDE別のトラブルシューティングフロー
+
+### 🔧 技術的特徴
+
+- **柔軟性**: 各ツールの設定レベルを段階的に調整可能
+- **拡張性**: 新しいツールやルールの追加が容易
+- **保守性**: 設定ファイルの依存関係を明確化
+- **運用性**: 自動化とマニュアル実行の両方に対応
+
+### 📈 品質向上効果
+
+```mermaid
+graph LR
+    subgraph "導入前"
+        A1[IDE固有の設定] --> A2[品質基準の差]
+        A2 --> A3[コードレビューの負荷]
+    end
+    
+    subgraph "導入後"
+        B1[統一品質ゲート] --> B2[自動品質チェック]
+        B2 --> B3[高品質コードベース]
+    end
+    
+    A3 --> B1
+    B3 --> C1[継続的品質改善]
+```
 
 ### 次のステップ
-1. 各ツールの設定レベルを段階的に引き上げ
-2. チーム固有のルール追加
-3. 継続的な品質改善プロセスの確立
-4. 定期的な設定見直しとメンテナンス
+
+1. **品質基準の段階的向上**
+   - checkstyle-simple.xml から checkstyle-strict.xml への移行
+   - PMD・SpotBugsルールの段階的厳格化
+
+2. **チーム固有ルールの追加**
+   - プロジェクト特有のコーディング規約
+   - セキュリティ要件に応じたカスタムルール
+
+3. **CI/CDパイプライン統合**
+   - GitHub Actions との連携強化
+   - 品質メトリクスの可視化
+
+4. **定期的なメンテナンス**
+   - 依存関係の更新
+   - 新しいJavaバージョンへの対応
+   - IDE新バージョンへの追従
+
+このシステムにより、開発者は好みのIDEを使いながら、統一された高品質なコードベースを維持できるようになります。
