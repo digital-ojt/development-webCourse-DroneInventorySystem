@@ -7,7 +7,7 @@ package com.digitalojt.web.exception;
  */
 public class InvalidInputException extends RuntimeException {
 
-  public InvalidInputException(String messageCode) {
-    super(ErrorMessageHelper.getMessage(messageCode));
-  }
+	public InvalidInputException(String messageCode) {
+		super(ErrorMessageHelper.getMessage(messageCode));
+	}
 }

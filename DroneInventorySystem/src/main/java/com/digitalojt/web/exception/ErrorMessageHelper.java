@@ -10,13 +10,13 @@ import java.util.ResourceBundle;
  */
 public class ErrorMessageHelper {
 
-  private static final ResourceBundle MESSAGES = ResourceBundle.getBundle("messages");
+	private static final ResourceBundle MESSAGES = ResourceBundle.getBundle("messages");
 
-  public static String getMessage(String messageCode) {
-    try {
-      return MESSAGES.getString(messageCode);
-    } catch (MissingResourceException e) {
-      return "Unknown error: " + messageCode; // デフォルトメッセージ
-    }
-  }
+	public static String getMessage(String messageCode) {
+		try {
+			return MESSAGES.getString(messageCode);
+		} catch (MissingResourceException e) {
+			return "Unknown error: " + messageCode; // デフォルトメッセージ
+		}
+	}
 }

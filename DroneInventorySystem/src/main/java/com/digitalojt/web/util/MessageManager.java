@@ -10,15 +10,15 @@ import org.springframework.context.MessageSource;
  */
 public class MessageManager {
 
-  /**
-   * メッセージIDからメッセージを取得
-   *
-   * @param messageSource
-   * @param key
-   * @param params
-   * @return
-   */
-  public static String getMessage(MessageSource messageSource, String key, Object... params) {
-    return messageSource.getMessage(key, params, Locale.JAPAN);
-  }
+	/**
+	 * メッセージIDからメッセージを取得
+	 *
+	 * @param messageSource
+	 * @param key
+	 * @param params
+	 * @return
+	 */
+	public static String getMessage(MessageSource messageSource, String key, Object... params) {
+		return messageSource.getMessage(key, params, Locale.JAPAN);
+	}
 }

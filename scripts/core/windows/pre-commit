@@ -1,0 +1,253 @@
+#!/bin/bash
+
+# =============================================================================
+# Windows用 Pre-commit Hook - 統合静的解析システム
+# =============================================================================
+# 
+# Windows環境 (Git Bash) に最適化されたpre-commitフックです。
+# コミット時に統合フォーマット・静的解析を実行し、品質ゲートを制御します。
+#
+# 除外ブランチ: main, master, develop, release/*, hotfix/*  
+# 実行内容: 統合フォーマット + Checkstyle + PMD + SpotBugs
+#
+# 注意: このスクリプトは実機テストを行っていません。
+#       Windows環境での動作確認後、必要に応じて調整してください。
+#
+# =============================================================================
+
+# エラーハンドリング: 最後まで実行してからexitする
+# set -e  # ファイル生成を確実に実行するため、関数内で個別に制御
+
+# プロジェクトルート取得
+PROJECT_ROOT="$(git rev-parse --show-toplevel)"
+
+# 除外ブランチリスト（静的解析をスキップするブランチ）
+SKIP_BRANCHES=(
+    "main"
+    "master" 
+    "master-test"
+    "develop"
+    "release/*"
+    "hotfix/*"
+)
+
+# 現在のブランチ名を取得
+CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
+
+# ログ出力関数
+log_info() {
+    echo "🔧 $1"
+}
+
+log_success() {
+    echo "✅ $1"
+}
+
+log_warning() {
+    echo "⚠️  $1"
+}
+
+log_error() {
+    echo "❌ $1"
+}
+
+log_skip() {
+    echo "🔄 $1"
+}
+
+log_note() {
+    echo "📝 $1"
+}
+
+# ブランチ除外チェック
+check_branch_exclusion() {
+    for skip_branch in "${SKIP_BRANCHES[@]}"; do
+        if [[ "$CURRENT_BRANCH" == $skip_branch ]]; then
+            log_skip "ブランチ '$CURRENT_BRANCH' は静的解析をスキップします"
+            log_success "コミットを続行します（品質チェック無し）"
+            exit 0
+        fi
+    done
+}
+
+# Windows環境情報取得
+get_windows_info() {
+    if command -v systeminfo >/dev/null 2>&1; then
+        WINDOWS_VERSION=$(systeminfo 2>/dev/null | grep "OS Name" | cut -d: -f2 | sed 's/^ *//' || echo "Windows (バージョン不明)")
+    else
+        WINDOWS_VERSION="Windows (Git Bash)"
+    fi
+}
+
+# Windows固有の環境チェック（重複削除済み）
+
+# エラー時の詳細ガイド表示
+show_error_guide() {
+    log_error "Pre-commit checks に失敗しました"
+    echo ""
+    log_info "📋 詳細確認方法（Windows用）:"
+    echo ""
+    echo "  【Eclipse IDE】"
+    echo "    Package Explorer で 'pre-commit-result.txt' を開いてください"
+    echo ""
+    echo "  【IntelliJ IDEA】"
+    echo "    Project toolwindow で 'pre-commit-result.txt' を開いてください"
+    echo ""
+    echo "  【VS Code】"  
+    echo "    Explorer で 'pre-commit-result.txt' を開いてください"
+    echo ""
+    echo "  【手動実行（Git Bash）】"
+    echo "    cd DroneInventorySystem"
+    echo "    ../scripts/core/windows/format-and-check.sh"
+    echo ""
+    echo "  【Windows固有のトラブルシューティング】"
+    echo "    - コマンドプロンプトで環境変数確認: echo %JAVA_HOME%"
+    echo "    - Windows Defenderの除外設定を確認"
+    echo "    - 管理者権限でのChocolatey更新: choco upgrade all"
+    echo ""
+    log_note "Windows環境での実機テストは未完了です"
+    log_info "Windows用 Pre-commit Hook by development-webCourse-DroneInventorySystem"
+}
+
+# Windows固有の環境チェック
+check_windows_environment() {
+    # Git Bash環境確認
+    if [ -n "$BASH_VERSION" ]; then
+        log_success "Git Bash環境: 確認済み"
+    else
+        log_warning "Git Bash環境ではない可能性があります"
+    fi
+    
+    # Windows環境確認
+    get_windows_info
+    log_info "実行環境: $WINDOWS_VERSION"
+    
+    # 必要なコマンドの存在確認
+    local missing_commands=()
+    
+    if ! command -v java >/dev/null 2>&1; then
+        missing_commands+=("java")
+    fi
+    
+    if ! command -v mvn >/dev/null 2>&1 && ! command -v mvn.cmd >/dev/null 2>&1; then
+        missing_commands+=("maven")
+    fi
+    
+    if ! command -v node >/dev/null 2>&1; then
+        missing_commands+=("node")
+    fi
+    
+    if [ ${#missing_commands[@]} -gt 0 ]; then
+        log_warning "以下のコマンドが見つかりません: ${missing_commands[*]}"
+        log_note "Windows用セットアップを再実行することを推奨します"
+    fi
+}
+
+# メイン処理
+main() {
+    log_info "Windows用 Pre-commit Hook: 統合静的解析システム開始"
+    log_note "注意: Windows環境での実機テストは未完了です"
+    echo "📍 現在のブランチ: $CURRENT_BRANCH"
+    echo "🎨 統合フォーマット: Space→Tab + Prettier Java + Eclipse Formatter"
+    echo "🔍 静的解析: Checkstyle + PMD + SpotBugs (JDK 17対応)"
+    echo "⚠️  注意: 品質違反が検出された場合、コミットは阻止されます"
+    echo ""
+    
+    # Windows環境チェック
+    check_windows_environment
+    
+    # ブランチ除外チェック
+    check_branch_exclusion
+    
+    # DroneInventorySystemディレクトリに移動
+    if [ ! -d "$PROJECT_ROOT/DroneInventorySystem" ]; then
+        log_error "DroneInventorySystemディレクトリが見つかりません"
+        exit 1
+    fi
+    
+    cd "$PROJECT_ROOT/DroneInventorySystem"
+    
+    # Windows用統合フォーマット・静的解析スクリプト実行
+    log_info "Windows用統合フォーマット・静的解析実行中..."
+    
+    if [ -f "../scripts/core/windows/format-and-check.sh" ]; then
+        # 実行権限確認
+        chmod +x "../scripts/core/windows/format-and-check.sh"
+        
+        # 一時ファイルで実行結果をキャプチャ
+        local temp_output="$PROJECT_ROOT/.git/pre-commit-temp-output.log"
+        
+        # 静的解析スクリプトを実行し、exit codeを保持
+        ../scripts/core/windows/format-and-check.sh > "$temp_output" 2>&1
+        local exit_code=$?
+        
+        # 結果ログを直接生成（Windows版）
+        local result_file="$PROJECT_ROOT/pre-commit-result.txt"
+        
+        # Windows環境情報を取得
+        get_windows_info
+        
+        {
+            echo "=== Windows用 Pre-commit Hook 実行結果 ==="
+            echo "実行時間: $(date)"
+            echo "ブランチ: $CURRENT_BRANCH"
+            echo "実行環境: $WINDOWS_VERSION"
+            echo "Git Bash: $BASH_VERSION"
+            echo "Java版: $(java -version 2>&1 | head -n1 || echo 'Java情報取得失敗')"
+            echo ""
+            echo "=== 実行内容 ==="
+            echo "1. Windows用統合フォーマット・静的解析スクリプト実行"
+            echo "2. scripts/core/windows/format-and-check.sh"
+            echo ""
+            echo "=== 実行結果詳細 ==="
+            if [ -f "$temp_output" ]; then
+                cat "$temp_output"
+            else
+                echo "❌ 実行結果ファイルが見つかりません: $temp_output"
+            fi
+        } > "$result_file"
+        
+        # 結果メッセージ追加
+        if [ $exit_code -eq 0 ]; then
+            echo "" >> "$result_file"
+            echo "✅ 全ての品質チェックに合格しました" >> "$result_file"
+            echo "🎉 コミットが正常に完了しました" >> "$result_file"
+            echo "🌟 Windows環境での実行が成功しました" >> "$result_file"
+        else
+            echo "" >> "$result_file"
+            echo "❌ 品質チェックで問題が検出されました" >> "$result_file"
+            echo "🔧 修正後、再度コミットを実行してください" >> "$result_file"
+            echo "" >> "$result_file"
+            echo "📋 Windows用トラブルシューティング:" >> "$result_file"
+            echo "  - PRE-COMMIT-GUIDE-WINDOWS.md を確認してください" >> "$result_file"
+            echo "  - 手動実行: cd DroneInventorySystem && ../scripts/core/windows/format-and-check.sh" >> "$result_file"
+            echo "  - Git Bash環境の確認: bash --version" >> "$result_file"
+            echo "  - Java環境の確認: java -version" >> "$result_file"
+            echo "  - Maven環境の確認: mvn -version" >> "$result_file"
+        fi
+        
+        # exit codeに応じてコミット制御
+        if [ $exit_code -eq 0 ]; then
+            log_success "Windows用統合静的解析: 全て合格"
+            log_success "コミットを続行します"
+            log_note "Windows環境での実行が成功しました"
+            # 成功時に一時ファイルを削除
+            rm -f "$temp_output"
+            exit 0
+        else
+            log_error "Windows用統合静的解析: 品質違反が検出されました"
+            show_error_guide
+            # エラー時に一時ファイルを削除
+            rm -f "$temp_output"
+            exit 1
+        fi
+    else
+        log_error "Windows用統合フォーマット・静的解析スクリプトが見つかりません"
+        log_error "期待される場所: scripts/core/windows/format-and-check.sh"
+        log_note "Windows用セットアップを再実行してください"
+        exit 1
+    fi
+}
+
+# スクリプト実行
+main "$@"

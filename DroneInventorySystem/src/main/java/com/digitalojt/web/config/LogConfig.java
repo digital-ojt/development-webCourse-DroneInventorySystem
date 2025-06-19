@@ -12,8 +12,8 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class LogConfig {
 
-  @Bean
-  public LogSettingFilter logSettingFilter() {
-    return new LogSettingFilter();
-  }
+	@Bean
+	public LogSettingFilter logSettingFilter() {
+		return new LogSettingFilter();
+	}
 }

@@ -16,19 +16,19 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class LoginService {
 
-  /** 管理者情報テーブル リポイジトリー */
-  private final AdminInfoRepository repository;
+	/** 管理者情報テーブル リポイジトリー */
+	private final AdminInfoRepository repository;
 
-  /** パスワードエンコーダー */
-  private final PasswordEncoder passwordEncoder;
+	/** パスワードエンコーダー */
+	private final PasswordEncoder passwordEncoder;
 
-  /**
-   * ユーザ情報テーブル 主キー検索
-   *
-   * @param loginId ログインID
-   * @return ユーザ情報テーブルを主キー検索した結果(1件)
-   */
-  public Optional<AdminInfo> searchUserById(String loginId) {
-    return repository.findById(loginId);
-  }
+	/**
+	 * ユーザ情報テーブル 主キー検索
+	 *
+	 * @param loginId ログインID
+	 * @return ユーザ情報テーブルを主キー検索した結果(1件)
+	 */
+	public Optional<AdminInfo> searchUserById(String loginId) {
+		return repository.findById(loginId);
+	}
 }

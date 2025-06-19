@@ -15,13 +15,13 @@ import java.lang.annotation.Target;
  * @author dotlife
  */
 @Constraint(validatedBy = OperationLogFormValidatorImpl.class)
-@Target({ElementType.TYPE})
+@Target({ ElementType.TYPE })
 @Retention(RetentionPolicy.RUNTIME)
 @ReportAsSingleViolation
 public @interface OperationLogFormValidator {
-  String message() default ErrorMessage.ALL_FIELDS_EMPTY_ERROR_MESSAGE;
+	String message() default ErrorMessage.ALL_FIELDS_EMPTY_ERROR_MESSAGE;
 
-  Class<?>[] groups() default {};
+	Class<?>[] groups() default {};
 
-  Class<? extends Payload>[] payload() default {};
+	Class<? extends Payload>[] payload() default {};
 }

@@ -1,3 +1,11 @@
 /.metadata/
 /.idea/
 /Servers/
+.vscode/settings.json
+/bin/
+/logs/
+/.vscode/
+DroneInventorySystem/.editorconfig
+DroneInventorySystem/logs/*.log
+pre-commit-result.txt
+test-output.log
