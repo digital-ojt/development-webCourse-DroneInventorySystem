@@ -50,59 +50,36 @@ fi
 
 echo "✅ Maven環境確認完了: $MVN_CMD"
 
-# JDK 17環境の確認と設定
-echo "☕ JDK 17環境の確認と設定..."
-
-# JDK 17のパスを検索
-JDK17_PATHS=(
-    "/Library/Java/JavaVirtualMachines/temurin-17.jdk/Contents/Home"
-    "/Library/Java/JavaVirtualMachines/openjdk-17.jdk/Contents/Home"
-    "/Library/Java/JavaVirtualMachines/jdk-17.jdk/Contents/Home"
-    "/usr/lib/jvm/java-17-openjdk"
-    "/usr/lib/jvm/temurin-17-jdk"
-)
-
-JAVA_17_HOME=""
-for jdk_path in "${JDK17_PATHS[@]}"; do
-    if [ -d "$jdk_path" ]; then
-        JAVA_17_HOME="$jdk_path"
-        break
-    fi
-done
+# JDK 17環境の確認
+echo "☕ Java環境の確認..."
 
 # 現在のJavaバージョンを確認
 CURRENT_JAVA_VERSION=$(java -version 2>&1 | head -n1 | cut -d'"' -f2)
 CURRENT_JAVA_MAJOR=$(echo $CURRENT_JAVA_VERSION | cut -d'.' -f1)
 
-if [ -n "$JAVA_17_HOME" ]; then
-    echo "✅ JDK 17検出: $JAVA_17_HOME"
-    # JDK 17を使用するための環境変数設定
-    export JAVA_HOME="$JAVA_17_HOME"
-    export PATH="$JAVA_17_HOME/bin:$PATH"
-    
-    # 設定後のJavaバージョンを確認
-    JAVA_VERSION=$(java -version 2>&1 | head -n1 | cut -d'"' -f2)
-    JAVA_MAJOR=$(echo $JAVA_VERSION | cut -d'.' -f1)
-    echo "✅ 使用Java: $JAVA_VERSION (JDK $JAVA_MAJOR)"
-    
-    if [ "$JAVA_MAJOR" != "17" ]; then
-        echo "⚠️  警告: JDK 17に設定しましたが、現在のJavaは$JAVA_MAJORです"
-    fi
+echo "   現在のJava: $CURRENT_JAVA_VERSION"
+echo "   メジャーバージョン: $CURRENT_JAVA_MAJOR"
+
+# JDK 17であることを確認
+if [ "$CURRENT_JAVA_MAJOR" = "17" ]; then
+    echo "✅ JDK 17環境を確認: プロジェクト要件に適合"
+    JAVA_HOME_PATH=$(java -XshowSettings:properties -version 2>&1 | grep 'java.home' | awk '{print $3}')
+    echo "   JAVA_HOME: $JAVA_HOME_PATH"
+elif [ "$CURRENT_JAVA_MAJOR" = "11" ]; then
+    echo "⚠️  JDK 11が使用されています"
+    echo "   このプロジェクトはJDK 17での動作を前提としています"
+    echo "   Eclipse設定: Preferences → Java → Installed JREs → JDK 17を選択"
+    echo "   静的解析を続行しますが、JDK 17への変更を推奨します"
+elif [ "$CURRENT_JAVA_MAJOR" = "21" ]; then
+    echo "⚠️  JDK 21が使用されています"
+    echo "   このプロジェクトはJDK 17での動作を前提としています"
+    echo "   Eclipse設定: Preferences → Java → Installed JREs → JDK 17を選択"
+    echo "   JDK 21でも静的解析を続行します"
 else
-    echo "❌ エラー: JDK 17が見つかりません"
-    echo "   現在のJava: $CURRENT_JAVA_VERSION (JDK $CURRENT_JAVA_MAJOR)"
-    echo ""
-    echo "🔧 JDK 17のインストール方法:"
-    echo "   1. Homebrew: brew install openjdk@17"
-    echo "   2. Eclipse Temurin: https://adoptium.net/temurin/releases/?version=17"
-    echo "   3. Oracle JDK: https://www.oracle.com/java/technologies/downloads/#java17"
-    echo ""
-    echo "📋 Eclipse/IntelliJ設定確認:"
-    echo "   - Eclipse: Preferences → Java → Installed JREs → JDK 17を選択"
-    echo "   - IntelliJ: File → Project Structure → SDKs → JDK 17を選択"
-    echo ""
-    echo "⚠️  このプロジェクトはJDK 17での動作を前提としています"
-    exit 1
+    echo "⚠️  JDK $CURRENT_JAVA_MAJOR が使用されています"
+    echo "   このプロジェクトはJDK 17での動作を前提としています"
+    echo "   Eclipse設定: Preferences → Java → Installed JREs → JDK 17を選択"
+    echo "   静的解析を続行しますが、予期しない問題が発生する可能性があります"
 fi
 echo ""
 
@@ -189,7 +166,7 @@ echo "===================="
 echo "🔧 タブインデント: ✅ 適用済み"
 echo "🎨 Prettier: ✅ 実行済み"
 echo "🌟 Eclipse Formatter: ✅ 実行済み"
-echo "☕ 使用Java: $(java -version 2>&1 | head -n1 | cut -d'"' -f2)"
+echo "☕ 使用Java: $(java -version 2>&1 | head -n1 | cut -d'"' -f2) (プロジェクト推奨: JDK 17)"
 
 if [ $CHECKSTYLE_RESULT -eq 0 ] && [ $PMD_RESULT -eq 0 ] && [ $SPOTBUGS_RESULT -eq 0 ]; then
     echo "🎉 すべてのチェック: ✅ 合格"
@@ -219,9 +196,10 @@ echo "    Window → Preferences → Java → Code Style → Formatter"
 echo "    でインポートしてください。"
 
 # 🔧 重要: 静的解析の結果に基づいて適切な終了コードを返す
+CURRENT_JAVA_VERSION=$(java -version 2>&1 | head -n1 | cut -d'"' -f2)
 if [ $CHECKSTYLE_RESULT -eq 0 ] && [ $PMD_RESULT -eq 0 ] && [ $SPOTBUGS_RESULT -eq 0 ]; then
     echo ""
-    echo "✅ 統合チェック完了: すべて合格 (JDK 17環境)"
+    echo "✅ 統合チェック完了: すべて合格 (Java $CURRENT_JAVA_VERSION)"
     exit 0
 else
     echo ""
