@@ -78,73 +78,7 @@ get_windows_info() {
     fi
 }
 
-# 結果ログ生成
-generate_result_log() {
-    local exit_code=$1
-    local temp_output_file=$2
-    local log_file="$PROJECT_ROOT/.git/pre-commit-last-run.log"
-    local result_file="$PROJECT_ROOT/pre-commit-result.txt"
-    
-    # Windows環境情報取得
-    get_windows_info
-    
-    # 詳細ログ生成
-    {
-        echo "=== Windows用 Pre-commit Hook 実行結果 ==="
-        echo "実行時間: $(date)"
-        echo "ブランチ: $CURRENT_BRANCH"
-        echo "実行環境: $WINDOWS_VERSION"
-        echo "Git Bash: $BASH_VERSION"
-        echo "Java版: $(java -version 2>&1 | head -n1 || echo 'Java情報取得失敗')"
-        echo ""
-        echo "=== 実行内容 ==="
-        echo "1. Windows用統合フォーマット・静的解析スクリプト実行"
-        echo "2. scripts/core/windows/format-and-check.sh"
-        echo ""
-        echo "=== 実行結果詳細 ==="
-        # 一時ファイルの内容を追加
-        if [ -f "$temp_output_file" ]; then
-            cat "$temp_output_file"
-        fi
-    } > "$log_file"
-    
-    # Eclipse/IntelliJ IDEA用の結果ファイル生成
-    cp "$log_file" "$result_file"
-        echo "2. scripts/core/windows/format-and-check.sh"
-        echo ""
-        echo "⚠️ 注意: Windows環境での実機テストは未完了です"
-        echo ""
-        echo "=== 実行結果詳細 ==="
-    } > "$log_file"
-    
-    # 結果をファイルに追記
-    cat >> "$log_file"
-    
-    # Eclipse/IntelliJ IDEA用の結果ファイル生成
-    cp "$log_file" "$result_file"
-    
-    # 結果に応じたメッセージ追加
-    if [ $exit_code -eq 0 ]; then
-        echo "" >> "$result_file"
-        echo "✅ 全ての品質チェックに合格しました" >> "$result_file"
-        echo "🎉 コミットが正常に完了しました" >> "$result_file"
-        echo "" >> "$result_file"
-        echo "📝 Windows環境での実行が成功しました" >> "$result_file"
-    else
-        echo "" >> "$result_file"
-        echo "❌ 品質チェックで問題が検出されました" >> "$result_file"
-        echo "🔧 修正後、再度コミットを実行してください" >> "$result_file"
-        echo "" >> "$result_file"
-        echo "📋 Windows用トラブルシューティング:" >> "$result_file"
-        echo "  - PRE-COMMIT-GUIDE-WINDOWS.md を確認してください" >> "$result_file"
-        echo "  - 手動実行: cd DroneInventorySystem && ../scripts/core/windows/format-and-check.sh" >> "$result_file"
-        echo "  - 環境変数確認: echo %JAVA_HOME% && echo %PATH%" >> "$result_file"
-        echo "  - Chocolatey更新: choco upgrade all (管理者権限)" >> "$result_file"
-        echo "  - Windows Defender除外設定を検討してください" >> "$result_file"
-        echo "" >> "$result_file"
-        echo "⚠️ Windows環境での問題はGitHubのIssueで報告してください" >> "$result_file"
-    fi
-}
+# Windows固有の環境チェック（重複削除済み）
 
 # エラー時の詳細ガイド表示
 show_error_guide() {
@@ -246,8 +180,54 @@ main() {
         ../scripts/core/windows/format-and-check.sh > "$temp_output" 2>&1
         local exit_code=$?
         
-        # 結果ログを生成
-        generate_result_log $exit_code "$temp_output"
+        echo "🔧 DEBUG: Windows用静的解析完了 exit_code=$exit_code" >&2
+        
+        # 結果ログを直接生成（Windows版）
+        local result_file="$PROJECT_ROOT/pre-commit-result.txt"
+        
+        # Windows環境情報を取得
+        get_windows_info
+        
+        {
+            echo "=== Windows用 Pre-commit Hook 実行結果 ==="
+            echo "実行時間: $(date)"
+            echo "ブランチ: $CURRENT_BRANCH"
+            echo "実行環境: $WINDOWS_VERSION"
+            echo "Git Bash: $BASH_VERSION"
+            echo "Java版: $(java -version 2>&1 | head -n1 || echo 'Java情報取得失敗')"
+            echo ""
+            echo "=== 実行内容 ==="
+            echo "1. Windows用統合フォーマット・静的解析スクリプト実行"
+            echo "2. scripts/core/windows/format-and-check.sh"
+            echo ""
+            echo "=== 実行結果詳細 ==="
+            if [ -f "$temp_output" ]; then
+                cat "$temp_output"
+            else
+                echo "❌ 実行結果ファイルが見つかりません: $temp_output"
+            fi
+        } > "$result_file"
+        
+        # 結果メッセージ追加
+        if [ $exit_code -eq 0 ]; then
+            echo "" >> "$result_file"
+            echo "✅ 全ての品質チェックに合格しました" >> "$result_file"
+            echo "🎉 コミットが正常に完了しました" >> "$result_file"
+            echo "🌟 Windows環境での実行が成功しました" >> "$result_file"
+        else
+            echo "" >> "$result_file"
+            echo "❌ 品質チェックで問題が検出されました" >> "$result_file"
+            echo "🔧 修正後、再度コミットを実行してください" >> "$result_file"
+            echo "" >> "$result_file"
+            echo "📋 Windows用トラブルシューティング:" >> "$result_file"
+            echo "  - PRE-COMMIT-GUIDE-WINDOWS.md を確認してください" >> "$result_file"
+            echo "  - 手動実行: cd DroneInventorySystem && ../scripts/core/windows/format-and-check.sh" >> "$result_file"
+            echo "  - Git Bash環境の確認: bash --version" >> "$result_file"
+            echo "  - Java環境の確認: java -version" >> "$result_file"
+            echo "  - Maven環境の確認: mvn -version" >> "$result_file"
+        fi
+        
+        echo "🔧 DEBUG: Windows用結果ファイル生成完了: $result_file" >&2
         
         # exit codeに応じてコミット制御
         if [ $exit_code -eq 0 ]; then
