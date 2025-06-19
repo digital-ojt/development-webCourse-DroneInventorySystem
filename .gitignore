@@ -8,3 +8,4 @@
 DroneInventorySystem/.editorconfig
 DroneInventorySystem/logs/*.log
 pre-commit-result.txt
+test-output.log

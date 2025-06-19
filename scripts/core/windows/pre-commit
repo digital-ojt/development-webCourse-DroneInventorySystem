@@ -249,18 +249,19 @@ main() {
         # 結果ログを生成
         generate_result_log $exit_code "$temp_output"
         
-        # 一時ファイルを削除
-        rm -f "$temp_output"
-        
         # exit codeに応じてコミット制御
         if [ $exit_code -eq 0 ]; then
             log_success "Windows用統合静的解析: 全て合格"
             log_success "コミットを続行します"
             log_note "Windows環境での実行が成功しました"
+            # 成功時に一時ファイルを削除
+            rm -f "$temp_output"
             exit 0
         else
             log_error "Windows用統合静的解析: 品質違反が検出されました"
             show_error_guide
+            # エラー時に一時ファイルを削除
+            rm -f "$temp_output"
             exit 1
         fi
     else

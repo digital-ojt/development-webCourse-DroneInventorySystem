@@ -209,13 +209,21 @@ execute_static_analysis() {
             log_warning "SpotBugs: Java 21クラスファイル互換性問題を検出"
             log_info "→ JDK 17環境でも一部Java 21クラスが参照されています"
             log_info "→ 静的解析は継続しますが、SpotBugsはスキップします"
+            # 互換性問題の場合、他のチェック結果を優先
         else
             log_warning "SpotBugs: 問題が検出されました"
             all_passed=false
         fi
     fi
     
-    return $([ "$all_passed" = true ] && echo 0 || echo 1)
+    # 結果判定を明確にする
+    if [ "$all_passed" = true ]; then
+        log_success "✅ 全ての静的解析チェックに合格しました"
+        return 0
+    else
+        log_error "❌ 静的解析で問題が検出されました"
+        return 1
+    fi
 }
 
 # 結果出力 (macOS用)
