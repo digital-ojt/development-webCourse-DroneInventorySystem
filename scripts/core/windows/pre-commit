@@ -81,6 +81,7 @@ get_windows_info() {
 # 結果ログ生成
 generate_result_log() {
     local exit_code=$1
+    local temp_output_file=$2
     local log_file="$PROJECT_ROOT/.git/pre-commit-last-run.log"
     local result_file="$PROJECT_ROOT/pre-commit-result.txt"
     
@@ -98,6 +99,17 @@ generate_result_log() {
         echo ""
         echo "=== 実行内容 ==="
         echo "1. Windows用統合フォーマット・静的解析スクリプト実行"
+        echo "2. scripts/core/windows/format-and-check.sh"
+        echo ""
+        echo "=== 実行結果詳細 ==="
+        # 一時ファイルの内容を追加
+        if [ -f "$temp_output_file" ]; then
+            cat "$temp_output_file"
+        fi
+    } > "$log_file"
+    
+    # Eclipse/IntelliJ IDEA用の結果ファイル生成
+    cp "$log_file" "$result_file"
         echo "2. scripts/core/windows/format-and-check.sh"
         echo ""
         echo "⚠️ 注意: Windows環境での実機テストは未完了です"
@@ -235,7 +247,7 @@ main() {
         local exit_code=$?
         
         # 結果ログを生成
-        cat "$temp_output" | generate_result_log $exit_code
+        generate_result_log $exit_code "$temp_output"
         
         # 一時ファイルを削除
         rm -f "$temp_output"
