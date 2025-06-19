@@ -84,12 +84,31 @@ generate_result_log() {
         echo "=== 実行結果詳細 ==="
         # 一時ファイルの内容を追加
         if [ -f "$temp_output_file" ]; then
+            echo "🔧 一時ファイルからログを読み込み中..." >&2
             cat "$temp_output_file"
+        else
+            echo "⚠️ 一時ファイルが見つかりません: $temp_output_file" >&2
+            echo "❌ 一時ファイルが見つかりません: $temp_output_file"
         fi
     } > "$log_file"
     
+    # ログファイル生成の確認
+    if [ -f "$log_file" ]; then
+        echo "✅ ログファイル生成完了: $log_file" >&2
+    else
+        echo "❌ ログファイル生成失敗: $log_file" >&2
+    fi
+    
     # Eclipse/IntelliJ IDEA用の結果ファイル生成
+    echo "🔧 結果ファイル生成中: $result_file" >&2
     cp "$log_file" "$result_file"
+    
+    # コピー結果の確認
+    if [ -f "$result_file" ]; then
+        echo "✅ 結果ファイルコピー完了: $result_file" >&2
+    else
+        echo "❌ 結果ファイルコピー失敗: $result_file" >&2
+    fi
     
     # 結果に応じたメッセージ追加
     if [ $exit_code -eq 0 ]; then
