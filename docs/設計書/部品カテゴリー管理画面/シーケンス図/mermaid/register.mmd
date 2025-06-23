@@ -1,0 +1,43 @@
+sequenceDiagram
+    participant User
+    participant Controller as CategoryInfoController
+    participant Form as CategoryInfoForm
+    participant Validator as CategoryInfoFormValidatorImpl
+    participant Service as CategoryInfoService
+    participant Repository as CategoryInfoRepository
+    participant DB as 部品カテゴリー情報テーブル
+
+    User->>Controller: GET /admin/CategoryInfo/register
+    Controller-->>User: return /admin/categoryInfo/register // 登録画面を表示
+
+    User->>Controller: POST /admin/categoryInfo/register // 登録情報を渡す
+    Form->>Validator: validate() // バリデーションチェック
+
+    alt 入力エラーあり
+        Validator-->>Form: エラーメッセージ設定
+        Form-->>Controller: エラーメッセージ送信
+        Controller-->>User: エラーメッセージ表示
+        Controller-->>User: return /admin/categoryInfo/register // 登録画面を表示
+    else 正常処理
+        Controller->>Service: saveCategoryInfoData(form) // 入力データに応じて在庫センター情報登録の指示
+        
+        critical トランザクション
+            Service->>Repository: saveCategoryInfo(form) // 業務データ入出力の指示
+            Repository->>DB: INSERT INTO category_info // formに応じてデータ登録
+
+            alt データ登録中にエラーが発生
+                Service->>DB: データロールバック
+            else 正常処理
+                Service->>DB: データをコミットする
+            end
+        end
+
+        alt データ登録中にエラーが発生していた場合
+            Service-->>Controller: エラーメッセージ送信
+            Controller-->>User: エラーメッセージ表示
+            Controller-->>User: return /admin/categoryInfo/register // 登録画面を表示
+        else 正常処理
+            Controller-->>User: addFlashAttribute() // 登録メッセージを表示
+            Controller-->>User: redirect: /admin/CategoryInfo/index // 部品カテゴリー 初期表示へリダイレクト
+        end
+    end

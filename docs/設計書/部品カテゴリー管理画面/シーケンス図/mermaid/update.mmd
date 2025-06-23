@@ -1,0 +1,54 @@
+sequenceDiagram
+    participant User
+    participant Controller as CategoryInfoController
+    participant Form as CategoryInfoForm
+    participant Validator as CategoryInfoFormValidatorImpl
+    participant Service as CategoryInfoService
+    participant Repository as CategoryInfoRepository
+    participant DB as 部品カテゴリー情報テーブル
+
+    User->>Controller: GET /admin/categoryInfo/update/{CategoryId} 
+    Controller->>Service: getCategoryInfoData(@PathVariable("CategoryId")) // IDに応じて部品カテゴリー情報取得の指示
+    Service->>Repository: findByCategoryId(CategoryId) // 業務データの取得指示
+    Repository->>DB: SELECT s FROM category_info // formに応じてデータ取得
+    DB -->> Repository: 部品カテゴリー情報リスト取得
+    Repository -->> Service: 部品カテゴリー情報リスト返却
+
+
+    alt 部品カテゴリー情報が空の場合
+        Service -->> Controller: エラーメッセージ設定
+        Controller-->>User: エラーメッセージ表示
+        Controller-->>User: return /admin/CategoryInfo/update  // 更新画面を表示
+    else 正常処理
+        Service -->> Controller: 部品カテゴリー情報リスト返却
+        Controller-->>User: return /admin/CategoryInfo/update  // 更新画面を表示
+    end
+
+    User->>Controller: POST /admin/CategoryInfo/update // 更新情報を渡す
+    Form->>Validator: validate() // バリデーションチェック
+
+    alt 入力エラーあり
+        Validator-->>Form: エラーメッセージ設定
+        Form-->>Controller: エラーメッセージ送信
+        Controller-->>User: エラーメッセージ表示
+        Controller-->>User: return /admin/CategoryInfo/update 
+    else 正常処理
+        Controller->>Service: saveCategoryInfoData(form) 
+        Service->>Repository: saveCategoryInfo(form) 
+        Repository->>DB: UPDATE category_info 
+
+        alt データ更新中にエラーが発生
+            Service->>DB: データロールバック
+        else 正常処理
+            Service->>DB: データをコミットする
+        end
+
+        alt データ更新中にエラーが発生していた場合
+            Service-->>Controller: エラーメッセージ送信
+            Controller-->>User: エラーメッセージ表示
+            Controller-->>User: redirect: /admin/CategoryInfo/index // 部品カテゴリー 初期表示へリダイレクト
+        else 正常処理
+            Controller-->>User: addFlashAttribute() 
+            Controller-->>User: redirect: /admin/CategoryInfo/index // 部品カテゴリー 初期表示へリダイレクト
+        end
+    end

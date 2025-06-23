@@ -1,0 +1,41 @@
+sequenceDiagram
+    participant User
+    participant Controller as CategoryInfoController
+    participant Form as CategoryInfoForm
+    participant Validator as CategoryInfoFormValidatorImpl
+    participant Service as CategoryInfoService
+    participant Repository as CategoryInfoRepository
+    participant DB as 部品カテゴリー情報テーブル
+
+    User->>Controller: GET /admin/categoryInfo/delete/{CategoryId} 
+    Controller->>Service: getCategoryInfoData(@PathVariable("CategoryId")) // IDに応じて部品カテゴリー情報取得の指示
+    Service->>Repository: findByCategoryId(CategoryId) // 業務データの取得指示
+    Repository->>DB: SELECT s FROM category_info // formに応じてデータ取得
+    DB -->> Repository: 部品カテゴリー情報リスト取得
+    Repository -->> Service: 部品カテゴリー情報リスト返却
+
+
+    alt 部品カテゴリー情報が空の場合
+        Service -->> Controller: エラーメッセージ設定
+        Controller-->>User: エラーメッセージ表示
+        Controller-->>User: return /admin/CategoryInfo/update  // 更新画面を表示
+    else 正常処理
+        Service -->> Controller: 部品カテゴリー情報リスト返却
+        Controller-->>User: return /admin/CategoryInfo/delete  // 削除確認画面を表示
+    end
+
+    User->>Controller: POST /admin/CategoryInfo/delete
+    Controller->>Service: saveCategoryInfoData() 
+    Service->>Repository: saveCategoryInfo() 
+    Repository->>DB: UPDATE category_info SET delete_flag // データの論理削除
+
+    alt データ更新中にエラーが発生
+        Service->>DB: データロールバック
+        Service-->>Controller: エラーメッセージ送信
+        Controller-->>User: エラーメッセージ表示
+        Controller-->>User: redirect: /admin/CategoryInfo/index // 部品カテゴリー 初期表示へリダイレクト
+    else 正常処理
+        Service->>DB: データをコミットする
+        Controller-->>User: addFlashAttribute() 
+        Controller-->>User: redirect: /admin/CategoryInfo/index // 部品カテゴリー 初期表示へリダイレクト
+    end

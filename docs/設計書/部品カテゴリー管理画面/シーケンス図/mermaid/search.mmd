@@ -1,0 +1,31 @@
+sequenceDiagram
+    participant User
+    participant Controller as CategoryInfoController
+    participant Form as CategoryInfoForm
+    participant Validator as CategoryInfoFormValidatorImpl
+    participant Service as CategoryInfoService
+    participant Repository as CategoryInfoRepository
+    participant DB as "部品カテゴリー情報テーブル"
+
+    User ->> Controller: GET /admin/category/search
+    Form ->> Validator: validate() // バリデーションチェック
+
+    alt 入力エラーあり
+        Validator -->> Form: エラーメッセージ設定
+        Form -->> Controller: エラーメッセージ送信
+        Controller -->> User: エラーメッセージ表示
+    else 正常処理
+        Controller ->> Service: getCategoryInfoData(form) // 検索条件に応じて部品カテゴリー情報取得の指示
+        Service ->> Repository: findByCategoryName(form) // 業務データの取得指示
+        Repository ->> DB: SELECT s FROM category_info // formに応じてデータ取得
+        DB -->> Repository: 部品カテゴリー情報リスト取得
+        Repository -->> Service: 部品カテゴリー情報リスト返却
+        alt 部品カテゴリー情報が空の場合
+            Service -->> Controller: エラーメッセージ設定
+            Controller-->>User: エラーメッセージ表示
+            Controller-->>User: redirect: /admin/CategoryInfo/index // 部品カテゴリー 初期表示へリダイレクト
+        else 正常処理
+            Service -->> Controller: 部品カテゴリー情報リスト返却
+            Controller -->> User: return /admin/category/init // 部品カテゴリー情報テーブルで取得したリストを表示する
+        end
+    end

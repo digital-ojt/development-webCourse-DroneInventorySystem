@@ -1,0 +1,15 @@
+sequenceDiagram
+    participant User
+    participant Controller as CategoryInfoController
+    participant Service as CategoryInfoService
+    participant Repository as CategoryInfoRepository
+    participant DB as "部品カテゴリー情報テーブル"
+
+    User ->> Controller: GET /admin/categoryInfo/index
+    Controller ->> Service: getCategoryInfoData()
+    Service ->> Repository: findAll()
+    Repository ->> DB: SELECT * FROM category_info
+    DB -->> Repository: 部品カテゴリー情報リスト取得
+    Repository -->> Service: 部品カテゴリー情報リスト返却
+    Service -->> Controller: 部品カテゴリー情報リスト返却
+    Controller ->> User: return /admin/categoryInfo/index
