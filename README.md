@@ -1,12 +1,12 @@
-## 👥 開発
-
-本プロジェクトは【Java Webアプリケーション開発コース】の学習教材として開発されています。
-
 # ドローン在庫管理システム (DroneInventorySystem)
 
 製造業クライアント向けのドローン部品在庫管理Webアプリケーションです。Spring Bootを使用したMVCアーキテクチャで構築されています。
 
-## 🛠 技術スタック
+## 開発
+
+本プロジェクトは【Java Webアプリケーション開発コース】の学習教材として開発されています。
+
+## 技術スタック
 
 ### バックエンド
 - **Java 17**
@@ -29,7 +29,7 @@
 - **Logback**
 - **SLF4J**
 
-## 📁 プロジェクト構成
+## プロジェクト構成
 
 ```
 DroneInventorySystem/
@@ -51,7 +51,7 @@ DroneInventorySystem/
 └── docs/               # 設計書・ドキュメント
 ```
 
-## 🔧 環境設定
+## 環境設定
 
 ### 必要な環境
 - Java 17
@@ -72,7 +72,7 @@ spring.datasource.username=youruserName
 spring.datasource.password=yourpassword
 ```
 
-## 🚀 起動方法
+## 起動方法
 
 ### 1. プロジェクトのクローン
 ```bash
@@ -89,7 +89,7 @@ mvn spring-boot:run
 ### 3. アクセス
 ブラウザで `http://localhost:8080` にアクセス
 
-## 📚 ドキュメント
+## ドキュメント
 
 - 詳細設計書: `docs/設計書/`
 - データベース設計: `docs/stock_mng.sql`
