@@ -1,11 +1,27 @@
+# Eclipse IDE関連ファイル
 /.metadata/
 /.idea/
 /Servers/
-.vscode/settings.json
 /bin/
 /logs/
+
+# VS Code関連ファイル  
+.vscode/settings.json
 /.vscode/
+
+# プロジェクト固有ファイル
 DroneInventorySystem/.editorconfig
 DroneInventorySystem/logs/*.log
+
+# 静的解析結果ファイル
 pre-commit-result.txt
 test-output.log
+
+# Node.js関連ファイル
+node_modules/
+package-lock.json
+npm-debug.log*
+
+# Maven関連ファイル
+target/
+.mvn/
