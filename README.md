@@ -52,12 +52,13 @@ project-root/
 ├── setup.sh                     # クロスプラットフォーム セットアップ
 ├── DroneInventorySystem/
 │   ├── config/                   # 設定ファイル集約ディレクトリ
-│   │   ├── format-and-check.sh  # OS判定→適切なスクリプト呼び出し
+│   │   ├── format-and-check.sh  # 統合フォーマット・静的解析スクリプト
 │   │   ├── checkstyle-*.xml     # Checkstyle設定ファイル群
 │   │   ├── eclipse-format.xml   # Eclipse Formatter設定
-│   │   ├── pmd-*.xml            # PMD ルールセット群
-│   │   └── package.json         # Node.js依存関係設定
-│   └── pom.xml                   # Maven設定（config/への参照）
+│   │   └── pmd-*.xml            # PMD ルールセット群
+│   ├── pom.xml                   # Maven設定（config/への参照）
+│   ├── package.json              # Node.js依存関係設定
+│   └── src/                      # ソースコード
 ├── scripts/
 │   ├── setup/
 │   │   ├── mac/
