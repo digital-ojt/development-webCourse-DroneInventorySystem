@@ -12,7 +12,8 @@
 #
 # =============================================================================
 
-set -e
+# エラーハンドリング: 静的解析の各段階でエラーが発生しても処理を継続
+set -o pipefail  # パイプラインのエラーを捕捉
 
 # 色付きログ出力関数
 log_info() {
@@ -51,9 +52,10 @@ check_macos_environment() {
         exit 1
     fi
     
+    # package.jsonは必須ではなく推奨に変更
     if [ ! -f "package.json" ]; then
-        log_error "Node.js環境が設定されていません (package.json不在)"
-        exit 1
+        log_warning "package.json が見つかりません"
+        log_info "→ Node.js環境は任意です（Prettierフォーマットをスキップ）"
     fi
 }
 
@@ -138,9 +140,10 @@ check_nodejs_environment() {
             log_warning "npm が見つかりません"
         fi
     else
-        log_error "Node.js がインストールされていません"
-        log_info "macOS用推奨インストール: brew install node"
-        exit 1
+        log_warning "Node.js がインストールされていません"
+        log_info "→ Prettierフォーマットをスキップします"
+        log_info "→ 推奨インストール: brew install node"
+        # Node.jsがなくても静的解析は続行
     fi
 }
 
@@ -183,7 +186,12 @@ execute_static_analysis() {
     
     # Checkstyle実行
     log_info "Checkstyle実行中..."
-    if $MVN_CMD checkstyle:check > "$temp_log_file" 2>&1; then
+    set +e  # エラー時停止を一時的に無効化
+    $MVN_CMD checkstyle:check > "$temp_log_file" 2>&1
+    local checkstyle_exit_code=$?
+    set -e  # エラー時停止を再有効化
+    
+    if [ $checkstyle_exit_code -eq 0 ]; then
         log_success "Checkstyle: 合格"
     else
         log_warning "Checkstyle: 違反が検出されました"
@@ -195,7 +203,12 @@ execute_static_analysis() {
     
     # PMD実行
     log_info "PMD実行中..."
-    if $MVN_CMD pmd:check > "$temp_log_file" 2>&1; then
+    set +e  # エラー時停止を一時的に無効化
+    $MVN_CMD pmd:check > "$temp_log_file" 2>&1
+    local pmd_exit_code=$?
+    set -e  # エラー時停止を再有効化
+    
+    if [ $pmd_exit_code -eq 0 ]; then
         log_success "PMD: 合格"
     else
         log_warning "PMD: 問題が検出されました"
@@ -207,7 +220,12 @@ execute_static_analysis() {
     
     # SpotBugs実行（macOS用エラーハンドリング）
     log_info "SpotBugs実行中..."
-    if $MVN_CMD spotbugs:check > "$temp_log_file" 2>&1; then
+    set +e  # エラー時停止を一時的に無効化
+    $MVN_CMD spotbugs:check > "$temp_log_file" 2>&1
+    local spotbugs_exit_code=$?
+    set -e  # エラー時停止を再有効化
+    
+    if [ $spotbugs_exit_code -eq 0 ]; then
         log_success "SpotBugs: 合格"
     else
         # macOS環境でのSpotBugsエラー詳細分析
@@ -281,7 +299,12 @@ main() {
     echo ""
     
     # 静的解析実行
-    if execute_static_analysis; then
+    set +e  # エラー時停止を一時的に無効化
+    execute_static_analysis
+    local static_analysis_exit_code=$?
+    set -e  # エラー時停止を再有効化
+    
+    if [ $static_analysis_exit_code -eq 0 ]; then
         local exit_code=0
     else
         local exit_code=1
