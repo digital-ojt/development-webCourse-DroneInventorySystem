@@ -3,6 +3,8 @@
 /.idea/
 /.vscode/
 /.settings/
+/Servers/
+/.metadata/
 .project
 .classpath
 

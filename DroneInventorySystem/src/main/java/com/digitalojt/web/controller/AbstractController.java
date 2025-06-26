@@ -29,7 +29,8 @@ public abstract class AbstractController implements ErrorController {
 	 * @return メソッド名
 	 */
 	private String getMethodName() {
-		return StackWalker.getInstance()
+		return StackWalker
+			.getInstance()
 			.walk(frames -> frames.skip(2).findFirst().map(StackWalker.StackFrame::getMethodName))
 			.orElse("UnknownMethod");
 	}

@@ -39,7 +39,8 @@ public class CustomUserDetailsService implements UserDetailsService {
 		return repository
 			.findById(username)
 			.map(adminInfo ->
-				User.withUsername(adminInfo.getAdminId())
+				User
+					.withUsername(adminInfo.getAdminId())
 					.password(adminInfo.getPassword())
 					.roles(RoleConstants.ROLE_USER)
 					.build()
