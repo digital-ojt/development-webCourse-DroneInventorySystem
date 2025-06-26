@@ -179,32 +179,39 @@ execute_static_analysis() {
     log_check "静的解析実行"
     
     local all_passed=true
+    local temp_log_file="/tmp/static-analysis-$$.log"
     
     # Checkstyle実行
     log_info "Checkstyle実行中..."
-    if $MVN_CMD checkstyle:check -q 2>/dev/null; then
+    if $MVN_CMD checkstyle:check > "$temp_log_file" 2>&1; then
         log_success "Checkstyle: 合格"
     else
         log_warning "Checkstyle: 違反が検出されました"
+        echo "==================== Checkstyle詳細ログ ===================="
+        cat "$temp_log_file"
+        echo "=============================================================="
         all_passed=false
     fi
     
     # PMD実行
     log_info "PMD実行中..."
-    if $MVN_CMD pmd:check -q 2>/dev/null; then
+    if $MVN_CMD pmd:check > "$temp_log_file" 2>&1; then
         log_success "PMD: 合格"
     else
         log_warning "PMD: 問題が検出されました"
+        echo "==================== PMD詳細ログ ===================="
+        cat "$temp_log_file"
+        echo "======================================================="
         all_passed=false
     fi
     
     # SpotBugs実行（macOS用エラーハンドリング）
     log_info "SpotBugs実行中..."
-    if $MVN_CMD spotbugs:check -q 2>/dev/null; then
+    if $MVN_CMD spotbugs:check > "$temp_log_file" 2>&1; then
         log_success "SpotBugs: 合格"
     else
         # macOS環境でのSpotBugsエラー詳細分析
-        spotbugs_error_output=$($MVN_CMD spotbugs:check -X 2>&1)
+        spotbugs_error_output=$(cat "$temp_log_file")
         if echo "$spotbugs_error_output" | grep -q "Unsupported class file major version"; then
             log_warning "SpotBugs: Java 21クラスファイル互換性問題を検出"
             log_info "→ JDK 17環境でも一部Java 21クラスが参照されています"
@@ -212,9 +219,15 @@ execute_static_analysis() {
             # 互換性問題の場合、他のチェック結果を優先
         else
             log_warning "SpotBugs: 問題が検出されました"
+            echo "==================== SpotBugs詳細ログ ===================="
+            cat "$temp_log_file"
+            echo "============================================================"
             all_passed=false
         fi
     fi
+    
+    # 一時ファイルのクリーンアップ
+    rm -f "$temp_log_file"
     
     # 結果判定を明確にする
     if [ "$all_passed" = true ]; then
