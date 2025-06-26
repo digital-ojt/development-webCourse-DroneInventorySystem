@@ -14,7 +14,7 @@ graph TB
         SA[静的解析システム]
         
         subgraph "統合フォーマットレイヤー 🎨 NEW"
-            IFS[format-and-check.sh<br/>統合フォーマットスクリプト]
+            IFS[config/format-and-check.sh<br/>統合フォーマットスクリプト]
             ST[Space→Tab変換]
             PJ[Prettier Java<br/>npm + prettier-plugin-java]
             EF[Eclipse Code Formatter<br/>formatter-maven-plugin]
@@ -322,7 +322,7 @@ flowchart TD
     G3 --> D1
     
     F1 --> H1[内蔵Terminal設定]
-    H1 --> H2[./format-and-check.sh手動実行可能]
+    H1 --> H2[./config/format-and-check.sh手動実行可能]
     H2 --> END[IntelliJ IDEA環境構築完了]
 ```
 
@@ -413,7 +413,7 @@ flowchart TD
     F2 --> H1
     G2 --> H1
     
-    H1 --> H2[format-and-check.sh<br/>統合実行スクリプト]
+    H1 --> H2[config/format-and-check.sh<br/>統合実行スクリプト]
     H2 --> H3[JDK 17環境強制チェック]
     H3 --> H4[Phase1: Space→Tab変換]
     H4 --> H5[Phase2: Prettier Java実行]
@@ -564,7 +564,7 @@ flowchart TD
     E1 -->|移行| F1[統合フォーマット環境セットアップ]
     E1 -->|維持| G1[Google Java Format継続使用]
     
-    F1 --> F2[format-and-check.sh利用]
+    F1 --> F2[config/format-and-check.sh利用]
     G1 --> G2[mvn fmt:format継続]
     
     F2 --> END[統合環境移行完了]

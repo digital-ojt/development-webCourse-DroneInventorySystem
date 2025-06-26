@@ -15,7 +15,8 @@
 #
 # =============================================================================
 
-set -e
+# エラーハンドリング: 静的解析の各段階でエラーが発生しても処理を継続
+set -o pipefail  # パイプラインのエラーを捕捉
 
 # 色付きログ出力関数 (Windows Git Bash用)
 log_info() {
@@ -223,44 +224,80 @@ execute_static_analysis() {
     log_check "静的解析実行"
     
     local all_passed=true
+    local temp_log_file="/tmp/static-analysis-$$.log"
     
     # Checkstyle実行
     log_info "Checkstyle実行中..."
-    if $MVN_CMD checkstyle:check -q 2>/dev/null; then
+    set +e  # エラー時停止を一時的に無効化
+    $MVN_CMD checkstyle:check > "$temp_log_file" 2>&1
+    local checkstyle_exit_code=$?
+    set -e  # エラー時停止を再有効化
+    
+    if [ $checkstyle_exit_code -eq 0 ]; then
         log_success "Checkstyle: 合格"
     else
         log_warning "Checkstyle: 違反が検出されました"
+        echo "==================== Checkstyle詳細ログ (Windows) =================="
+        cat "$temp_log_file"
+        echo "======================================================================="
         all_passed=false
     fi
     
     # PMD実行
     log_info "PMD実行中..."
-    if $MVN_CMD pmd:check -q 2>/dev/null; then
+    set +e  # エラー時停止を一時的に無効化
+    $MVN_CMD pmd:check > "$temp_log_file" 2>&1
+    local pmd_exit_code=$?
+    set -e  # エラー時停止を再有効化
+    
+    if [ $pmd_exit_code -eq 0 ]; then
         log_success "PMD: 合格"
     else
         log_warning "PMD: 問題が検出されました"
+        echo "==================== PMD詳細ログ (Windows) ===================="
+        cat "$temp_log_file"
+        echo "=================================================================="
         all_passed=false
     fi
     
     # SpotBugs実行（Windows用エラーハンドリング）
     log_info "SpotBugs実行中..."
-    if $MVN_CMD spotbugs:check -q 2>/dev/null; then
+    set +e  # エラー時停止を一時的に無効化
+    $MVN_CMD spotbugs:check > "$temp_log_file" 2>&1
+    local spotbugs_exit_code=$?
+    set -e  # エラー時停止を再有効化
+    
+    if [ $spotbugs_exit_code -eq 0 ]; then
         log_success "SpotBugs: 合格"
     else
         # Windows環境でのSpotBugsエラー詳細分析
-        spotbugs_error_output=$($MVN_CMD spotbugs:check -X 2>&1)
+        spotbugs_error_output=$(cat "$temp_log_file")
         if echo "$spotbugs_error_output" | grep -q "Unsupported class file major version"; then
             log_warning "SpotBugs: Java 21クラスファイル互換性問題を検出"
             log_info "→ JDK 17環境でも一部Java 21クラスが参照されています"
             log_info "→ 静的解析は継続しますが、SpotBugsはスキップします"
+            # 互換性問題の場合、他のチェック結果を優先
         else
             log_warning "SpotBugs: 問題が検出されました"
+            echo "==================== SpotBugs詳細ログ (Windows) ===================="
+            cat "$temp_log_file"
+            echo "======================================================================="
             log_note "Windows環境での実行問題の可能性があります"
             all_passed=false
         fi
     fi
     
-    return $([ "$all_passed" = true ] && echo 0 || echo 1)
+    # 一時ファイルのクリーンアップ
+    rm -f "$temp_log_file"
+    
+    # 結果判定を明確にする
+    if [ "$all_passed" = true ]; then
+        log_success "✅ 全ての静的解析チェックに合格しました"
+        return 0
+    else
+        log_error "❌ 静的解析で問題が検出されました"
+        return 1
+    fi
 }
 
 # Windows特有のパフォーマンス警告
@@ -323,7 +360,12 @@ main() {
     echo ""
     
     # 静的解析実行
-    if execute_static_analysis; then
+    set +e  # エラー時停止を一時的に無効化
+    execute_static_analysis
+    local static_analysis_exit_code=$?
+    set -e  # エラー時停止を再有効化
+    
+    if [ $static_analysis_exit_code -eq 0 ]; then
         local exit_code=0
     else
         local exit_code=1

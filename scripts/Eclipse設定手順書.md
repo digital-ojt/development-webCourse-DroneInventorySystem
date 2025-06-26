@@ -133,7 +133,7 @@
 **原因**: eclipse-format.xmlの場所が間違っている
 **解決策**: 
 ```bash
-# プロジェクトルートにファイルがあることを確認
+# configディレクトリにファイルがあることを確認
 ls -la eclipse-format.xml
 ```
 

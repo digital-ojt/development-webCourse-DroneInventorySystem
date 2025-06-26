@@ -104,8 +104,8 @@ check_integrated_format() {
     
     local format_ok=true
     
-    if [ -f "$DRONE_DIR/format-and-check.sh" ]; then
-        log_success "統合フォーマットスクリプト: $DRONE_DIR/format-and-check.sh"
+    if [ -f "$DRONE_DIR/config/format-and-check.sh" ]; then
+        log_success "統合フォーマットスクリプト: $DRONE_DIR/config/format-and-check.sh"
     else
         log_warning "統合フォーマットスクリプトが見つかりません"
         format_ok=false
@@ -118,8 +118,8 @@ check_integrated_format() {
         format_ok=false
     fi
     
-    if [ -f "$DRONE_DIR/eclipse-format.xml" ]; then
-        log_success "Eclipse Formatter設定: eclipse-format.xml"
+    if [ -f "$DRONE_DIR/config/eclipse-format.xml" ]; then
+        log_success "Eclipse Formatter設定: config/eclipse-format.xml"
     else
         log_warning "Eclipse Formatter設定が見つかりません"
         format_ok=false
@@ -196,10 +196,10 @@ run_test() {
     
     # 統合フォーマットスクリプトのテスト
     cd DroneInventorySystem
-    if [ -f "format-and-check.sh" ]; then
-        chmod +x format-and-check.sh
+    if [ -f "config/format-and-check.sh" ]; then
+        chmod +x config/format-and-check.sh
         log_info "統合フォーマット・静的解析テスト実行..."
-        if ./format-and-check.sh; then
+        if ./config/format-and-check.sh; then
             log_success "統合テスト: 合格"
         else
             log_warning "統合テスト: 一部警告あり（通常の動作です）"
@@ -240,11 +240,11 @@ node --version
 
 #### IntelliJ IDEA  
 - **エラー確認**: Project toolwindow で `pre-commit-result.txt` を開く
-- **手動実行**: Terminal タブで `./DroneInventorySystem/format-and-check.sh`
+- **手動実行**: Terminal タブで `./DroneInventorySystem/config/format-and-check.sh`
 
 #### VS Code
 - **エラー確認**: Explorer で `pre-commit-result.txt` を開く  
-- **手動実行**: 統合Terminal で `./DroneInventorySystem/format-and-check.sh`
+- **手動実行**: 統合Terminal で `./DroneInventorySystem/config/format-and-check.sh`
 
 ### 3. トラブルシューティング
 
@@ -265,7 +265,7 @@ brew upgrade maven node
 #### 権限問題
 ```bash
 # スクリプト実行権限付与
-chmod +x DroneInventorySystem/format-and-check.sh
+chmod +x DroneInventorySystem/config/format-and-check.sh
 chmod +x .git/hooks/pre-commit
 ```
 
