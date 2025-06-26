@@ -34,7 +34,7 @@
 		<maven.compiler.target>17</maven.compiler.target>
 		
 		<!-- 静的解析設定（プロファイルで切り替え可能） -->
-		<checkstyle.config.location>config/checkstyle-strict.xml</checkstyle.config.location>
+		<checkstyle.config.location>checkstyle-strict.xml</checkstyle.config.location>
 		<checkstyle.failOnViolation>false</checkstyle.failOnViolation>
 		<pmd.failOnViolation>false</pmd.failOnViolation>
 		<spotbugs.failOnError>false</spotbugs.failOnError>
@@ -241,7 +241,7 @@
 				<artifactId>formatter-maven-plugin</artifactId>
 				<version>2.23.0</version>
 				<configuration>
-					<configFile>${project.basedir}/config/eclipse-format.xml</configFile>
+					<configFile>${project.basedir}/eclipse-format.xml</configFile>
 					<lineEnding>LF</lineEnding>
 					<encoding>UTF-8</encoding>
 					<includes>
@@ -293,7 +293,7 @@
 					<minimumTokens>100</minimumTokens>
 					<targetJdk>17</targetJdk>
 					<rulesets>
-						<ruleset>config/pmd-basic.xml</ruleset>
+						<ruleset>pmd-basic.xml</ruleset>
 					</rulesets>
 					<excludes>
 						<exclude>**/test/**/*.java</exclude>
@@ -376,7 +376,7 @@
 					<minimumTokens>100</minimumTokens>
 					<targetJdk>17</targetJdk>
 					<rulesets>
-						<ruleset>config/pmd-basic.xml</ruleset>
+						<ruleset>pmd-basic.xml</ruleset>
 					</rulesets>
 					<excludes>
 						<exclude>**/test/**/*.java</exclude>

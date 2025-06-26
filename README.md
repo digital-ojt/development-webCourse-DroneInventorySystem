@@ -42,7 +42,7 @@
 ```bash
 # 統合フォーマット・静的解析の手動実行
 cd DroneInventorySystem
-./format-and-check.sh
+./config/format-and-check.sh
 ```
 
 ### 📂 ディレクトリ構造
@@ -51,8 +51,13 @@ cd DroneInventorySystem
 project-root/
 ├── setup.sh                     # クロスプラットフォーム セットアップ
 ├── DroneInventorySystem/
-│   ├── format-and-check.sh      # OS判定→適切なスクリプト呼び出し
-│   └── pom.xml
+│   ├── config/                   # 設定ファイル集約ディレクトリ
+│   │   ├── format-and-check.sh  # OS判定→適切なスクリプト呼び出し
+│   │   ├── checkstyle-*.xml     # Checkstyle設定ファイル群
+│   │   ├── eclipse-format.xml   # Eclipse Formatter設定
+│   │   ├── pmd-*.xml            # PMD ルールセット群
+│   │   └── package.json         # Node.js依存関係設定
+│   └── pom.xml                   # Maven設定（config/への参照）
 ├── scripts/
 │   ├── setup/
 │   │   ├── mac/
@@ -104,7 +109,7 @@ project-root/
 
 1. **OS別ガイドを確認**: `PRE-COMMIT-GUIDE-{OS}.md`
 2. **結果ファイルを確認**: `pre-commit-result.txt`
-3. **手動実行でテスト**: `cd DroneInventorySystem && ./format-and-check.sh`
+3. **手動実行でテスト**: `cd DroneInventorySystem && ./config/format-and-check.sh`
 4. **GitHubでIssue報告**: OS環境・エラー詳細を含めて報告
 
 ---

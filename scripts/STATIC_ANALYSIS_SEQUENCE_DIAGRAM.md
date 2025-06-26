@@ -57,7 +57,7 @@ sequenceDiagram
         Hook->>Git: スキップメッセージ出力
         Git->>Eclipse: コミット成功
     else 対象ブランチの場合
-        Hook->>Script: ./format-and-check.sh実行
+        Hook->>Script: ./config/format-and-check.sh実行
         
         alt 静的解析成功
             Script-->>Hook: 終了コード 0
@@ -144,7 +144,7 @@ sequenceDiagram
 
 ```mermaid
 flowchart TD
-    A[format-and-check.sh実行] --> B{Javaバージョン確認}
+    A[config/format-and-check.sh実行] --> B{Javaバージョン確認}
     B --> C[java -version実行]
     C --> D{JDK 17?}
     
@@ -269,7 +269,7 @@ flowchart TD
     D -->|その他開発ブランチ| F
     
     E --> G[✅ コミット続行]
-    F --> H[format-and-check.sh実行]
+    F --> H[config/format-and-check.sh実行]
     H --> I{静的解析結果}
     
     I -->|成功| J[✅ コミット許可]
@@ -533,7 +533,7 @@ sequenceDiagram
     participant Git as Git
     
     Note over Dev, Reports: 🚀 統合フォーマット・チェック開始
-    Dev->>Script: ./format-and-check.sh 実行
+    Dev->>Script: ./config/format-and-check.sh 実行
     Script->>Dev: 🎯 統合フォーマット・品質チェック開始
     
     Note over Script, Reports: Phase 1: 環境確認・セットアップ
